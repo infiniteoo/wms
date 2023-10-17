@@ -1,13 +1,13 @@
 "use client";
 import { useState } from "react";
 import "./Toolbar.css"; // Import your CSS file for custom styling
-import Config from './config/Config';
-import Inventory from './inventory/Inventory';
-import Receiving from './receiving/Receiving';
-import Shipping from './shipping/Shipping';
-import System from './system/System';
+import Config from "./config/Config";
+import Inventory from "./inventory/Inventory";
+import Receiving from "./receiving/Receiving";
+import Shipping from "./shipping/Shipping";
+import System from "./system/System";
 
-const Toolbar = () => {
+const Toolbar = ({  }) => {
   const [activeTab, setActiveTab] = useState("INVENTORY");
 
   const handleTabClick = (tabName) => {
@@ -17,15 +17,15 @@ const Toolbar = () => {
   const renderTabContent = () => {
     switch (activeTab) {
       case "INVENTORY":
-        return <Inventory/>;
+        return <Inventory />;
       case "SHIPPING":
-        return <Shipping/>;
+        return <Shipping />;
       case "RECEIVING":
-        return <Receiving/>;
+        return <Receiving />;
       case "SYSTEM":
-        return <System/>;
+        return <System />;
       case "CONFIG":
-        return <Config/>;
+        return <Config />;
       default:
         return null;
     }
