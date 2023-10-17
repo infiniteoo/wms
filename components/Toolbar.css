@@ -1,0 +1,11 @@
+/* Toolbar.css */
+.menu li:hover {
+    background-color: #dcdcdc; /* Slightly darker gray color on hover */
+    cursor: pointer;
+  }
+  
+  .menu .active {
+    background-color: #dcdcdc; /* Slightly darker gray color for the active tab */
+    
+  }
+  

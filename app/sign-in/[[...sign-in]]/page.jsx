@@ -1,9 +1,13 @@
+import React from 'react';
 import { SignIn } from "@clerk/nextjs";
+
 
 export default function Page() {
   return (
-    <div className="justify-center flex flex-row items-center">
-      <SignIn />;
-    </div>
+    
+      <div className="flex justify-center items-center ml-2">
+        <SignIn />
+      </div>
+    
   );
 }
