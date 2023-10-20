@@ -32,8 +32,9 @@ const Toolbar = ({  }) => {
   };
 
   return (
-    <div className="flex flex-row justify-center ">
-      <div className="flex flex-col justify-center items-center">
+    <div className="flex flex-row justify-start ">
+      <div className="flex flex-col justify-center 
+    ">
         <ul className="menu flex flex-row space-x-4 ">
           <li
             className={activeTab === "INVENTORY" ? "active" : ""}

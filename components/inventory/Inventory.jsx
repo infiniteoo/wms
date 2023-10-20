@@ -1,69 +1,74 @@
-import React, { useEffect, useState } from "react";
-import { createClient } from "@supabase/supabase-js";
+"use client";
+import { useState } from "react";
+import "./Inventory.css"; // Import your CSS file for custom styling
+import DisplayInventory from "./DisplayInventory";
 
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
-);
+const Inventory = ({}) => {
+  const [activeTab, setActiveTab] = useState("dashboard");
 
-function Inventory() {
-  const [inventory, setInventory] = useState([]);
+  const handleTabClick = (tabName) => {
+    setActiveTab(tabName);
+  };
 
-  useEffect(() => {
-    getCountries();
-  }, []);
-
-  async function getCountries() {
-    try {
-      let { data, error } = await supabase.from("inventory").select("*");
-      if (error) {
-        console.error(error);
-      } else {
-        setInventory(data);
-      }
-    } catch (error) {
-      console.error(error);
+  const renderTabContent = () => {
+    switch (activeTab) {
+      case "dashboard":
+        return null;
+      case "database":
+        return <DisplayInventory/>;
+      case "tab3":
+        return null;
+      case "tab4":
+        return null;
+      case "tab5":
+        return null;
+      default:
+        return 
     }
-  }
+  };
 
   return (
-    <div className="container mx-auto mt-10">
-      {inventory && (
-        <table className="min-w-full border rounded-lg overflow-hidden">
-          <thead className="bg-gray-800 text-white">
-            <tr>
-              <th className="py-2">Item Number</th>
-              <th className="py-2">Lot Number</th>
-              <th className="py-2">Description</th>
-              <th className="py-2">LPN Number</th>
-              <th className="py-2">Cases</th>
-              <th className="py-2">Manufactured Date</th>
-              <th className="py-2">Expiration Date</th>
-              <th className="py-2">Status</th>
-              <th className="py-2">Location</th>
-              <th className="py-2">Aging Profile</th>
-            </tr>
-          </thead>
-          <tbody>
-            {inventory.map((item) => (
-              <tr key={item.id} className="bg-gray-100 hover:bg-gray-200">
-                <td className="py-2">{item.item_number}</td>
-                <td className="py-2">{item.lot_number}</td>
-                <td className="py-2">{item.description}</td>
-                <td className="py-2">{item.lpn_number}</td>
-                <td className="py-2">{item.cases}</td>
-                <td className="py-2">{item.manufactured_date}</td>
-                <td className="py-2">{item.expiration_date}</td>
-                <td className="py-2">{item.status}</td>
-                <td className="py-2">{item.location}</td>
-                <td className="py-2">{item.aging_profile}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      )}
+    <div className="flex flex-row justify-start ">
+      <div className="flex flex-col justify-start ">
+        <ul className="menu flex flex-row space-x-4 ">
+          <li
+            className={activeTab === "dashboard" ? "active" : ""}
+            onClick={() => handleTabClick("dashboard")}
+          >
+            dashboard
+          </li>
+          <li
+            className={activeTab === "database" ? "active" : ""}
+            onClick={() => handleTabClick("database")}
+          >
+            database
+          </li>
+          <li
+            className={activeTab === "RECEIVING" ? "active" : ""}
+            onClick={() => handleTabClick("RECEIVING")}
+          >
+            RECEIVING
+          </li>
+          <li
+            className={activeTab === "SYSTEM" ? "active" : ""}
+            onClick={() => handleTabClick("SYSTEM")}
+          >
+            SYSTEM
+          </li>
+          <li
+            className={activeTab === "CONFIG" ? "active" : ""}
+            onClick={() => handleTabClick("CONFIG")}
+          >
+            CONFIG
+          </li>
+        </ul>
+
+        <div className="flex flex-col font-bold">
+          <div className="tab-content">{renderTabContent()}</div>
+        </div>
+      </div>
     </div>
   );
-}
+};
 
 export default Inventory;
