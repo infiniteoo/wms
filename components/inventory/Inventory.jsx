@@ -15,7 +15,7 @@ const Inventory = ({}) => {
       case "dashboard":
         return null;
       case "database":
-        return <DisplayInventory/>;
+        return <DisplayInventory />;
       case "tab3":
         return null;
       case "tab4":
@@ -23,13 +23,13 @@ const Inventory = ({}) => {
       case "tab5":
         return null;
       default:
-        return 
+        return;
     }
   };
 
   return (
-    <div className="flex flex-row justify-start ">
-      <div className="flex flex-col justify-start ">
+    <div className="flex flex-col border-black ">
+      <div className="flex   ">
         <ul className="menu flex flex-row space-x-4 ">
           <li
             className={activeTab === "dashboard" ? "active" : ""}
@@ -62,10 +62,9 @@ const Inventory = ({}) => {
             CONFIG
           </li>
         </ul>
-
-        <div className="flex flex-col font-bold">
-          <div className="tab-content">{renderTabContent()}</div>
-        </div>
+      </div>
+      <div className="flex flex-col w-full">
+        <div className="w-full ">{renderTabContent()}</div>
       </div>
     </div>
   );

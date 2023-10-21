@@ -5,7 +5,9 @@
   }
   
   .menu .active {
-    background-color: #dcdcdc; /* Slightly darker gray color for the active tab */
-    
+    background-color: black; /* Slightly darker gray color for the active tab */
+    color: white;
+    padding-left: 5px;
+    padding-right: 5px;
   }
   

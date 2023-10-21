@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { createClient } from "@supabase/supabase-js";
+import InventoryToolbar from "./InventoryToolbar";
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL,
@@ -8,30 +9,49 @@ const supabase = createClient(
 
 const DisplayInventory = () => {
   const [inventory, setInventory] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
+  const [selectedRows, setSelectedRows] = useState([]);
 
   useEffect(() => {
-    getCountries();
-  }, []);
+    fetchInventory();
+  }, [currentPage]);
 
-  async function getCountries() {
-    try {
-      let { data, error } = await supabase.from("inventory").select("*");
-      if (error) {
-        console.error(error);
-      } else {
-        setInventory(data);
-      }
-    } catch (error) {
+  const fetchInventory = async () => {
+    const { data, error } = await supabase
+      .from("inventory")
+      .select("*")
+      .range((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage - 1);
+    if (error) {
       console.error(error);
+    } else {
+      setInventory(data);
     }
-  }
+  };
+
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+  };
+
+  const handleRowClick = (rowId) => {
+    // Toggle the selection of the clicked row
+    setSelectedRows((prevSelectedRows) => {
+      if (prevSelectedRows.includes(rowId)) {
+        return prevSelectedRows.filter((id) => id !== rowId);
+      } else {
+        return [...prevSelectedRows, rowId];
+      }
+    });
+  };
 
   return (
-    <div className="container mx-auto mt-10">
+    <div className="mt-8 border-orange-500 w-full">
+      <InventoryToolbar />
       {inventory && (
-        <table className="min-w-full border rounded-lg overflow-hidden">
+        <table className="rounded-lg overflow-hidden w-full">
           <thead className="bg-gray-800 text-white">
             <tr>
+              <th className="py-2"></th>
               <th className="py-2">Item Number</th>
               <th className="py-2">Lot Number</th>
               <th className="py-2">Description</th>
@@ -46,7 +66,21 @@ const DisplayInventory = () => {
           </thead>
           <tbody>
             {inventory.map((item) => (
-              <tr key={item.id} className="bg-gray-100 hover:bg-gray-200">
+              <tr
+                key={item.id}
+                className={`${
+                  selectedRows.includes(item.id)
+                    ? "font-bold bg-yellow-200"
+                    : "bg-gray-100 hover:bg-gray-200"
+                }`}
+                onClick={() => handleRowClick(item.id)}
+              >
+                <td className="py-2">
+                  <input
+                    type="checkbox"
+                    checked={selectedRows.includes(item.id)}
+                  />
+                </td>
                 <td className="py-2">{item.item_number}</td>
                 <td className="py-2">{item.lot_number}</td>
                 <td className="py-2">{item.description}</td>
@@ -62,8 +96,23 @@ const DisplayInventory = () => {
           </tbody>
         </table>
       )}
+      <div className="pagination">
+        <button
+          onClick={() => handlePageChange(currentPage - 1)}
+          disabled={currentPage === 1}
+        >
+          &laquo; Previous Page
+        </button>
+        <button
+          onClick={() => handlePageChange(currentPage + 1)}
+          disabled={inventory.length < itemsPerPage}
+          className="ml-5"
+        >
+          Next Page &raquo;
+        </button>
+      </div>
     </div>
   );
-}
+};
 
 export default DisplayInventory;

@@ -6,8 +6,9 @@ import Inventory from "./inventory/Inventory";
 import Receiving from "./receiving/Receiving";
 import Shipping from "./shipping/Shipping";
 import System from "./system/System";
+import { UserButton } from "@clerk/nextjs";
 
-const Toolbar = ({  }) => {
+const Toolbar = ({}) => {
   const [activeTab, setActiveTab] = useState("INVENTORY");
 
   const handleTabClick = (tabName) => {
@@ -32,9 +33,8 @@ const Toolbar = ({  }) => {
   };
 
   return (
-    <div className="flex flex-row justify-start ">
-      <div className="flex flex-col justify-center 
-    ">
+    <div className=" border-green-500" style={{ width: "100%" }}>
+      <div className="flex flex-row justify-between">
         <ul className="menu flex flex-row space-x-4 ">
           <li
             className={activeTab === "INVENTORY" ? "active" : ""}
@@ -67,10 +67,12 @@ const Toolbar = ({  }) => {
             CONFIG
           </li>
         </ul>
-
-        <div className="flex flex-col font-bold">
-          <div className="tab-content">{renderTabContent()}</div>
+        <div>
+          <UserButton afterSignOutUrl="/" />
         </div>
+      </div>
+      <div className="flex flex-col border-purple-300">
+        <div className="tab-content">{renderTabContent()}</div>
       </div>
     </div>
   );
