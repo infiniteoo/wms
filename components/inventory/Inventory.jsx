@@ -28,9 +28,9 @@ const Inventory = ({}) => {
   };
 
   return (
-    <div className="flex flex-col border-black ">
-      <div className="flex   ">
-        <ul className="menu flex flex-row space-x-4 ">
+    <div className="flex flex-col border-black w-full">
+      <div className="flex flex-row">
+        <ul className="menu flex flex-row space-x-4 pl-2 ">
           <li
             className={activeTab === "dashboard" ? "active" : ""}
             onClick={() => handleTabClick("dashboard")}
@@ -63,8 +63,8 @@ const Inventory = ({}) => {
           </li>
         </ul>
       </div>
-      <div className="flex flex-col w-full">
-        <div className="w-full ">{renderTabContent()}</div>
+      <div className="">
+        <div className=" ">{renderTabContent()}</div>
       </div>
     </div>
   );

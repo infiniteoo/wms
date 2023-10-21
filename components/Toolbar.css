@@ -2,10 +2,11 @@
 .menu li:hover {
     background-color: #dcdcdc; /* Slightly darker gray color on hover */
     cursor: pointer;
+    border-radius: 2px;
   }
   
   .menu .active {
     background-color: #dcdcdc; /* Slightly darker gray color for the active tab */
-    
+    border-radius: 10px;
   }
   

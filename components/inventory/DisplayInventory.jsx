@@ -45,10 +45,10 @@ const DisplayInventory = () => {
   };
 
   return (
-    <div className="mt-8 border-orange-500 w-full">
+    <div className="mt-8 border-orange-500 ">
       <InventoryToolbar />
       {inventory && (
-        <table className="rounded-lg overflow-hidden w-full">
+        <table className="rounded-lg overflow-hidden">
           <thead className="bg-gray-800 text-white">
             <tr>
               <th className="py-2"></th>
@@ -106,7 +106,7 @@ const DisplayInventory = () => {
         <button
           onClick={() => handlePageChange(currentPage + 1)}
           disabled={inventory.length < itemsPerPage}
-          className="ml-5"
+          className="pl-5"
         >
           Next Page &raquo;
         </button>

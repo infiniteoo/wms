@@ -5,7 +5,7 @@
   }
   
   .menu .active {
-    background-color: black; /* Slightly darker gray color for the active tab */
+    background-color: black; 
     color: white;
     padding-left: 5px;
     padding-right: 5px;

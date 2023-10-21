@@ -33,9 +33,9 @@ const Toolbar = ({}) => {
   };
 
   return (
-    <div className=" border-green-500" style={{ width: "100%" }}>
-      <div className="flex flex-row justify-between">
-        <ul className="menu flex flex-row space-x-4 ">
+    <div className=" border-green-500 w-full">
+      <div className="flex flex-row justify-between w-full">
+        <ul className="menu flex flex-row space-x-4 items-center ml-2">
           <li
             className={activeTab === "INVENTORY" ? "active" : ""}
             onClick={() => handleTabClick("INVENTORY")}
@@ -67,11 +67,11 @@ const Toolbar = ({}) => {
             CONFIG
           </li>
         </ul>
-        <div>
+        <div className="mr-2 pt-1">
           <UserButton afterSignOutUrl="/" />
         </div>
       </div>
-      <div className="flex flex-col border-purple-300">
+      <div className="flex flex-col">
         <div className="tab-content">{renderTabContent()}</div>
       </div>
     </div>
