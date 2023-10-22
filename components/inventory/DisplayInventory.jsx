@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { createClient } from "@supabase/supabase-js";
 import InventoryToolbar from "./InventoryToolbar";
 import ItemModal from "./ItemModal";
+import { useUser } from "@clerk/clerk-react";
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL,
@@ -17,6 +18,10 @@ const DisplayInventory = () => {
   const [selectedRows, setSelectedRows] = useState([]);
   const [searchTerm, setSearchTerm] = useState(""); // Add state for search term
   const [isOpen, setIsOpen] = useState(false);
+  const user = useUser();
+  const userFullName = user.fullName;
+
+  console.log("userFullName", user.user.fullName);
 
   useEffect(() => {
     fetchInventory();
@@ -60,14 +65,10 @@ const DisplayInventory = () => {
       expirationDate,
     } = formData;
 
-    console.log("manufactured date", manufacturedDate);
-    console.log("expiration date", expirationDate);
-
     const daysToExpire =
       (new Date(expirationDate) - new Date(manufacturedDate)) /
       (1000 * 60 * 60 * 24);
 
-    console.log("days to expire", daysToExpire);
     const item = {
       item_number: itemNumber,
       description,
@@ -79,8 +80,9 @@ const DisplayInventory = () => {
       manufactured_date: manufacturedDate,
       expiration_date: expirationDate,
       days_to_expire: daysToExpire,
+      lastTouchedBy: user.user.fullName,
     };
-    console.log(item);
+    
     // Add logic to save item to database
     const { data, error } = await supabase
       .from("inventory")
