@@ -8,16 +8,24 @@ const InventoryToolbar = ({
   setInventory,
   searchTerm,
   setSearchTerm,
-
+  actionModifier,
   setModifier,
+  setActionModifier,
+  selectedRows,
+  setIsOpen,
 }) => {
   return (
-    <div className="flex flex-row justify-between  p-1  border-cyan-400">
-      <div className="">
-        <ActionDropdown />
+    <div className="flex flex-row justify-between p-1 border-cyan-400">
+      <div className="flex items-center">
+        <ActionDropdown
+          actionModifier={actionModifier}
+          setActionModifier={setActionModifier}
+          selectedRows={selectedRows}
+          setIsOpen={setIsOpen}
+        />
       </div>
 
-      <div className="">
+      <div className="flex items-center">
         <SearchModifierDropdown
           inventory={inventory}
           setModifier={setModifier}

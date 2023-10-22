@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { createClient } from "@supabase/supabase-js";
 import InventoryToolbar from "./InventoryToolbar";
+import ItemModal from "./ItemModal";
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL,
@@ -9,27 +10,87 @@ const supabase = createClient(
 
 const DisplayInventory = () => {
   const [inventory, setInventory] = useState([]);
+  const [actionModifier, setActionModifier] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
   const [modifier, setModifier] = useState("");
   const [selectedRows, setSelectedRows] = useState([]);
   const [searchTerm, setSearchTerm] = useState(""); // Add state for search term
+  const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
     fetchInventory();
   }, [currentPage, searchTerm]); // Listen for changes in currentPage and searchTerm
 
   const fetchInventory = async () => {
-    // Your search logic here based on searchTerm, e.g., using .ilike
+    try {
+      const { data, error } = await supabase
+        .from("inventory")
+        .select("*")
+        .ilike(modifier, `%${searchTerm}%`)
+        .range(
+          (currentPage - 1) * itemsPerPage,
+          currentPage * itemsPerPage - 1
+        );
+
+      if (error) {
+        console.error(error);
+      } else {
+        setInventory(data);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const closeModal = () => {
+    setIsOpen(false);
+  };
+
+  const onSave = async (formData) => {
+    const {
+      itemNumber,
+      description,
+      lpnNumber,
+      lotNumber,
+      status,
+      location,
+      cases,
+      manufacturedDate,
+      expirationDate,
+    } = formData;
+
+    console.log("manufactured date", manufacturedDate);
+    console.log("expiration date", expirationDate);
+
+    const daysToExpire =
+      (new Date(expirationDate) - new Date(manufacturedDate)) /
+      (1000 * 60 * 60 * 24);
+
+    console.log("days to expire", daysToExpire);
+    const item = {
+      item_number: itemNumber,
+      description,
+      lpn_number: lpnNumber,
+      lot_number: lotNumber,
+      status,
+      location,
+      cases,
+      manufactured_date: manufacturedDate,
+      expiration_date: expirationDate,
+      days_to_expire: daysToExpire,
+    };
+    console.log(item);
+    // Add logic to save item to database
     const { data, error } = await supabase
       .from("inventory")
-      .select("*")
-      .ilike(modifier, `%${searchTerm}%`) // Adjust this to your search column
-      .range((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage - 1);
+      .insert([item])
+      .select();
     if (error) {
       console.error(error);
     } else {
-      setInventory(data);
+      console.log("data", data);
+      setInventory([...inventory, data[0]]);
     }
   };
 
@@ -62,6 +123,10 @@ const DisplayInventory = () => {
         setSearchTerm={setSearchTerm}
         modifier={modifier}
         setModifier={setModifier}
+        actionModifier={actionModifier}
+        setActionModifier={setActionModifier}
+        selectedRows={selectedRows}
+        setIsOpen={setIsOpen}
       />
       {inventory && (
         <table className="rounded-lg overflow-hidden">
@@ -127,6 +192,14 @@ const DisplayInventory = () => {
         >
           Next Page &raquo;
         </button>
+        {isOpen && (
+          <ItemModal
+            setIsOpen={setIsOpen}
+            closeModal={closeModal}
+            onSave={onSave}
+            selectedRows={selectedRows}
+          />
+        )}
       </div>
     </div>
   );
