@@ -29,6 +29,11 @@ const DisplayInventory = () => {
     }
   };
 
+  const handleCheckboxChange = (event) => {
+    const rowId = parseInt(event.target.parentElement.parentElement.id);
+    handleRowClick(rowId);
+  };
+
   const handlePageChange = (page) => {
     setCurrentPage(page);
   };
@@ -44,9 +49,10 @@ const DisplayInventory = () => {
     });
   };
 
+
   return (
     <div className="mt-8 border-orange-500 ">
-      <InventoryToolbar />
+      <InventoryToolbar inventory={inventory} setInventory={setInventory} />
       {inventory && (
         <table className="rounded-lg overflow-hidden">
           <thead className="bg-gray-800 text-white">
@@ -65,6 +71,7 @@ const DisplayInventory = () => {
             </tr>
           </thead>
           <tbody>
+            
             {inventory.map((item) => (
               <tr
                 key={item.id}
@@ -78,6 +85,7 @@ const DisplayInventory = () => {
                 <td className="py-2">
                   <input
                     type="checkbox"
+                    onChange={handleCheckboxChange}
                     checked={selectedRows.includes(item.id)}
                   />
                 </td>
@@ -105,7 +113,7 @@ const DisplayInventory = () => {
         </button>
         <button
           onClick={() => handlePageChange(currentPage + 1)}
-          disabled={inventory.length < itemsPerPage}
+          disabled={inventory && inventory.length < itemsPerPage}
           className="pl-5"
         >
           Next Page &raquo;
