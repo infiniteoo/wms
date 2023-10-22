@@ -11,16 +11,20 @@ const DisplayInventory = () => {
   const [inventory, setInventory] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
+  const [modifier, setModifier] = useState("");
   const [selectedRows, setSelectedRows] = useState([]);
+  const [searchTerm, setSearchTerm] = useState(""); // Add state for search term
 
   useEffect(() => {
     fetchInventory();
-  }, [currentPage]);
+  }, [currentPage, searchTerm]); // Listen for changes in currentPage and searchTerm
 
   const fetchInventory = async () => {
+    // Your search logic here based on searchTerm, e.g., using .ilike
     const { data, error } = await supabase
       .from("inventory")
       .select("*")
+      .ilike(modifier, `%${searchTerm}%`) // Adjust this to your search column
       .range((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage - 1);
     if (error) {
       console.error(error);
@@ -49,10 +53,16 @@ const DisplayInventory = () => {
     });
   };
 
-
   return (
     <div className="mt-8 border-orange-500 ">
-      <InventoryToolbar inventory={inventory} setInventory={setInventory} />
+      <InventoryToolbar
+        inventory={inventory}
+        setInventory={setInventory}
+        searchTerm={searchTerm}
+        setSearchTerm={setSearchTerm}
+        modifier={modifier}
+        setModifier={setModifier}
+      />
       {inventory && (
         <table className="rounded-lg overflow-hidden">
           <thead className="bg-gray-800 text-white">
@@ -71,7 +81,6 @@ const DisplayInventory = () => {
             </tr>
           </thead>
           <tbody>
-            
             {inventory.map((item) => (
               <tr
                 key={item.id}

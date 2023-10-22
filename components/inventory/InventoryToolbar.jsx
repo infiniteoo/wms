@@ -3,9 +3,14 @@ import ActionDropdown from "./ActionDropdown";
 import SearchModifierDropdown from "./SearchModifierDropdown";
 import SearchTextInput from "./SearchTextInput";
 
-const InventoryToolbar = ({ inventory, setInventory }) => {
-  const [modifier, setModifier] = useState("");
- 
+const InventoryToolbar = ({
+  inventory,
+  setInventory,
+  searchTerm,
+  setSearchTerm,
+
+  setModifier,
+}) => {
   return (
     <div className="flex flex-row justify-between  p-1  border-cyan-400">
       <div className="">
@@ -13,8 +18,16 @@ const InventoryToolbar = ({ inventory, setInventory }) => {
       </div>
 
       <div className="">
-        <SearchModifierDropdown inventory={inventory} setModifier={setModifier} />
-        <SearchTextInput inventory={inventory} setInventory={setInventory} modifier={modifier}/>
+        <SearchModifierDropdown
+          inventory={inventory}
+          setModifier={setModifier}
+        />
+        <SearchTextInput
+          inventory={inventory}
+          setInventory={setInventory}
+          setSearchTerm={setSearchTerm}
+          searchTerm={searchTerm}
+        />
       </div>
     </div>
   );
