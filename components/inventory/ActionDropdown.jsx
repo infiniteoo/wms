@@ -41,7 +41,8 @@ const ActionDropdown = ({
       id="action-dropdown"
       className="bg-white border rounded px-2 py-1"
       onChange={handleChange}
-      defaultValue=""
+      value={actionModifier}
+      defaultValue={actionModifier}
     >
       <option value="" disabled defaultValue hidden>
         Actions

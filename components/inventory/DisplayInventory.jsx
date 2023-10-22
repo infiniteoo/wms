@@ -19,9 +19,6 @@ const DisplayInventory = () => {
   const [searchTerm, setSearchTerm] = useState(""); // Add state for search term
   const [isOpen, setIsOpen] = useState(false);
   const user = useUser();
-  const userFullName = user.fullName;
-
-  console.log("userFullName", user.user.fullName);
 
   useEffect(() => {
     fetchInventory();
@@ -82,7 +79,7 @@ const DisplayInventory = () => {
       days_to_expire: daysToExpire,
       lastTouchedBy: user.user.fullName,
     };
-    
+
     // Add logic to save item to database
     const { data, error } = await supabase
       .from("inventory")
@@ -93,6 +90,9 @@ const DisplayInventory = () => {
     } else {
       console.log("data", data);
       setInventory([...inventory, data[0]]);
+      setSelectedRows([]);
+      setActionModifier("");
+      console.log("action modified: ", actionModifier);
     }
   };
 
