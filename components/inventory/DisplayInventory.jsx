@@ -31,32 +31,38 @@ const DisplayInventory = () => {
 
   const confirmDelete = async () => {
     if (selectedRows.length > 0) {
-      // delete item(s)
-      console.log("selectedRows", selectedRows);
-      const { data, error } = await supabase
-        .from("inventory")
-        .delete()
-        .in(
-          "id",
-          selectedRows.map((row) => row.id)
-        )
-        .select();
-      if (error) {
-        console.error(error);
-      } else {
-        console.log("data", data);
-        setInventory(
-          inventory.filter((item) => {
-            return !selectedRows.includes(item);
-          })
-        );
-        setSelectedRows([]);
-        setActionModifier("");
-      }
-    }
+      // Create an array to store promises for each delete operation
+      const deletePromises = selectedRows.map(async (row) => {
+        try {
+          // Delete the item
+          const { data, error } = await supabase
+            .from("inventory")
+            .delete()
+            .eq("id", row.id)
+            .select();
+          if (error) {
+            console.error(error);
+          }
+        } catch (error) {
+          console.error(error);
+        }
+      });
 
-    // Close the modal
-    setShowDeleteModal(false);
+      // Wait for all delete operations to complete
+      await Promise.all(deletePromises);
+
+      // Update the local state to remove the deleted items
+      const updatedInventory = inventory.filter(
+        (item) =>
+          !selectedRows.some((selectedItem) => selectedItem.id === item.id)
+      );
+      setInventory(updatedInventory);
+
+      // Clear the selected rows and close the modal
+      setSelectedRows([]);
+      setActionModifier("");
+      setShowDeleteModal(false);
+    }
   };
 
   console.log("selectedRows", selectedRows);
@@ -168,23 +174,28 @@ const DisplayInventory = () => {
       }
     }
   };
-
-  const handleCheckboxChange = (event) => {
-    const rowId = parseInt(event.target.parentElement.parentElement.id);
-    handleRowClick(rowId);
-  };
-
   const handlePageChange = (page) => {
     setCurrentPage(page);
   };
 
+  const handleCheckboxChange = (event, rowItem) => {
+    event.stopPropagation(); // Prevent the click event from propagating to the row
+    handleRowClick(rowItem);
+  };
+
   const handleRowClick = (rowItem) => {
-    // Toggle the selection of the clicked row
     setSelectedRows((prevSelectedRows) => {
-      if (prevSelectedRows.some((item) => item.id === rowItem.id)) {
+      // Check if the clicked row is already selected
+      const isRowSelected = prevSelectedRows.some(
+        (item) => item.id === rowItem.id
+      );
+
+      if (isRowSelected) {
+        // If the row is already selected, remove it from the selected rows
         return prevSelectedRows.filter((item) => item.id !== rowItem.id);
       } else {
-        return [rowItem];
+        // If the row is not selected, add it to the selected rows
+        return [...prevSelectedRows, rowItem];
       }
     });
   };
@@ -239,9 +250,13 @@ const DisplayInventory = () => {
                 <td className="py-2">
                   <input
                     type="checkbox"
-                    onChange={handleCheckboxChange}
-                    checked={selectedRows.includes(item.id)}
+                    onChange={(event) => handleCheckboxChange(event, item)} // Checkbox handler
+                    checked={selectedRows.some(
+                      (selectedItem) => selectedItem.id === item.id
+                    )}
+                    style={{ marginRight: "6px" }}
                   />
+                  {selectedRows.includes(item.id) ? "✓" : null}
                 </td>
                 <td className="py-2">{item.item_number}</td>
                 <td className="py-2">{item.lot_number}</td>
@@ -258,7 +273,7 @@ const DisplayInventory = () => {
           </tbody>
         </table>
       )}
-      <div className="pagination">
+      <div className="pagination text-center mt-3">
         <button
           onClick={() => handlePageChange(currentPage - 1)}
           disabled={currentPage === 1}

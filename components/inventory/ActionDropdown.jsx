@@ -17,6 +17,12 @@ const ActionDropdown = ({
     // open modal to add item
   };
   const handleDeleteItem = async () => {
+    if (selectedRows.length === 0) {
+      alert("please select an item to delete");
+      setActionModifier("");
+      return;
+    }
+    setActionModifier("");
     setItemToDelete(selectedRows);
     setShowDeleteModal(true);
   };
