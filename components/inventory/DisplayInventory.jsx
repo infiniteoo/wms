@@ -5,8 +5,7 @@ import InventoryToolbar from "./InventoryToolbar";
 import ItemModal from "./ItemModal";
 import { useUser } from "@clerk/clerk-react";
 import DeleteConfirmationModal from "./ConfirmationModal";
-
-
+  
 
 const DisplayInventory = () => {
   const [inventory, setInventory] = useState([]);

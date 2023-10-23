@@ -1,12 +1,10 @@
-import React from 'react';
+import React from "react";
 
 import { AiOutlineReload } from "@react-icons/all-files/ai/AiOutlineReload";
 
-
-
 const RefreshButton = ({ setInventory, fetchInventory }) => {
   const handleRefresh = async () => {
-        fetchInventory();
+    fetchInventory();
   };
 
   return (
@@ -15,8 +13,7 @@ const RefreshButton = ({ setInventory, fetchInventory }) => {
       className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-2 mr-10 rounded-full focus:outline-none focus:shadow-outline"
       title="Refresh Database"
     >
-     
-      <AiOutlineReload/>
+      <AiOutlineReload />
     </button>
   );
 };

@@ -1,0 +1,1 @@
+export const TOTAL_SPOTS_IN_WAREHOUSE = 5000;
