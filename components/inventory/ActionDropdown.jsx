@@ -6,14 +6,19 @@ const ActionDropdown = ({
   selectedRows,
   setIsOpen,
   setSelectedRows,
+  setItemToDelete,
+  setShowDeleteModal,
 }) => {
   const handleAddItem = () => {
-    setIsOpen(true);
     setSelectedRows([]);
+    setActionModifier("");
+    setIsOpen(true);
+    
     // open modal to add item
   };
-  const handleDeleteItem = () => {
-    console.log("delete item");
+  const handleDeleteItem = async () => {
+    setItemToDelete(selectedRows);
+    setShowDeleteModal(true);
   };
   const handleEditItem = () => {
     if (selectedRows.length > 1) {

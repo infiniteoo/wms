@@ -3,6 +3,7 @@ import { createClient } from "@supabase/supabase-js";
 import InventoryToolbar from "./InventoryToolbar";
 import ItemModal from "./ItemModal";
 import { useUser } from "@clerk/clerk-react";
+import DeleteConfirmationModal from "./ConfirmationModal";
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL,
@@ -19,6 +20,44 @@ const DisplayInventory = () => {
   const [searchTerm, setSearchTerm] = useState(""); // Add state for search term
   const [isOpen, setIsOpen] = useState(false);
   const user = useUser();
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [itemToDelete, setItemToDelete] = useState(null);
+
+  const cancelDelete = () => {
+    // Cancel the delete operation and close the modal
+    setActionModifier("");
+    setShowDeleteModal(false);
+  };
+
+  const confirmDelete = async () => {
+    if (selectedRows.length > 0) {
+      // delete item(s)
+      console.log("selectedRows", selectedRows);
+      const { data, error } = await supabase
+        .from("inventory")
+        .delete()
+        .in(
+          "id",
+          selectedRows.map((row) => row.id)
+        )
+        .select();
+      if (error) {
+        console.error(error);
+      } else {
+        console.log("data", data);
+        setInventory(
+          inventory.filter((item) => {
+            return !selectedRows.includes(item);
+          })
+        );
+        setSelectedRows([]);
+        setActionModifier("");
+      }
+    }
+
+    // Close the modal
+    setShowDeleteModal(false);
+  };
 
   console.log("selectedRows", selectedRows);
   useEffect(() => {
@@ -106,7 +145,7 @@ const DisplayInventory = () => {
       console.log("item", item);
       const { data, error } = await supabase
         .from("inventory")
-        .update(item) 
+        .update(item)
         .eq("id", item.id)
 
         .select();
@@ -164,6 +203,8 @@ const DisplayInventory = () => {
         selectedRows={selectedRows}
         setIsOpen={setIsOpen}
         setSelectedRows={setSelectedRows}
+        setItemToDelete={setItemToDelete}
+        setShowDeleteModal={setShowDeleteModal}
       />
       {inventory && (
         <table className="rounded-lg overflow-hidden">
@@ -236,6 +277,14 @@ const DisplayInventory = () => {
             setIsOpen={setIsOpen}
             closeModal={closeModal}
             onSave={onSave}
+            selectedRows={selectedRows}
+          />
+        )}
+        {showDeleteModal && (
+          <DeleteConfirmationModal
+            showDeleteModal={showDeleteModal}
+            onCancel={cancelDelete}
+            onConfirm={confirmDelete}
             selectedRows={selectedRows}
           />
         )}

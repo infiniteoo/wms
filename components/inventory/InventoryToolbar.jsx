@@ -14,6 +14,8 @@ const InventoryToolbar = ({
   selectedRows,
   setIsOpen,
   setSelectedRows,
+  setItemToDelete,
+  setShowDeleteModal,
 }) => {
   return (
     <div className="flex flex-row justify-between p-1 border-cyan-400">
@@ -24,6 +26,9 @@ const InventoryToolbar = ({
           selectedRows={selectedRows}
           setIsOpen={setIsOpen}
           setSelectedRows={setSelectedRows}
+          setItemToDelete={setItemToDelete}
+          setShowDeleteModal={setShowDeleteModal}
+          
         />
       </div>
 
