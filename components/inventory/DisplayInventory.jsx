@@ -103,6 +103,7 @@ const DisplayInventory = () => {
       cases,
       manufacturedDate,
       expirationDate,
+      agingProfile,
     } = formData;
 
     const daysToExpire =
@@ -122,9 +123,10 @@ const DisplayInventory = () => {
       days_to_expire: daysToExpire + "Days",
       lastTouchedBy: user.user.fullName,
       fifo: null,
-      aging_profile: null,
+      aging_profile: agingProfile,
       id: selectedRows[0].id,
       created_at: selectedRows[0].created_at,
+      last_modified: new Date(),
     };
     // if selectedRows is empty, add item to database
     if (selectedRows.length === 0) {

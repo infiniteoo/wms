@@ -12,6 +12,7 @@ const ItemModal = ({ isOpen, closeModal, onSave, selectedRows }) => {
     cases: "",
     manufacturedDate: "",
     expirationDate: "",
+    agingProfile: "",
   };
 
   const [formData, setFormData] = useState(initialFormData);
@@ -28,6 +29,7 @@ const ItemModal = ({ isOpen, closeModal, onSave, selectedRows }) => {
         cases,
         manufactured_date,
         expiration_date,
+        aging_profile,
       } = selectedRows[0];
 
       setFormData({
@@ -40,6 +42,7 @@ const ItemModal = ({ isOpen, closeModal, onSave, selectedRows }) => {
         cases: cases,
         manufacturedDate: manufactured_date,
         expirationDate: expiration_date,
+        agingProfile: aging_profile,
       });
     } else {
       // No row selected, reset the form data
@@ -158,6 +161,16 @@ const ItemModal = ({ isOpen, closeModal, onSave, selectedRows }) => {
               id="expirationDate"
               name="expirationDate"
               value={formData.expirationDate}
+              onChange={handleChange}
+              required
+            />
+
+<label htmlFor="cases">Aging Profile:</label>
+            <input
+              type="text"
+              id="agingProfile"
+              name="agingProfile"
+              value={formData.agingProfile}
               onChange={handleChange}
               required
             />
