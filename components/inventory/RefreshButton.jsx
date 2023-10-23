@@ -1,11 +1,8 @@
 import React from 'react';
-import { createClient } from '@supabase/supabase-js';
+
 import { AiOutlineReload } from "@react-icons/all-files/ai/AiOutlineReload";
 
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
-);
+
 
 const RefreshButton = ({ setInventory, fetchInventory }) => {
   const handleRefresh = async () => {
