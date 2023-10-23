@@ -60,3 +60,19 @@ input[type="submit"] {
 input[type="submit"]:hover {
     background-color: #0056b3;
 }
+
+.modal-buttons {
+    color: white;
+    border: none;
+    border-radius: 3px;
+    padding: 10px;
+    cursor: pointer;
+}
+
+.delete-confirm {
+    background-color: #dc3545;
+}
+
+.delete-cancel {
+    background-color: #6c757d;
+}

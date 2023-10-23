@@ -216,6 +216,7 @@ const DisplayInventory = () => {
         setSelectedRows={setSelectedRows}
         setItemToDelete={setItemToDelete}
         setShowDeleteModal={setShowDeleteModal}
+        fetchInventory={fetchInventory}
       />
       {inventory && (
         <table className="rounded-lg overflow-hidden">
