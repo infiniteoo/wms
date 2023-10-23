@@ -2,6 +2,7 @@
 import { useState } from "react";
 import "./Inventory.css"; // Import your CSS file for custom styling
 import DisplayInventory from "./DisplayInventory";
+import InventoryDashboard from "./InventoryDashboard";
 
 const Inventory = ({}) => {
   const [activeTab, setActiveTab] = useState("dashboard");
@@ -13,7 +14,7 @@ const Inventory = ({}) => {
   const renderTabContent = () => {
     switch (activeTab) {
       case "dashboard":
-        return null;
+        return <InventoryDashboard />;
       case "database":
         return <DisplayInventory />;
       case "tab3":
