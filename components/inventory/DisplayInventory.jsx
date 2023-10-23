@@ -20,6 +20,7 @@ const DisplayInventory = () => {
   const [isOpen, setIsOpen] = useState(false);
   const user = useUser();
 
+  console.log("selectedRows", selectedRows);
   useEffect(() => {
     fetchInventory();
   }, [currentPage, searchTerm]); // Listen for changes in currentPage and searchTerm
@@ -76,23 +77,56 @@ const DisplayInventory = () => {
       cases,
       manufactured_date: manufacturedDate,
       expiration_date: expirationDate,
-      days_to_expire: daysToExpire,
+      days_to_expire: daysToExpire + "Days",
       lastTouchedBy: user.user.fullName,
+      fifo: null,
+      aging_profile: null,
+      id: selectedRows[0].id,
+      created_at: selectedRows[0].created_at,
     };
-
-    // Add logic to save item to database
-    const { data, error } = await supabase
-      .from("inventory")
-      .insert([item])
-      .select();
-    if (error) {
-      console.error(error);
+    // if selectedRows is empty, add item to database
+    if (selectedRows.length === 0) {
+      // Add logic to save item to database
+      const { data, error } = await supabase
+        .from("inventory")
+        .insert([item])
+        .select();
+      if (error) {
+        console.error(error);
+      } else {
+        console.log("data", data);
+        setInventory([...inventory, data[0]]);
+        setSelectedRows([]);
+        setActionModifier("");
+        console.log("action modified: ", actionModifier);
+      }
     } else {
-      console.log("data", data);
-      setInventory([...inventory, data[0]]);
-      setSelectedRows([]);
-      setActionModifier("");
-      console.log("action modified: ", actionModifier);
+      // update item in database with selectedRows[0].id
+      console.log("selectedRow[0].id", selectedRows[0].id);
+      console.log("item", item);
+      const { data, error } = await supabase
+        .from("inventory")
+        .update(item) 
+        .eq("id", item.id)
+
+        .select();
+
+      if (error) {
+        console.error(error);
+      } else {
+        console.log("data", data);
+        setInventory(
+          inventory.map((item) => {
+            if (item.id === data[0].id) {
+              return data[0];
+            } else {
+              return item;
+            }
+          })
+        );
+        setSelectedRows([]);
+        setActionModifier("");
+      }
     }
   };
 
@@ -105,13 +139,13 @@ const DisplayInventory = () => {
     setCurrentPage(page);
   };
 
-  const handleRowClick = (rowId) => {
+  const handleRowClick = (rowItem) => {
     // Toggle the selection of the clicked row
     setSelectedRows((prevSelectedRows) => {
-      if (prevSelectedRows.includes(rowId)) {
-        return prevSelectedRows.filter((id) => id !== rowId);
+      if (prevSelectedRows.some((item) => item.id === rowItem.id)) {
+        return prevSelectedRows.filter((item) => item.id !== rowItem.id);
       } else {
-        return [...prevSelectedRows, rowId];
+        return [rowItem];
       }
     });
   };
@@ -129,6 +163,7 @@ const DisplayInventory = () => {
         setActionModifier={setActionModifier}
         selectedRows={selectedRows}
         setIsOpen={setIsOpen}
+        setSelectedRows={setSelectedRows}
       />
       {inventory && (
         <table className="rounded-lg overflow-hidden">
@@ -152,11 +187,13 @@ const DisplayInventory = () => {
               <tr
                 key={item.id}
                 className={`${
-                  selectedRows.includes(item.id)
+                  selectedRows.some(
+                    (selectedItem) => selectedItem.id === item.id
+                  )
                     ? "font-bold bg-yellow-200"
                     : "bg-gray-100 hover:bg-gray-200"
                 }`}
-                onClick={() => handleRowClick(item.id)}
+                onClick={() => handleRowClick(item)}
               >
                 <td className="py-2">
                   <input

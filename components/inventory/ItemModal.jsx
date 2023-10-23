@@ -1,8 +1,8 @@
-import { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./ItemModal.css";
 
 const ItemModal = ({ isOpen, closeModal, onSave, selectedRows }) => {
-  const [formData, setFormData] = useState({
+  const initialFormData = {
     itemNumber: "",
     description: "",
     lpnNumber: "",
@@ -12,31 +12,40 @@ const ItemModal = ({ isOpen, closeModal, onSave, selectedRows }) => {
     cases: "",
     manufacturedDate: "",
     expirationDate: "",
-  });
+  };
 
-  if (selectedRows.length === 1) {
-    const {
-      item_number,
-      description,
-      lpn_number,
-      lot_number,
-      status,
-      location,
-      cases,
-      manufactured_date,
-      expiration_date,
-    } = selectedRows[0];
+  const [formData, setFormData] = useState(initialFormData);
 
-    formData.itemNumber = item_number;
-    formData.description = description;
-    formData.lpnNumber = lpn_number;
-    formData.lotNumber = lot_number;
-    formData.status = status;
-    formData.manufacturedDate = manufactured_date;
-    formData.expirationDate = expiration_date;
-    formData.cases = cases;
-    formData.location = location;
-  }
+  useEffect(() => {
+    if (selectedRows.length === 1) {
+      const {
+        item_number,
+        description,
+        lpn_number,
+        lot_number,
+        status,
+        location,
+        cases,
+        manufactured_date,
+        expiration_date,
+      } = selectedRows[0];
+
+      setFormData({
+        itemNumber: item_number,
+        description: description,
+        lpnNumber: lpn_number,
+        lotNumber: lot_number,
+        status: status,
+        location: location,
+        cases: cases,
+        manufacturedDate: manufactured_date,
+        expirationDate: expiration_date,
+      });
+    } else {
+      // No row selected, reset the form data
+      setFormData(initialFormData);
+    }
+  }, [selectedRows]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;

@@ -5,16 +5,28 @@ const ActionDropdown = ({
   setActionModifier,
   selectedRows,
   setIsOpen,
+  setSelectedRows,
 }) => {
   const handleAddItem = () => {
     setIsOpen(true);
+    setSelectedRows([]);
     // open modal to add item
   };
   const handleDeleteItem = () => {
     console.log("delete item");
   };
   const handleEditItem = () => {
-    console.log("edit item");
+    if (selectedRows.length > 1) {
+      alert("sorry, you can only edit one item at a time");
+      setActionModifier("");
+    } else if (selectedRows.length === 1) {
+      // open modal to edit item
+      setIsOpen(true);
+      setActionModifier("");
+    } else {
+      alert("please select an item to edit");
+      setActionModifier("");
+    }
   };
 
   const handleChange = (event) => {
@@ -42,7 +54,6 @@ const ActionDropdown = ({
       className="bg-white border rounded px-2 py-1"
       onChange={handleChange}
       value={actionModifier}
-      defaultValue={actionModifier}
     >
       <option value="" disabled defaultValue hidden>
         Actions
@@ -52,7 +63,6 @@ const ActionDropdown = ({
       <option value="delete">Delete Item</option>
     </select>
   );
-  s;
 };
 
 export default ActionDropdown;

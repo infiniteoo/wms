@@ -13,6 +13,7 @@ const InventoryToolbar = ({
   setActionModifier,
   selectedRows,
   setIsOpen,
+  setSelectedRows,
 }) => {
   return (
     <div className="flex flex-row justify-between p-1 border-cyan-400">
@@ -22,6 +23,7 @@ const InventoryToolbar = ({
           setActionModifier={setActionModifier}
           selectedRows={selectedRows}
           setIsOpen={setIsOpen}
+          setSelectedRows={setSelectedRows}
         />
       </div>
 
