@@ -112,7 +112,16 @@ const Orders = () => {
   };
 
   const onSave = async (formData) => {
-    const po_number = generateRandomPoNumber();
+    console.log("form data on save: ", formData);
+    let po_number;
+    if (formData.po_number === "") {
+      po_number = generateRandomPoNumber();
+    } else {
+      po_number = formData.po_number;
+    }
+
+    console.log("po number: ", po_number);
+
     const {
       order_lines,
       carrier,
@@ -295,20 +304,30 @@ const Orders = () => {
                     {selectedRows.includes(item.id) ? "✓" : null}
                   </td>
                   <td className="py-2 text-center">{item.po_number}</td>
-                  <td className="py-2 text-center">{item.order_lines.length}</td>
+                  <td className="py-2 text-center">
+                    {item.order_lines.length}
+                  </td>
                   <td className="py-2 text-center">{item.carrier}</td>
                   <td className="py-2 text-center">{item.trailer_number}</td>
-                  <td className="py-2 text-center">{item.order_lines.length}</td>
-                  <td className="py-2 text-center">{formatDate(item.appointment_date)}</td>
-                  <td className="py-2 text-center">{formatTime(item.appointment_time)}</td>
+                  <td className="py-2 text-center">
+                    {item.order_lines.length}
+                  </td>
+                  <td className="py-2 text-center">
+                    {formatDate(item.appointment_date)}
+                  </td>
+                  <td className="py-2 text-center">
+                    {formatTime(item.appointment_time)}
+                  </td>
                   <td className="py-2 text-center">{item.status}</td>
                   <td className="py-2 text-center">{item.created_by}</td>
-                  <td className="py-2 text-center">{item.completed ? "Y" : "N"}</td>
+                  <td className="py-2 text-center">
+                    {item.completed ? "Y" : "N"}
+                  </td>
                 </tr>
               ))}
             </tbody>
           </table>
-        </div>  
+        </div>
       )}
 
       <div className="pagination text-center mt-10">

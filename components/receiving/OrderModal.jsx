@@ -3,6 +3,7 @@ import "./OrderModal.css";
 import Datetime from "react-datetime";
 import "react-datetime/css/react-datetime.css";
 import moment from "moment";
+import { v4 as uuidv4 } from "uuid";
 
 import { AiOutlinePlusCircle } from "@react-icons/all-files/ai/AiOutlinePlusCircle";
 
@@ -37,9 +38,26 @@ const OrderModal = ({ isOpen, closeModal, onSave, selectedRows }) => {
     // Use the format you want, for example, "HH:mm"
     return moment(date).format("YYYY-MM-DD");
   };
+  const generateRandomPoNumber = () => {
+    // Generate a random UUID
+    const uuid = uuidv4();
+
+    // Extract the first 10 characters from the UUID and remove hyphens
+    const poNumber = uuid.substr(0, 10).replace(/-/g, "");
+
+    return poNumber;
+  };
 
   const addOrderLine = () => {
     if (newOrderLine.item_number) {
+      if (!formData.po_number) {
+        // Generate a new PO number here (you can implement your logic)
+        const newPoNumber = generateRandomPoNumber();
+  
+        // Update the newOrderLine with the generated PO number
+        newOrderLine.po_number = newPoNumber;
+      }
+  
       setOrderLines([...orderLines, newOrderLine]);
       setOrderLineTags([...orderLineTags, newOrderLine.item_number]);
       setNewOrderLine({
@@ -53,6 +71,8 @@ const OrderModal = ({ isOpen, closeModal, onSave, selectedRows }) => {
       console.log("order lines: ", orderLines);
     }
   };
+  
+  
 
   const removeOrderLine = (index) => {
     const updatedOrderLines = [...orderLines];
@@ -66,7 +86,7 @@ const OrderModal = ({ isOpen, closeModal, onSave, selectedRows }) => {
 
   const initialFormData = {
     po_number: "",
-    order_lines: "",
+    
     carrier: "",
     trailer_number: "",
     appointment_date: "",
@@ -74,12 +94,14 @@ const OrderModal = ({ isOpen, closeModal, onSave, selectedRows }) => {
     staus: "Pending",
     created_by: "",
     completed: false,
+    order_lines: [],
   };
 
   const [formData, setFormData] = useState(initialFormData);
 
   useEffect(() => {
     if (selectedRows.length === 1) {
+
       const {
         po_number,
         order_lines,
@@ -102,12 +124,29 @@ const OrderModal = ({ isOpen, closeModal, onSave, selectedRows }) => {
         appointment_time,
         completed,
       });
+      setOrderLines(order_lines);
     } else {
       // No row selected, reset the form data
       setFormData(initialFormData);
     }
+    console.log("formdata in selectedrow useeeffects: ", formData)
   }, [selectedRows]);
 
+  useEffect(() => {
+    if (selectedRows.length === 1) {
+      const { order_lines } = selectedRows[0];
+      if (order_lines && order_lines.length > 0) {
+        const tags = order_lines.map((line) => line.item_number);
+        setOrderLineTags(tags);
+        console.log("order line tags: ", orderLineTags);
+      }
+    }
+  }, [selectedRows]);
+
+  useEffect(() => {
+
+
+  }, []);
   const handleChange = (e) => {
     const { name, value } = e.target;
     console.log("name: ", name);
@@ -119,7 +158,10 @@ const OrderModal = ({ isOpen, closeModal, onSave, selectedRows }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    console.log('order lines in handlesubmit: ', orderLines)
+    console.log('form data in handlesubmit before mutation: ', formData)
     formData.order_lines = orderLines;
+    console.log("form data inhandlesubmit: ", formData);
     onSave(formData);
     closeModal();
   };
