@@ -199,131 +199,140 @@ const DisplayInventory = () => {
 
   return (
     <div className="mt-8 border-orange-500 ml-2" style={{ width: "99%" }}>
-  <InventoryToolbar
-    inventory={inventory}
-    setInventory={setInventory}
-    searchTerm={searchTerm}
-    setSearchTerm={setSearchTerm}
-    modifier={modifier}
-    setModifier={setModifier}
-    actionModifier={actionModifier}
-    setActionModifier={setActionModifier}
-    selectedRows={selectedRows}
-    setIsOpen={setIsOpen}
-    setSelectedRows={setSelectedRows}
-    setItemToDelete={setItemToDelete}
-    setShowDeleteModal={setShowDeleteModal}
-    fetchInventory={fetchInventory}
-  />
-  {inventory && (
-    <div className="table-container h-80 overflow-y-auto mt-1">
-      <table className="rounded-lg overflow-hidden text-sm w-full">
-        <colgroup>
-          <col style={{ width: "40px" }} /> {/* Adjust the width as needed */}
-          <col style={{ width: "100px" }} /> {/* Adjust the width as needed */}
-          <col style={{ width: "100px" }} /> {/* Adjust the width as needed */}
-          <col style={{ width: "200px" }} /> {/* Adjust the width as needed */}
-          <col style={{ width: "100px" }} /> {/* Adjust the width as needed */}
-          <col style={{ width: "60px" }} /> {/* Adjust the width as needed */}
-          <col style={{ width: "120px" }} /> {/* Adjust the width as needed */}
-          <col style={{ width: "120px" }} /> {/* Adjust the width as needed */}
-          <col style={{ width: "80px" }} /> {/* Adjust the width as needed */}
-          <col style={{ width: "120px" }} /> {/* Adjust the width as needed */}
-          <col style={{ width: "120px" }} /> {/* Adjust the width as needed */}
-        </colgroup>
-        <thead className="bg-gray-800 text-white">
-          <tr>
-            <th className="py-2"></th>
-            <th className="py-2">Item Number</th>
-            <th className="py-2">Lot Number</th>
-            <th className="py-2">Description</th>
-            <th className="py-2">LPN Number</th>
-            <th className="py-2">Cases</th>
-            <th className="py-2">Manufactured Date</th>
-            <th className="py-2">Expiration Date</th>
-            <th className="py-2">Status</th>
-            <th className="py-2">Location</th>
-            <th className="py-2">Aging Profile</th>
-          </tr>
-        </thead>
-        <tbody>
-          {inventory.map((item, index) => (
-            <tr
-              key={item.id}
-              className={`${
-                selectedRows.some(
-                  (selectedItem) => selectedItem.id === item.id
-                )
-                  ? "font-bold bg-yellow-200"
-                  : index % 2 === 0
-                  ? "bg-gray-100"
-                  : "hover:bg-gray-200"
-              }`}
-              onClick={() => handleRowClick(item)}
-            >
-              <td className="py-2">
-                <input
-                  type="checkbox"
-                  onChange={(event) => handleCheckboxChange(event, item)}
-                  checked={selectedRows.some(
-                    (selectedItem) => selectedItem.id === item.id
-                  )}
-                  style={{ marginRight: "6px" }}
-                />
-                {selectedRows.includes(item.id) ? "✓" : null}
-              </td>
-              <td className="py-2">{item.item_number}</td>
-              <td className="py-2">{item.lot_number}</td>
-              <td className="py-2">{item.description}</td>
-              <td className="py-2">{item.lpn_number}</td>
-              <td className="py-2">{item.cases}</td>
-              <td className="py-2">{item.manufactured_date}</td>
-              <td className="py-2">{item.expiration_date}</td>
-              <td className="py-2">{item.status}</td>
-              <td className="py-2">{item.location}</td>
-              <td className="py-2">{item.aging_profile}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
-  )
-}
-
-  <div className="pagination text-center mt-10">
-    <button
-      onClick={() => handlePageChange(currentPage - 1)}
-      disabled={currentPage === 1}
-      className="px-4 py-2 rounded-md bg-blue-500 text-white text-lg hover:bg-blue-600 focus:outline-none focus:ring focus:ring-blue-300"
-    >
-      &laquo; Previous Page
-    </button>
-    <button
-      onClick={() => handlePageChange(currentPage + 1)}
-      disabled={inventory && inventory.length < itemsPerPage}
-      className="px-4 py-2 rounded-md bg-blue-500 text-white text-lg hover:bg-blue-600 ml-4 focus:outline-none focus:ring focus:ring-blue-300"
-    >
-      Next Page &raquo;
-    </button>
-    {isOpen && (
-      <ItemModal
+      <InventoryToolbar
+        inventory={inventory}
+        setInventory={setInventory}
+        searchTerm={searchTerm}
+        setSearchTerm={setSearchTerm}
+        modifier={modifier}
+        setModifier={setModifier}
+        actionModifier={actionModifier}
+        setActionModifier={setActionModifier}
+        selectedRows={selectedRows}
         setIsOpen={setIsOpen}
-        closeModal={closeModal}
-        onSave={onSave}
-        selectedRows={selectedRows}
+        setSelectedRows={setSelectedRows}
+        setItemToDelete={setItemToDelete}
+        setShowDeleteModal={setShowDeleteModal}
+        fetchInventory={fetchInventory}
       />
-    )}
-    {showDeleteModal && (
-      <DeleteConfirmationModal
-        showDeleteModal={showDeleteModal}
-        onCancel={cancelDelete}
-        onConfirm={confirmDelete}
-        selectedRows={selectedRows}
-      />
-    )}
-  </div>
-</div>
+      {inventory && (
+        <div className="table-container h-80 overflow-y-auto mt-1">
+          <table className="rounded-lg overflow-hidden text-sm w-full">
+            <colgroup>
+              <col style={{ width: "40px" }} />{" "}
+              {/* Adjust the width as needed */}
+              <col style={{ width: "100px" }} />{" "}
+              {/* Adjust the width as needed */}
+              <col style={{ width: "100px" }} />{" "}
+              {/* Adjust the width as needed */}
+              <col style={{ width: "200px" }} />{" "}
+              {/* Adjust the width as needed */}
+              <col style={{ width: "100px" }} />{" "}
+              {/* Adjust the width as needed */}
+              <col style={{ width: "60px" }} />{" "}
+              {/* Adjust the width as needed */}
+              <col style={{ width: "120px" }} />{" "}
+              {/* Adjust the width as needed */}
+              <col style={{ width: "120px" }} />{" "}
+              {/* Adjust the width as needed */}
+              <col style={{ width: "80px" }} />{" "}
+              {/* Adjust the width as needed */}
+              <col style={{ width: "120px" }} />{" "}
+              {/* Adjust the width as needed */}
+              <col style={{ width: "120px" }} />{" "}
+              {/* Adjust the width as needed */}
+            </colgroup>
+            <thead className="bg-gray-800 text-white">
+              <tr>
+                <th className="py-2"></th>
+                <th className="py-2">Item Number</th>
+                <th className="py-2">Lot Number</th>
+                <th className="py-2">Description</th>
+                <th className="py-2">LPN Number</th>
+                <th className="py-2">Cases</th>
+                <th className="py-2">Manufactured Date</th>
+                <th className="py-2">Expiration Date</th>
+                <th className="py-2">Status</th>
+                <th className="py-2">Location</th>
+                <th className="py-2">Aging Profile</th>
+              </tr>
+            </thead>
+            <tbody>
+              {inventory.map((item, index) => (
+                <tr
+                  key={item.id}
+                  className={`${
+                    selectedRows.some(
+                      (selectedItem) => selectedItem.id === item.id
+                    )
+                      ? "font-bold bg-yellow-200"
+                      : index % 2 === 0
+                      ? "bg-gray-100"
+                      : "hover:bg-gray-200"
+                  }`}
+                  onClick={() => handleRowClick(item)}
+                >
+                  <td className="py-2">
+                    <input
+                      type="checkbox"
+                      onChange={(event) => handleCheckboxChange(event, item)}
+                      checked={selectedRows.some(
+                        (selectedItem) => selectedItem.id === item.id
+                      )}
+                      style={{ marginRight: "6px" }}
+                    />
+                    {selectedRows.includes(item.id) ? "✓" : null}
+                  </td>
+                  <td className="py-2 text-center">{item.item_number}</td>
+                  <td className="py-2 text-center">{item.lot_number}</td>
+                  <td className="py-2 text-center">{item.description}</td>
+                  <td className="py-2 text-center">{item.lpn_number}</td>
+                  <td className="py-2 text-center">{item.cases}</td>
+                  <td className="py-2 text-center">{item.manufactured_date}</td>
+                  <td className="py-2 text-center">{item.expiration_date}</td>
+                  <td className="py-2 text-center">{item.status}</td>
+                  <td className="py-2 text-center">{item.location}</td>
+                  <td className="py-2 text-center">{item.aging_profile}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
 
+      <div className="pagination text-center mt-10">
+        <button
+          onClick={() => handlePageChange(currentPage - 1)}
+          disabled={currentPage === 1}
+          className="px-4 py-2 rounded-md bg-blue-500 text-white text-lg hover:bg-blue-600 focus:outline-none focus:ring focus:ring-blue-300"
+        >
+          &laquo; Previous Page
+        </button>
+        <button
+          onClick={() => handlePageChange(currentPage + 1)}
+          disabled={inventory && inventory.length < itemsPerPage}
+          className="px-4 py-2 rounded-md bg-blue-500 text-white text-lg hover:bg-blue-600 ml-4 focus:outline-none focus:ring focus:ring-blue-300"
+        >
+          Next Page &raquo;
+        </button>
+        {isOpen && (
+          <ItemModal
+            setIsOpen={setIsOpen}
+            closeModal={closeModal}
+            onSave={onSave}
+            selectedRows={selectedRows}
+          />
+        )}
+        {showDeleteModal && (
+          <DeleteConfirmationModal
+            showDeleteModal={showDeleteModal}
+            onCancel={cancelDelete}
+            onConfirm={confirmDelete}
+            selectedRows={selectedRows}
+          />
+        )}
+      </div>
+    </div>
   );
 };
 

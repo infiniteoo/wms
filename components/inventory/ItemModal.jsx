@@ -119,8 +119,14 @@ const ItemModal = ({ isOpen, closeModal, onSave, selectedRows }) => {
             >
               <option value="AVAILABLE">AVAILABLE</option>
               <option value="EXPIRED">EXPIRED</option>
-              <option value="CLOSE TO EXPIRE">CLOSE TO EXPIRE</option>
+              <option value="AVAILABLE CLOSE TO EXPIRATION">
+                AVAILABLE CLOSE TO EXPIRATION
+              </option>
+              <option value="HOLD">HOLD</option>
+              <option value="HOLD">QCNS</option>
               <option value="DUMP">DUMP</option>
+              <option value="STAGED">STAGED</option>
+              <option value="SHIPPED">SHIPPED</option>
             </select>
           </div>
 
@@ -165,7 +171,7 @@ const ItemModal = ({ isOpen, closeModal, onSave, selectedRows }) => {
               required
             />
 
-<label htmlFor="cases">Aging Profile:</label>
+            <label htmlFor="cases">Aging Profile:</label>
             <input
               type="text"
               id="agingProfile"
