@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from "react";
 
-import {supabase} from '../../supabase'
+import { supabase } from "../../supabase";
 import InventoryToolbar from "./InventoryToolbar";
 import ItemModal from "./ItemModal";
 import { useUser } from "@clerk/clerk-react";
 import DeleteConfirmationModal from "./ConfirmationModal";
-  
 
 const DisplayInventory = () => {
   const [inventory, setInventory] = useState([]);
@@ -124,8 +123,7 @@ const DisplayInventory = () => {
       lastTouchedBy: user.user.fullName,
       fifo: null,
       aging_profile: agingProfile,
-      id: selectedRows[0].id,
-      created_at: selectedRows[0].created_at,
+
       last_modified: new Date(),
     };
     // if selectedRows is empty, add item to database
@@ -151,7 +149,7 @@ const DisplayInventory = () => {
       const { data, error } = await supabase
         .from("inventory")
         .update(item)
-        .eq("id", item.id)
+        .eq("id", selectedRows[0].id)
 
         .select();
 
@@ -200,7 +198,7 @@ const DisplayInventory = () => {
   };
 
   return (
-    <div className="mt-8 border-orange-500 ">
+    <div className="mt-8 border-orange-500 ml-2" style={{ width: "95%" }}>
       <InventoryToolbar
         inventory={inventory}
         setInventory={setInventory}
@@ -218,60 +216,62 @@ const DisplayInventory = () => {
         fetchInventory={fetchInventory}
       />
       {inventory && (
-        <table className="rounded-lg overflow-hidden">
-          <thead className="bg-gray-800 text-white">
-            <tr>
-              <th className="py-2"></th>
-              <th className="py-2">Item Number</th>
-              <th className="py-2">Lot Number</th>
-              <th className="py-2">Description</th>
-              <th className="py-2">LPN Number</th>
-              <th className="py-2">Cases</th>
-              <th className="py-2">Manufactured Date</th>
-              <th className="py-2">Expiration Date</th>
-              <th className="py-2">Status</th>
-              <th className="py-2">Location</th>
-              <th className="py-2">Aging Profile</th>
-            </tr>
-          </thead>
-          <tbody>
-            {inventory.map((item) => (
-              <tr
-                key={item.id}
-                className={`${
-                  selectedRows.some(
-                    (selectedItem) => selectedItem.id === item.id
-                  )
-                    ? "font-bold bg-yellow-200"
-                    : "bg-gray-100 hover:bg-gray-200"
-                }`}
-                onClick={() => handleRowClick(item)}
-              >
-                <td className="py-2">
-                  <input
-                    type="checkbox"
-                    onChange={(event) => handleCheckboxChange(event, item)} // Checkbox handler
-                    checked={selectedRows.some(
-                      (selectedItem) => selectedItem.id === item.id
-                    )}
-                    style={{ marginRight: "6px" }}
-                  />
-                  {selectedRows.includes(item.id) ? "✓" : null}
-                </td>
-                <td className="py-2">{item.item_number}</td>
-                <td className="py-2">{item.lot_number}</td>
-                <td className="py-2">{item.description}</td>
-                <td className="py-2">{item.lpn_number}</td>
-                <td className="py-2">{item.cases}</td>
-                <td className="py-2">{item.manufactured_date}</td>
-                <td className="py-2">{item.expiration_date}</td>
-                <td className="py-2">{item.status}</td>
-                <td className="py-2">{item.location}</td>
-                <td className="py-2">{item.aging_profile}</td>
+        <div className="relative table-container h-80 overflow-y-auto mt-3">
+          <table className="rounded-lg overflow-hidden">
+            <thead className="bg-gray-800 text-white">
+              <tr>
+                <th className="py-2"></th>
+                <th className="py-2">Item Number</th>
+                <th className="py-2">Lot Number</th>
+                <th className="py-2">Description</th>
+                <th className="py-2">LPN Number</th>
+                <th className="py-2">Cases</th>
+                <th className="py-2">Manufactured Date</th>
+                <th className="py-2">Expiration Date</th>
+                <th className="py-2">Status</th>
+                <th className="py-2">Location</th>
+                <th className="py-2">Aging Profile</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {inventory.map((item) => (
+                <tr
+                  key={item.id}
+                  className={`${
+                    selectedRows.some(
+                      (selectedItem) => selectedItem.id === item.id
+                    )
+                      ? "font-bold bg-yellow-200"
+                      : "bg-gray-100 hover:bg-gray-200"
+                  }`}
+                  onClick={() => handleRowClick(item)}
+                >
+                  <td className="py-2">
+                    <input
+                      type="checkbox"
+                      onChange={(event) => handleCheckboxChange(event, item)} // Checkbox handler
+                      checked={selectedRows.some(
+                        (selectedItem) => selectedItem.id === item.id
+                      )}
+                      style={{ marginRight: "6px" }}
+                    />
+                    {selectedRows.includes(item.id) ? "✓" : null}
+                  </td>
+                  <td className="py-2">{item.item_number}</td>
+                  <td className="py-2">{item.lot_number}</td>
+                  <td className="py-2">{item.description}</td>
+                  <td className="py-2">{item.lpn_number}</td>
+                  <td className="py-2">{item.cases}</td>
+                  <td className="py-2">{item.manufactured_date}</td>
+                  <td className="py-2">{item.expiration_date}</td>
+                  <td className="py-2">{item.status}</td>
+                  <td className="py-2">{item.location}</td>
+                  <td className="py-2">{item.aging_profile}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       )}
       <div className="pagination text-center mt-3">
         <button

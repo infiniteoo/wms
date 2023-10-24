@@ -33,7 +33,7 @@ const Toolbar = ({}) => {
   };
 
   return (
-    <div className=" border-green-500 w-full">
+    <div className=" border-green-500 w-screen" >
       <div className="flex flex-row justify-between w-full">
         <ul className="menu flex flex-row space-x-4 items-center ml-2">
           <li

@@ -1,5 +1,6 @@
 import OccupancyProgress from "./OccupancyProgress";
 import RecentActivity from "./RecentActivity";
+import InventoryTimeline from "./InventoryTimeline";
 
 const InventoryDashboard = () => {
   return (
@@ -14,6 +15,10 @@ const InventoryDashboard = () => {
           {" "}
           <RecentActivity />
         </div>
+      </div>
+      <div className="">
+        
+        <InventoryTimeline />
       </div>
     </div>
   );
