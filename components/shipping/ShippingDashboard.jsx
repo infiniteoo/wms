@@ -1,9 +1,9 @@
 import React from "react";
-import ReceivingTimeline from "./ReceivingTimeline";
+import ShippingTimeline from "./ShippingTimeline";
 import RecentActivity from "./RecentActivity";
-import ReceivingChart from "./ReceivingChart";
+import ShippingChart from "./ShippingChart";
 
-const ReceivingDashboard = () => {
+const ShippingDashboard = () => {
   return (
     <div className="flex flex-col border-black shadow-md mt-10">
       <div className="flex flex-row">
@@ -14,15 +14,15 @@ const ReceivingDashboard = () => {
         </div>
         <div className="w-1/2 ml-2 h-1/2">
           <div className="flex flex-col h-full ">
-            <ReceivingTimeline />
+            <ShippingTimeline />
           </div>
         </div>
       </div>
       <div className="mt-3 h-full">
-        <ReceivingChart />
+        <ShippingChart />
       </div>
     </div>
   );
 };
 
-export default ReceivingDashboard;
+export default ShippingDashboard;

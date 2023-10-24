@@ -3,7 +3,7 @@ import Timeline from "react-calendar-timeline";
 import "react-calendar-timeline/lib/Timeline.css";
 import moment from "moment";
 
-const ReceivingTimeline = () => {
+const ShippingTimeline = () => {
   const groups = [
     { id: 1, title: "Inbounds" },
     { id: 2, title: "Outbounds" },
@@ -49,4 +49,4 @@ const ReceivingTimeline = () => {
   );
 };
 
-export default ReceivingTimeline;
+export default ShippingTimeline;

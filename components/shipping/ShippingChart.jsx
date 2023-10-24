@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { supabase } from "../../supabase";
 import Chart from "chart.js/auto";
 
-const ReceivingChart = () => {
+const ShippingChart = () => {
   const [activity, setActivity] = useState([]);
 
   useEffect(() => {
@@ -12,7 +12,7 @@ const ReceivingChart = () => {
 
       try {
         const { data, error } = await supabase
-          .from("incoming_orders")
+          .from("outbound_orders")
           .select("created_at")
           .gte("created_at", twentyFourHoursAgo.toISOString())
           .order("created_at", { ascending: true });
@@ -91,4 +91,4 @@ const ReceivingChart = () => {
   );
 };
 
-export default ReceivingChart;
+export default ShippingChart;

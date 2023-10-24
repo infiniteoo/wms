@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { supabase } from "../../supabase";
-import ReceivingToolbar from "./ReceivingToolbar";
+import ShippingToolbar from "./ShippingToolbar";
 import OrderModal from "./OrderModal";
 import { useUser } from "@clerk/clerk-react";
 import DeleteConfirmationModal from "./ConfirmationModal";
@@ -95,7 +95,7 @@ const Orders = () => {
   const fetchInventory = async () => {
     try {
       const { data, error } = await supabase
-        .from("incoming_orders")
+        .from("outbound_orders")
         .select("*")
         .ilike(modifier, `%${searchTerm}%`)
         .range(
@@ -156,7 +156,7 @@ const Orders = () => {
     if (selectedRows.length === 0) {
       // Add logic to save item to database
       const { data, error } = await supabase
-        .from("incoming_orders")
+        .from("outbound_orders")
         .insert([item])
         .select();
       if (error) {
@@ -173,7 +173,7 @@ const Orders = () => {
       console.log("selectedRow[0].id", selectedRows[0].id);
       console.log("item", item);
       const { data, error } = await supabase
-        .from("incoming_orders")
+        .from("outbound_orders")
         .update(item)
         .eq("id", selectedRows[0].id)
 
@@ -225,7 +225,7 @@ const Orders = () => {
 
   return (
     <div className="mt-8 border-orange-500 ml-2" style={{ width: "99%" }}>
-      <ReceivingToolbar
+      <ShippingToolbar
         inventory={inventory}
         setInventory={setInventory}
         searchTerm={searchTerm}

@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import "./Shipping.css"; // Import your CSS file for custom styling
-import ReceivingDashboard from "./ReceivingDashboard";
+import ShippingDashboard from "./ShippingDashboard";
 import Orders from "./Orders";
 
 const Shipping = ({}) => {
@@ -14,7 +14,7 @@ const Shipping = ({}) => {
   const renderTabContent = () => {
     switch (activeTab) {
       case "dashboard":
-        return <ReceivingDashboard />;
+        return <ShippingDashboard />;
       case "orders":
         return <Orders />;
       case "tab3":

@@ -4,7 +4,7 @@ import SearchModifierDropdown from "./SearchModifierDropdown";
 import SearchTextInput from "./SearchTextInput";
 import RefreshButton from "./RefreshButton";
 
-const ReceivingToolbar = ({
+const ShippingToolbar = ({
   inventory,
   setInventory,
   searchTerm,
@@ -82,4 +82,4 @@ const ReceivingToolbar = ({
   );
 };
 
-export default ReceivingToolbar;
+export default ShippingToolbar;

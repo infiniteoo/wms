@@ -13,7 +13,7 @@ const ActionDropdown = ({
     setSelectedRows([]);
     setActionModifier("");
     setIsOpen(true);
-    
+
     // open modal to add item
   };
   const handleDeleteItem = async () => {
