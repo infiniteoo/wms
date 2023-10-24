@@ -28,7 +28,7 @@ const RecentActivity = () => {
 
   return (
     <div className="bg-white rounded-lg p-4 shadow-md">
-      <div className="recent-activity">
+      <div className="recent-activity h-full">
         <h2 className="text-lg font-semibold">Recent Activity</h2>
         <div className="console">
           {activity.map((item) => (

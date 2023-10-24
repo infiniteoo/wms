@@ -5,42 +5,45 @@ import moment from "moment";
 
 const ReceivingTimeline = () => {
   const groups = [
-    { id: 1, title: "group 1" },
-    { id: 2, title: "group 2" },
+    { id: 1, title: "Inbounds" },
+    { id: 2, title: "Outbounds" },
   ];
 
   const items = [
     {
       id: 1,
       group: 1,
-      title: "item 1",
+      title: "Inbound #34",
       start_time: moment(),
-      end_time: moment().add(1, "hour"),
+      end_time: moment().add(2, "hour"),
     },
     {
       id: 2,
       group: 2,
-      title: "item 2",
+      title: "Outbound - Crete #44",
       start_time: moment().add(-0.5, "hour"),
-      end_time: moment().add(0.5, "hour"),
+      end_time: moment().add(4.5, "hour"),
     },
     {
       id: 3,
       group: 1,
-      title: "item 3",
-      start_time: moment().add(2, "hour"),
-      end_time: moment().add(3, "hour"),
+      title: "Inbound #37",
+      start_time: moment().add(4, "hour"),
+      end_time: moment().add(6, "hour"),
     },
   ];
 
   return (
-    <div className=" justify-center items-center p-4 rounded shadow-md mr-1">
-      <h2 className="text-lg font-semibold">Incoming Appointments</h2>
+    <div className="p-4 rounded shadow-md mr-1">
+      <h2 className="text-lg font-semibold">Appointment Calendar</h2>
       <Timeline
         groups={groups}
         items={items}
-        defaultTimeStart={moment().add(-12, "hour")}
+        defaultTimeStart={moment().add(-6, "hour")}
         defaultTimeEnd={moment().add(12, "hour")}
+        sidebarWidth={100}
+        lineHeight={43}
+        itemHeightRatio={0.75}
       />
     </div>
   );
