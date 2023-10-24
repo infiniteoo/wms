@@ -45,6 +45,12 @@ const Orders = () => {
     return poNumber;
   };
 
+  const calculateTotalCases = (orderLines) => {
+    return orderLines.reduce((totalCases, orderLine) => {
+      return totalCases + Number(orderLine.cases);
+    }, 0);
+  };
+
   const confirmDelete = async () => {
     if (selectedRows.length > 0) {
       // Create an array to store promises for each delete operation
@@ -310,7 +316,7 @@ const Orders = () => {
                   <td className="py-2 text-center">{item.carrier}</td>
                   <td className="py-2 text-center">{item.trailer_number}</td>
                   <td className="py-2 text-center">
-                    {item.order_lines.length}
+                    {calculateTotalCases(item.order_lines)}
                   </td>
                   <td className="py-2 text-center">
                     {formatDate(item.appointment_date)}
