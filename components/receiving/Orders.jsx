@@ -126,8 +126,6 @@ const Orders = () => {
       po_number = formData.po_number;
     }
 
-    console.log("po number: ", po_number);
-
     const {
       order_lines,
       carrier,
