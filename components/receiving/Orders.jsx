@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 
 import { supabase } from "../../supabase";
-import InventoryToolbar from "./InventoryToolbar";
-import ItemModal from "./ItemModal";
+import ReceivingToolbar from "./ReceivingToolbar";
+import OrderModal from "./OrderModal";
 import { useUser } from "@clerk/clerk-react";
 import DeleteConfirmationModal from "./ConfirmationModal";
 
@@ -32,7 +32,7 @@ const Orders = () => {
         try {
           // Delete the item
           const { data, error } = await supabase
-            .from("inventory")
+            .from("incoming_orders")
             .delete()
             .eq("id", row.id)
             .select();
@@ -69,7 +69,7 @@ const Orders = () => {
   const fetchInventory = async () => {
     try {
       const { data, error } = await supabase
-        .from("inventory")
+        .from("incoming_orders")
         .select("*")
         .ilike(modifier, `%${searchTerm}%`)
         .range(
@@ -130,7 +130,7 @@ const Orders = () => {
     if (selectedRows.length === 0) {
       // Add logic to save item to database
       const { data, error } = await supabase
-        .from("inventory")
+        .from("incoming_orders")
         .insert([item])
         .select();
       if (error) {
@@ -147,7 +147,7 @@ const Orders = () => {
       console.log("selectedRow[0].id", selectedRows[0].id);
       console.log("item", item);
       const { data, error } = await supabase
-        .from("inventory")
+        .from("incoming_orders")
         .update(item)
         .eq("id", selectedRows[0].id)
 
@@ -199,7 +199,7 @@ const Orders = () => {
 
   return (
     <div className="mt-8 border-orange-500 ml-2" style={{ width: "99%" }}>
-  <InventoryToolbar
+  <ReceivingToolbar
     inventory={inventory}
     setInventory={setInventory}
     searchTerm={searchTerm}
@@ -219,31 +219,32 @@ const Orders = () => {
     <div className="table-container h-80 overflow-y-auto mt-1">
       <table className="rounded-lg overflow-hidden text-sm w-full">
         <colgroup>
-          <col style={{ width: "40px" }} /> {/* Adjust the width as needed */}
+          <col style={{ width: "120spx" }} /> {/* Adjust the width as needed */}
           <col style={{ width: "100px" }} /> {/* Adjust the width as needed */}
           <col style={{ width: "100px" }} /> {/* Adjust the width as needed */}
-          <col style={{ width: "200px" }} /> {/* Adjust the width as needed */}
           <col style={{ width: "100px" }} /> {/* Adjust the width as needed */}
-          <col style={{ width: "60px" }} /> {/* Adjust the width as needed */}
+          <col style={{ width: "100px" }} /> {/* Adjust the width as needed */}
+          <col style={{ width: "100px" }} /> {/* Adjust the width as needed */}
           <col style={{ width: "120px" }} /> {/* Adjust the width as needed */}
           <col style={{ width: "120px" }} /> {/* Adjust the width as needed */}
           <col style={{ width: "80px" }} /> {/* Adjust the width as needed */}
           <col style={{ width: "120px" }} /> {/* Adjust the width as needed */}
-          <col style={{ width: "120px" }} /> {/* Adjust the width as needed */}
+          
         </colgroup>
         <thead className="bg-gray-800 text-white">
           <tr>
-            <th className="py-2"></th>
-            <th className="py-2">Item Number</th>
-            <th className="py-2">Lot Number</th>
-            <th className="py-2">Description</th>
-            <th className="py-2">LPN Number</th>
-            <th className="py-2">Cases</th>
-            <th className="py-2">Manufactured Date</th>
-            <th className="py-2">Expiration Date</th>
+            
+            <th className="py-2">PO Number</th>
+            <th className="py-2">Order Lines</th>
+            <th className="py-2">Carrier</th>
+            <th className="py-2">Trailer Number</th>
+            <th className="py-2">Total Cases</th>
+            <th className="py-2">Appt. Date</th>
+            <th className="py-2">Appt. Time</th>
             <th className="py-2">Status</th>
-            <th className="py-2">Location</th>
-            <th className="py-2">Aging Profile</th>
+            <th className="py-2">Created By</th>
+         
+            <th className="py-2">Completed</th>
           </tr>
         </thead>
         <tbody>
@@ -272,16 +273,16 @@ const Orders = () => {
                 />
                 {selectedRows.includes(item.id) ? "✓" : null}
               </td>
-              <td className="py-2">{item.item_number}</td>
-              <td className="py-2">{item.lot_number}</td>
-              <td className="py-2">{item.description}</td>
-              <td className="py-2">{item.lpn_number}</td>
-              <td className="py-2">{item.cases}</td>
-              <td className="py-2">{item.manufactured_date}</td>
-              <td className="py-2">{item.expiration_date}</td>
+              <td className="py-2">{item.po_number}</td>
+              <td className="py-2">{item.order_lines.length}</td>
+              <td className="py-2">{item.carrier}</td>
+              <td className="py-2">{item.trailer_number}</td>
+              <td className="py-2">{item.order_lines.length}</td>
+              <td className="py-2">{item.appointment_date}</td>
+              <td className="py-2">{item.appointment_date}</td>
               <td className="py-2">{item.status}</td>
-              <td className="py-2">{item.location}</td>
-              <td className="py-2">{item.aging_profile}</td>
+              <td className="py-2">{item.created_by}</td>
+              <td className="py-2">{item.completed}</td>
             </tr>
           ))}
         </tbody>
@@ -306,7 +307,7 @@ const Orders = () => {
       Next Page &raquo;
     </button>
     {isOpen && (
-      <ItemModal
+      <OrderModal
         setIsOpen={setIsOpen}
         closeModal={closeModal}
         onSave={onSave}

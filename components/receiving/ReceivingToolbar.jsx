@@ -4,7 +4,7 @@ import SearchModifierDropdown from "./SearchModifierDropdown";
 import SearchTextInput from "./SearchTextInput";
 import RefreshButton from "./RefreshButton";
 
-const InventoryToolbar = ({
+const ReceivingToolbar = ({
   inventory,
   setInventory,
   searchTerm,
@@ -51,4 +51,4 @@ const InventoryToolbar = ({
   );
 };
 
-export default InventoryToolbar;
+export default ReceivingToolbar;

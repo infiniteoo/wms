@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "./ItemModal.css";
+import "./OrderModal.css";
 
 const DeleteConfirmationModal = ({
   selectedRows,
@@ -12,7 +12,7 @@ const DeleteConfirmationModal = ({
       <div className="modal">
         <div className="modal-content text-center">
           <div className="text-xl font-bold">Confirm Deletion</div>
-          <p className="mb-5">Are you sure you want to delete the selected item(s)?</p>
+          <p className="mb-5">Are you sure you want to delete the selected order(s)?</p>
           {selectedRows.map((item) => (
             <div key={item.id}>
               <p className="text-xl">
