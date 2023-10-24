@@ -44,24 +44,7 @@ const Inventory = ({}) => {
           >
             database
           </li>
-          <li
-            className={activeTab === "RECEIVING" ? "active" : ""}
-            onClick={() => handleTabClick("RECEIVING")}
-          >
-            RECEIVING
-          </li>
-          <li
-            className={activeTab === "SYSTEM" ? "active" : ""}
-            onClick={() => handleTabClick("SYSTEM")}
-          >
-            SYSTEM
-          </li>
-          <li
-            className={activeTab === "CONFIG" ? "active" : ""}
-            onClick={() => handleTabClick("CONFIG")}
-          >
-            CONFIG
-          </li>
+          
         </ul>
       </div>
       <div className="">
