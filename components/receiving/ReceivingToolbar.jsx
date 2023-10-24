@@ -44,8 +44,9 @@ const ReceivingToolbar = ({
       </div>
 
       <div className="flex items-center">
-        <div className={`switch-container mr-10 `}>
+        <div className={`switch-container mr-6 `}>
           <label
+            title="Hide Completed"
             className={`switch ${
               hideCompleted
                 ? "border-2 border-green-400"
@@ -61,6 +62,7 @@ const ReceivingToolbar = ({
             <span className={`slider`}></span>
           </label>
         </div>
+
         <RefreshButton
           setInventory={setInventory}
           fetchInventory={fetchInventory}
