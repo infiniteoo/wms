@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-
+import { v4 as uuidv4 } from "uuid";
 import { supabase } from "../../supabase";
 import ReceivingToolbar from "./ReceivingToolbar";
 import OrderModal from "./OrderModal";
@@ -23,6 +23,26 @@ const Orders = () => {
     // Cancel the delete operation and close the modal
     setActionModifier("");
     setShowDeleteModal(false);
+  };
+
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString(); // You can customize the format
+  };
+
+  const formatTime = (dateString) => {
+    const date = new Date(dateString);
+    return date.toLocaleTimeString(); // You can customize the format
+  };
+
+  const generateRandomPoNumber = () => {
+    // Generate a random UUID
+    const uuid = uuidv4();
+
+    // Extract the first 10 characters from the UUID and remove hyphens
+    const poNumber = uuid.substr(0, 10).replace(/-/g, "");
+
+    return poNumber;
   };
 
   const confirmDelete = async () => {
@@ -92,39 +112,30 @@ const Orders = () => {
   };
 
   const onSave = async (formData) => {
+    const po_number = generateRandomPoNumber();
     const {
-      itemNumber,
-      description,
-      lpnNumber,
-      lotNumber,
-      status,
-      location,
-      cases,
-      manufacturedDate,
-      expirationDate,
-      agingProfile,
+      order_lines,
+      carrier,
+      trailer_number,
+      appointment_date,
+      appointment_time,
     } = formData;
 
-    const daysToExpire =
-      (new Date(expirationDate) - new Date(manufacturedDate)) /
-      (1000 * 60 * 60 * 24);
-
     const item = {
-      item_number: itemNumber,
-      description,
-      lpn_number: lpnNumber,
-      lot_number: lotNumber,
-      status,
-      location,
-      cases,
-      manufactured_date: manufacturedDate,
-      expiration_date: expirationDate,
-      days_to_expire: daysToExpire + "Days",
-      lastTouchedBy: user.user.fullName,
-      fifo: null,
-      aging_profile: agingProfile,
-
-      last_modified: new Date(),
+      po_number,
+      order_lines,
+      carrier,
+      trailer_number,
+      appointment_date,
+      appointment_time,
+      created_by: user.user.fullName,
+      completed: false,
+      unloaded_by: null,
+      currently_unloading: false,
+      assigned_dock_door: null,
+      last_updated: new Date(),
+      updated_by: user.user.fullName,
+      status: "Pending",
     };
     // if selectedRows is empty, add item to database
     if (selectedRows.length === 0) {
@@ -199,132 +210,140 @@ const Orders = () => {
 
   return (
     <div className="mt-8 border-orange-500 ml-2" style={{ width: "99%" }}>
-  <ReceivingToolbar
-    inventory={inventory}
-    setInventory={setInventory}
-    searchTerm={searchTerm}
-    setSearchTerm={setSearchTerm}
-    modifier={modifier}
-    setModifier={setModifier}
-    actionModifier={actionModifier}
-    setActionModifier={setActionModifier}
-    selectedRows={selectedRows}
-    setIsOpen={setIsOpen}
-    setSelectedRows={setSelectedRows}
-    setItemToDelete={setItemToDelete}
-    setShowDeleteModal={setShowDeleteModal}
-    fetchInventory={fetchInventory}
-  />
-  {inventory && (
-    <div className="table-container h-80 overflow-y-auto mt-1">
-      <table className="rounded-lg overflow-hidden text-sm w-full">
-        <colgroup>
-          <col style={{ width: "120spx" }} /> {/* Adjust the width as needed */}
-          <col style={{ width: "100px" }} /> {/* Adjust the width as needed */}
-          <col style={{ width: "100px" }} /> {/* Adjust the width as needed */}
-          <col style={{ width: "100px" }} /> {/* Adjust the width as needed */}
-          <col style={{ width: "100px" }} /> {/* Adjust the width as needed */}
-          <col style={{ width: "100px" }} /> {/* Adjust the width as needed */}
-          <col style={{ width: "120px" }} /> {/* Adjust the width as needed */}
-          <col style={{ width: "120px" }} /> {/* Adjust the width as needed */}
-          <col style={{ width: "80px" }} /> {/* Adjust the width as needed */}
-          <col style={{ width: "120px" }} /> {/* Adjust the width as needed */}
-          
-        </colgroup>
-        <thead className="bg-gray-800 text-white">
-          <tr>
-            
-            <th className="py-2">PO Number</th>
-            <th className="py-2">Order Lines</th>
-            <th className="py-2">Carrier</th>
-            <th className="py-2">Trailer Number</th>
-            <th className="py-2">Total Cases</th>
-            <th className="py-2">Appt. Date</th>
-            <th className="py-2">Appt. Time</th>
-            <th className="py-2">Status</th>
-            <th className="py-2">Created By</th>
-         
-            <th className="py-2">Completed</th>
-          </tr>
-        </thead>
-        <tbody>
-          {inventory.map((item, index) => (
-            <tr
-              key={item.id}
-              className={`${
-                selectedRows.some(
-                  (selectedItem) => selectedItem.id === item.id
-                )
-                  ? "font-bold bg-yellow-200"
-                  : index % 2 === 0
-                  ? "bg-gray-100"
-                  : "hover:bg-gray-200"
-              }`}
-              onClick={() => handleRowClick(item)}
-            >
-              <td className="py-2">
-                <input
-                  type="checkbox"
-                  onChange={(event) => handleCheckboxChange(event, item)}
-                  checked={selectedRows.some(
-                    (selectedItem) => selectedItem.id === item.id
-                  )}
-                  style={{ marginRight: "6px" }}
-                />
-                {selectedRows.includes(item.id) ? "✓" : null}
-              </td>
-              <td className="py-2">{item.po_number}</td>
-              <td className="py-2">{item.order_lines.length}</td>
-              <td className="py-2">{item.carrier}</td>
-              <td className="py-2">{item.trailer_number}</td>
-              <td className="py-2">{item.order_lines.length}</td>
-              <td className="py-2">{item.appointment_date}</td>
-              <td className="py-2">{item.appointment_date}</td>
-              <td className="py-2">{item.status}</td>
-              <td className="py-2">{item.created_by}</td>
-              <td className="py-2">{item.completed}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
-  )
-}
-
-  <div className="pagination text-center mt-10">
-    <button
-      onClick={() => handlePageChange(currentPage - 1)}
-      disabled={currentPage === 1}
-      className="px-4 py-2 rounded-md bg-blue-500 text-white text-lg hover:bg-blue-600 focus:outline-none focus:ring focus:ring-blue-300"
-    >
-      &laquo; Previous Page
-    </button>
-    <button
-      onClick={() => handlePageChange(currentPage + 1)}
-      disabled={inventory && inventory.length < itemsPerPage}
-      className="px-4 py-2 rounded-md bg-blue-500 text-white text-lg hover:bg-blue-600 ml-4 focus:outline-none focus:ring focus:ring-blue-300"
-    >
-      Next Page &raquo;
-    </button>
-    {isOpen && (
-      <OrderModal
+      <ReceivingToolbar
+        inventory={inventory}
+        setInventory={setInventory}
+        searchTerm={searchTerm}
+        setSearchTerm={setSearchTerm}
+        modifier={modifier}
+        setModifier={setModifier}
+        actionModifier={actionModifier}
+        setActionModifier={setActionModifier}
+        selectedRows={selectedRows}
         setIsOpen={setIsOpen}
-        closeModal={closeModal}
-        onSave={onSave}
-        selectedRows={selectedRows}
+        setSelectedRows={setSelectedRows}
+        setItemToDelete={setItemToDelete}
+        setShowDeleteModal={setShowDeleteModal}
+        fetchInventory={fetchInventory}
       />
-    )}
-    {showDeleteModal && (
-      <DeleteConfirmationModal
-        showDeleteModal={showDeleteModal}
-        onCancel={cancelDelete}
-        onConfirm={confirmDelete}
-        selectedRows={selectedRows}
-      />
-    )}
-  </div>
-</div>
+      {inventory && (
+        <div className="table-container h-80 overflow-y-auto mt-1">
+          <table className="rounded-lg overflow-hidden text-sm w-full">
+            <colgroup>
+              <col style={{ width: "60px" }} />{" "}
+              {/* Adjust the width as needed */}
+              <col style={{ width: "120spx" }} />{" "}
+              {/* Adjust the width as needed */}
+              <col style={{ width: "100px" }} />{" "}
+              {/* Adjust the width as needed */}
+              <col style={{ width: "100px" }} />{" "}
+              {/* Adjust the width as needed */}
+              <col style={{ width: "100px" }} />{" "}
+              {/* Adjust the width as needed */}
+              <col style={{ width: "100px" }} />{" "}
+              {/* Adjust the width as needed */}
+              <col style={{ width: "100px" }} />{" "}
+              {/* Adjust the width as needed */}
+              <col style={{ width: "120px" }} />{" "}
+              {/* Adjust the width as needed */}
+              <col style={{ width: "120px" }} />{" "}
+              {/* Adjust the width as needed */}
+              <col style={{ width: "80px" }} />{" "}
+              {/* Adjust the width as needed */}
+              <col style={{ width: "100px" }} />{" "}
+              {/* Adjust the width as needed */}
+            </colgroup>
+            <thead className="bg-gray-800 text-white">
+              <tr>
+                <th className="py-2"></th>
+                <th className="py-2">PO Number</th>
+                <th className="py-2">Order Lines</th>
+                <th className="py-2">Carrier</th>
+                <th className="py-2">Trailer Number</th>
+                <th className="py-2">Total Cases</th>
+                <th className="py-2">Appt. Date</th>
+                <th className="py-2">Appt. Time</th>
+                <th className="py-2">Status</th>
+                <th className="py-2">Created By</th>
+                <th className="py-2">Completed</th>
+              </tr>
+            </thead>
+            <tbody>
+              {inventory.map((item, index) => (
+                <tr
+                  key={item.id}
+                  className={`${
+                    selectedRows.some(
+                      (selectedItem) => selectedItem.id === item.id
+                    )
+                      ? "font-bold bg-yellow-200"
+                      : index % 2 === 0
+                      ? "bg-gray-100"
+                      : "hover:bg-gray-200"
+                  }`}
+                  onClick={() => handleRowClick(item)}
+                >
+                  <td className="py-2">
+                    <input
+                      type="checkbox"
+                      onChange={(event) => handleCheckboxChange(event, item)}
+                      checked={selectedRows.some(
+                        (selectedItem) => selectedItem.id === item.id
+                      )}
+                      style={{ marginRight: "6px" }}
+                    />
+                    {selectedRows.includes(item.id) ? "✓" : null}
+                  </td>
+                  <td className="py-2 text-center">{item.po_number}</td>
+                  <td className="py-2 text-center">{item.order_lines.length}</td>
+                  <td className="py-2 text-center">{item.carrier}</td>
+                  <td className="py-2 text-center">{item.trailer_number}</td>
+                  <td className="py-2 text-center">{item.order_lines.length}</td>
+                  <td className="py-2 text-center">{formatDate(item.appointment_date)}</td>
+                  <td className="py-2 text-center">{formatTime(item.appointment_time)}</td>
+                  <td className="py-2 text-center">{item.status}</td>
+                  <td className="py-2 text-center">{item.created_by}</td>
+                  <td className="py-2 text-center">{item.completed ? "Y" : "N"}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>  
+      )}
 
+      <div className="pagination text-center mt-10">
+        <button
+          onClick={() => handlePageChange(currentPage - 1)}
+          disabled={currentPage === 1}
+          className="px-4 py-2 rounded-md bg-blue-500 text-white text-lg hover:bg-blue-600 focus:outline-none focus:ring focus:ring-blue-300"
+        >
+          &laquo; Previous Page
+        </button>
+        <button
+          onClick={() => handlePageChange(currentPage + 1)}
+          disabled={inventory && inventory.length < itemsPerPage}
+          className="px-4 py-2 rounded-md bg-blue-500 text-white text-lg hover:bg-blue-600 ml-4 focus:outline-none focus:ring focus:ring-blue-300"
+        >
+          Next Page &raquo;
+        </button>
+        {isOpen && (
+          <OrderModal
+            setIsOpen={setIsOpen}
+            closeModal={closeModal}
+            onSave={onSave}
+            selectedRows={selectedRows}
+          />
+        )}
+        {showDeleteModal && (
+          <DeleteConfirmationModal
+            showDeleteModal={showDeleteModal}
+            onCancel={cancelDelete}
+            onConfirm={confirmDelete}
+            selectedRows={selectedRows}
+          />
+        )}
+      </div>
+    </div>
   );
 };
 

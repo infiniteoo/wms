@@ -44,7 +44,6 @@ const Inventory = ({}) => {
           >
             database
           </li>
-          
         </ul>
       </div>
       <div className="">
