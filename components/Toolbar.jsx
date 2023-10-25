@@ -5,7 +5,7 @@ import Config from "./config/Config";
 import Inventory from "./inventory/Inventory";
 import Receiving from "./receiving/Receiving";
 import Shipping from "./shipping/Shipping";
-import System from "./system/System";
+import Tools from "./tools/Tools";
 import { UserButton } from "@clerk/nextjs";
 
 const Toolbar = ({}) => {
@@ -23,17 +23,18 @@ const Toolbar = ({}) => {
         return <Shipping />;
       case "RECEIVING":
         return <Receiving />;
-      case "SYSTEM":
-        return <System />;
+      case "TOOLS":
+        return <Tools />;
       case "CONFIG":
         return <Config />;
+
       default:
         return null;
     }
   };
 
   return (
-    <div className=" border-green-500 w-screen" >
+    <div className=" border-green-500 w-screen">
       <div className="flex flex-row justify-between w-full">
         <ul className="menu flex flex-row space-x-4 items-center ml-2">
           <li
@@ -55,10 +56,10 @@ const Toolbar = ({}) => {
             RECEIVING
           </li>
           <li
-            className={activeTab === "SYSTEM" ? "active" : ""}
-            onClick={() => handleTabClick("SYSTEM")}
+            className={activeTab === "TOOLS" ? "active" : ""}
+            onClick={() => handleTabClick("TOOLS")}
           >
-            SYSTEM
+            TOOLS
           </li>
           <li
             className={activeTab === "CONFIG" ? "active" : ""}

@@ -14,8 +14,12 @@
     "@supabase/auth-helpers-nextjs": "^0.8.1",
     "@supabase/supabase-js": "^2.38.1",
     "chart.js": "^4.4.0",
+    "faker": "^6.6.6",
+    "interactjs": "^1.10.19",
     "moment": "^2.29.4",
     "next": "13.5.5",
+    "prop-types": "^15.8.1",
+    "randomcolor": "^0.6.2",
     "react": "^18",
     "react-calendar-timeline": "^0.28.0",
     "react-chartjs-2": "^5.2.0",
@@ -25,6 +29,7 @@
     "victory": "^36.6.11"
   },
   "devDependencies": {
+    "@faker-js/faker": "^8.2.0",
     "autoprefixer": "^10",
     "eslint": "^8",
     "eslint-config-next": "13.5.5",
