@@ -1,15 +1,13 @@
-import React, { Component } from "react";
+import React, { useState } from "react";
 import moment from "moment";
-
 import Timeline, {
   TimelineHeaders,
   SidebarHeader,
   DateHeader,
 } from "react-calendar-timeline/lib";
-
 import generateFakeData from "./generate-fake-data";
 
-var keys = {
+const keys = {
   groupIdKey: "id",
   groupTitleKey: "title",
   groupRightTitleKey: "rightTitle",
@@ -22,51 +20,67 @@ var keys = {
   groupLabelKey: "title",
 };
 
-export default class App extends Component {
-  constructor(props) {
-    super(props);
+const CustomTimeline = () => {
+  const { groups, items } = generateFakeData(15);
+  // set to one hour before now
+  const defaultTimeStart = moment().subtract(1, "hour").toDate();
 
-    const { groups, items } = generateFakeData(150);
-    const defaultTimeStart = moment().startOf("day").toDate();
-    const defaultTimeEnd = moment().startOf("day").add(1, "day").toDate();
+  const defaultTimeEnd = moment(defaultTimeStart).add(24, "hours").toDate();
 
-    this.state = {
-      groups,
-      items,
-      defaultTimeStart,
-      defaultTimeEnd,
-    };
-  }
+  const [state, setState] = useState({
+    groups,
+    items,
+    defaultTimeStart,
+    defaultTimeEnd,
+  });
 
-  render() {
-    const { groups, items, defaultTimeStart, defaultTimeEnd } = this.state;
-
-    return (
-      <Timeline
-        groups={groups}
-        items={items}
-        keys={keys}
-        sidebarContent={<div>Above The Left</div>}
-        itemsSorted
-        itemTouchSendsClick={false}
-        stackItems
-        itemHeightRatio={0.75}
-        showCursorLine
-        canMove={false}
-        canResize={false}
-        defaultTimeStart={defaultTimeStart}
-        defaultTimeEnd={defaultTimeEnd}
-      >
-        <TimelineHeaders className="sticky">
-          <SidebarHeader>
-            {({ getRootProps }) => {
-              return <div {...getRootProps()}>Left</div>;
-            }}
-          </SidebarHeader>
-          <DateHeader unit="primaryHeader" />
-          <DateHeader />
-        </TimelineHeaders>
-      </Timeline>
+  const handleItemMove = (itemId, dragTime, newGroupOrder) => {
+    console.log(
+      "in handleItemMove (itemId, dragTime, newGroupOrder)",
+      itemId,
+      dragTime,
+      newGroupOrder
     );
-  }
-}
+    console.log("state.items", state.items);
+    const updatedItems = state.items.map((item) => {
+      if (item.id === itemId) {
+        const start = dragTime;
+        const end = moment(dragTime)
+          .add(item.end - item.start, "ms")
+          .toDate();
+        return { ...item, start, end, group: newGroupOrder + 1 };
+      }
+      return item;
+    });
+
+    setState({ ...state, items: updatedItems });
+  };
+
+  return (
+    <Timeline
+      groups={state.groups}
+      items={state.items}
+      keys={keys}
+      itemsSorted
+      itemTouchSendsClick={true}
+      stackItems={false}
+      itemHeightRatio={0.75}
+      showCursorLine
+      canMove={true}
+      canChangeGroup={true}
+      canResize={true}
+      className="mt-10"
+      traditionalZoom={true}
+      onItemMove={handleItemMove}
+      defaultTimeStart={state.defaultTimeStart}
+      defaultTimeEnd={state.defaultTimeEnd}
+    >
+      <TimelineHeaders className="sticky">
+        <DateHeader unit="primaryHeader" />
+        <DateHeader />
+      </TimelineHeaders>
+    </Timeline>
+  );
+};
+
+export default CustomTimeline;
