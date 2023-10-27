@@ -32,11 +32,6 @@ const CustomTimeline = () => {
     defaultTimeEnd,
   });
 
-  useEffect(() => {
-    console.log("groups", groups);
-    console.log("initialItems", initialItems);
-  }, [groups, initialItems]);
-
   const handleEdit = (itemId) => {
     // Define the edit logic here
   };
@@ -107,7 +102,7 @@ const CustomTimeline = () => {
   return (
     <div
       className="timeline-container"
-      style={{ maxHeight: "500px", overflowY: "scroll" }}
+      style={{ maxHeight: "500px", overflowY: "auto" }}
     >
       <Timeline
         groups={state.groups}
@@ -121,7 +116,7 @@ const CustomTimeline = () => {
         canMove={true}
         canChangeGroup={true}
         canResize={true}
-        className="mt-10"
+        className="mt-1"
         traditionalZoom={true}
         onItemMove={handleItemMove}
         defaultTimeStart={state.defaultTimeStart}
