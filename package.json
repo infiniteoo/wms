@@ -10,6 +10,9 @@
   },
   "dependencies": {
     "@clerk/nextjs": "^4.25.4",
+    "@devexpress/dx-react-core": "^4.0.5",
+    "@devexpress/dx-react-scheduler": "^4.0.5",
+    "@devexpress/dx-react-scheduler-material-ui": "^4.0.5",
     "@react-icons/all-files": "^4.1.0",
     "@supabase/auth-helpers-nextjs": "^0.8.1",
     "@supabase/supabase-js": "^2.38.1",
@@ -21,6 +24,7 @@
     "prop-types": "^15.8.1",
     "randomcolor": "^0.6.2",
     "react": "^18",
+    "react-big-calendar": "^1.8.4",
     "react-calendar-timeline": "^0.28.0",
     "react-chartjs-2": "^5.2.0",
     "react-datetime": "^3.2.0",
