@@ -25,6 +25,7 @@ export default function Selectable({}) {
   const [view, setView] = useState(Views.WEEK);
   const [date, setDate] = useState(new Date());
   const [openModal, setOpenModal] = useState(false);
+  const [selectedEvent, setSelectedEvent] = useState(null);
 
   const closeModal = () => {
     setOpenModal(false);
@@ -40,6 +41,16 @@ export default function Selectable({}) {
           title: appointment.title,
           start: new Date(appointment.start),
           end: new Date(appointment.end),
+          created_at: appointment.created_at,
+          created_by: appointment.created_by,
+          updated_at: appointment.updated_at,
+          order_number: appointment.order_number,
+          updated_by: appointment.updated_by,
+          carrier: appointment.carrier,
+          trailer_number: appointment.trailer_number,
+          booker_name: appointment.booker_name,
+          booker_phone: appointment.booker_phone,
+          booker_email: appointment.booker_email,
         }));
 
         console.log("formattedData", formattedData);
@@ -81,6 +92,7 @@ export default function Selectable({}) {
 
   const handleSelectEvent = useCallback((event) => {
     console.log("event", event);
+    setSelectedEvent(event);
     setOpenModal(true);
   });
 
@@ -102,7 +114,7 @@ export default function Selectable({}) {
 
     if (data) {
       const updatedEventData = data[0];
-      console.log("Event dragged and dropped:", updatedEventData);
+
       data[0].start = new Date(data[0].start);
       data[0].end = new Date(data[0].end);
 
@@ -175,7 +187,13 @@ export default function Selectable({}) {
           onEventResize={onEventResize} // Add event resize handler
         />
       </div>
-      {openModal && <Modal closeModal={closeModal} />}
+      {openModal && (
+        <Modal
+          closeModal={closeModal}
+          appointment={selectedEvent}
+          setEvents={setEvents}
+        />
+      )}
     </Fragment>
   );
 }
