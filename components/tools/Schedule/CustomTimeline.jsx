@@ -22,17 +22,23 @@ const keys = {
   groupLabelKey: "title",
 };
 
-const CustomTimeline = () => {
-  const { groups, items: initialItems } = generateFakeData(15);
+const CustomTimeline = ({
+  groups,
+  appointments,
+  setGroups,
+  setAppointments,
+}) => {
+  /* const { poops: poops, initialItems } = generateFakeData(15); */
   const defaultTimeStart = moment().subtract(1, "hour").toDate();
   const defaultTimeEnd = moment(defaultTimeStart).add(24, "hours").toDate();
-  const [state, setState] = useState({
+  const [state, setState] = useState({});
+  console.log(groups, appointments);
+  /* setState({
     groups,
-    items: initialItems,
+    appointments,
     defaultTimeStart,
     defaultTimeEnd,
-  });
-
+  }); */
   const handleEdit = (itemId) => {
     // Define the edit logic here
   };
@@ -67,7 +73,7 @@ const CustomTimeline = () => {
       title: "",
       rightTitle: "",
       bgColor: "",
-      startTime: time,
+      startTime: new Date(time).toISOString(), // Convert the time to ISO date string
     };
 
     setContextMenu({ position, itemId: "23423s", groupDetails });
@@ -104,16 +110,8 @@ const CustomTimeline = () => {
   };
 
   const onSave = (title, start, end, groupDetails) => {
-    // Implement the logic to add a new item with the provided details.
-    // You can create a new item object and add it to the items array.
     const newUuid = uuidv4();
     const numericId = parseInt(newUuid.replace(/-/g, ""), 16);
-    console.log(numericId);
-
-    console.log("groupDetails", groupDetails);
-    console.log("title", title);
-    console.log("start", start);
-    console.log("end", end);
 
     const newItem = {
       group: groupDetails.id,
@@ -132,33 +130,36 @@ const CustomTimeline = () => {
     <div
       className="timeline-container"
       style={{ maxHeight: "500px", overflowY: "auto" }}
-      // Detect empty areas clicked
     >
-      <Timeline
-        onCanvasClick={handleEmptyAreaClick}
-        groups={state.groups}
-        items={state.items}
-        keys={keys}
-        itemsSorted
-        itemTouchSendsClick={true}
-        stackItems={true}
-        itemHeightRatio={0.75}
-        showCursorLine
-        canMove={true}
-        canChangeGroup={true}
-        canResize={true}
-        className="mt-1"
-        traditionalZoom={true}
-        onItemMove={handleItemMove}
-        defaultTimeStart={state.defaultTimeStart}
-        defaultTimeEnd={state.defaultTimeEnd}
-        onItemContextMenu={handleRightClick}
-      >
-        <TimelineHeaders className="sticky">
-          <DateHeader unit="primaryHeader" />
-          <DateHeader />
-        </TimelineHeaders>
-      </Timeline>
+      {groups && groups.length > 0 ? (
+        <Timeline
+          onCanvasClick={handleEmptyAreaClick}
+          groups={groups}
+          items={appointments}
+          keys={keys}
+          itemsSorted
+          itemTouchSendsClick={true}
+          stackItems={true}
+          itemHeightRatio={0.75}
+          showCursorLine
+          canMove={true}
+          canChangeGroup={true}
+          canResize={true}
+          className="mt-1"
+          traditionalZoom={true}
+          onItemMove={handleItemMove}
+          defaultTimeStart={defaultTimeStart}
+          defaultTimeEnd={defaultTimeEnd}
+          onItemContextMenu={handleRightClick}
+        >
+          <TimelineHeaders className="sticky">
+            <DateHeader unit="primaryHeader" />
+            <DateHeader />
+          </TimelineHeaders>
+        </Timeline>
+      ) : (
+        <div>Loading...</div>
+      )}
       {contextMenu && (
         <ContextMenu
           x={contextMenu.position.x}

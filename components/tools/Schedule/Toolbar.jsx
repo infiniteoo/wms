@@ -10,7 +10,7 @@ const Toolbar = () => {
 
   const addAppointment = () => {
     // Define the add logic here
-    setOpenModal(true);
+    /* setOpenModal(true); */
   };
 
   const handleOpenSettings = () => {
