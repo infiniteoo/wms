@@ -1,22 +1,66 @@
-import React, { Fragment, useState, useCallback, useMemo } from "react";
+import React, {
+  Fragment,
+  useState,
+  useCallback,
+  useMemo,
+  useEffect,
+} from "react";
 import PropTypes from "prop-types";
 import { Calendar, Views, DateLocalizer } from "react-big-calendar";
-import DemoLink from "./DemoLink.component";
 import events from "./events";
 import { momentLocalizer } from "react-big-calendar";
 import "react-big-calendar/lib/css/react-big-calendar.css";
+import { supabase } from "../../../supabase";
 
 import moment from "moment";
 
 export default function Selectable({}) {
   const localizer = momentLocalizer(moment);
-  const [myEvents, setEvents] = useState(events);
+  const [myEvents, setEvents] = useState([]);
+
+  useEffect(() => {
+    const fetchAppointments = async () => {
+      const { data, error } = await supabase.from("appointments").select("*");
+
+      if (data) {
+        const formattedData = data.map((appointment) => ({
+          id: appointment.id,
+          title: appointment.title,
+          start: new Date(appointment.start), // Convert to Date
+          end: new Date(appointment.end), // Convert to Date
+        }));
+
+        console.log("formattedData", formattedData);
+        setEvents(formattedData);
+      }
+    };
+
+    fetchAppointments();
+  }, []);
 
   const handleSelectSlot = useCallback(
-    ({ start, end }) => {
-      const title = window.prompt("New Event name");
+    async ({ start, end }) => {
+      console.log("start start", start);
+      console.log("end end", end);
+
+      const title = window.prompt("New Event Title");
       if (title) {
-        setEvents((prev) => [...prev, { start, end, title }]);
+        const { data, error } = await supabase
+          .from("appointments")
+          .insert([{ start, end, title }])
+          .select("*");
+
+        if (data) {
+          const formattedData = data.map((appointment) => ({
+            ...appointment,
+            start: new Date(appointment.start).toString(), // Format start date
+            end: new Date(appointment.end).toString(), // Format end date
+          }));
+
+          console.log("formattedData", formattedData);
+
+          setEvents((prev) => [...prev, { start, end, title }]);
+        }
       }
     },
     [setEvents]
@@ -37,7 +81,6 @@ export default function Selectable({}) {
 
   return (
     <Fragment>
-      {/*   <DemoLink fileName="selectable"></DemoLink> */}
       <div className="flex flex-col justify-center items-center mt-7">
         <Calendar
           defaultDate={defaultDate}
