@@ -146,6 +146,23 @@
             margin-top: 10px;
         }
 
+        .selected-day {
+            background-color: #007BFF;
+            border: 1px solid #ccc;
+            border-radius: 50%;
+            /* Make it more circular */
+            width: 30px;
+            /* Adjust the width and height as needed */
+            height: 30px;
+            /* Adjust the width and height as needed */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            cursor: pointer;
+        }
+
+
         input,
         select {
             width: 100%;

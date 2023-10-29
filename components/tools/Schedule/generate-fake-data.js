@@ -14,7 +14,6 @@ export default function (groupCount = 10, itemCount = 30) {
     });
   }
 
-  console.log("generated groups: ", groups);
   let items = [];
   const currentTime = new Date().getTime();
   const twentyFourHoursInMs = 24 * 60 * 60 * 1000;

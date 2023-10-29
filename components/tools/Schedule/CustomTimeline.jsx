@@ -7,6 +7,7 @@ import Timeline, {
 } from "react-calendar-timeline/lib";
 import generateFakeData from "./generate-fake-data";
 import ContextMenu from "./ContextMenu";
+import { v4 as uuidv4 } from "uuid";
 
 const keys = {
   groupIdKey: "id",
@@ -52,6 +53,27 @@ const CustomTimeline = () => {
     setContextMenu({ position, itemId, groupDetails });
   };
 
+  const handleEmptyAreaClick = (groupId, time, e) => {
+    console.log("group id", groupId);
+    console.log("time", time);
+    console.log("e", e);
+    e.preventDefault(); // Prevent the default context menu
+    const position = { x: e.clientX, y: e.clientY };
+    console.log("position", position);
+    console.log("state.groups", state.groups);
+    console.log("state.items", state.items);
+    const groupDetails = {
+      id: groupId,
+      title: "",
+      rightTitle: "",
+      bgColor: "",
+      startTime: time,
+    };
+
+    setContextMenu({ position, itemId: "23423s", groupDetails });
+    // Define the empty area click logic here
+  };
+
   const handleItemMove = (itemId, dragTime, newGroupOrder) => {
     const updatedItems = state.items.map((item) => {
       if (item.id === itemId) {
@@ -82,18 +104,25 @@ const CustomTimeline = () => {
   };
 
   const onSave = (title, start, end, groupDetails) => {
-    const updatedItems = state.items.map((item) => {
-      if (item.id === contextMenu.itemId) {
-        return {
-          ...item,
-          title,
-          start,
-          end,
-          group: contextMenu.groupDetails.id, // Update the group ID with the selected group
-        };
-      }
-      return item;
-    });
+    // Implement the logic to add a new item with the provided details.
+    // You can create a new item object and add it to the items array.
+    const newUuid = uuidv4();
+    const numericId = parseInt(newUuid.replace(/-/g, ""), 16);
+    console.log(numericId);
+
+    console.log("groupDetails", groupDetails);
+    console.log("title", title);
+    console.log("start", start);
+    console.log("end", end);
+
+    const newItem = {
+      group: groupDetails.id,
+      title: title,
+      start: start,
+      end: end,
+    };
+
+    const updatedItems = [...state.items, newItem];
 
     setState({ ...state, items: updatedItems });
     setContextMenu(null);
@@ -103,14 +132,16 @@ const CustomTimeline = () => {
     <div
       className="timeline-container"
       style={{ maxHeight: "500px", overflowY: "auto" }}
+      // Detect empty areas clicked
     >
       <Timeline
+        onCanvasClick={handleEmptyAreaClick}
         groups={state.groups}
         items={state.items}
         keys={keys}
         itemsSorted
         itemTouchSendsClick={true}
-        stackItems={false}
+        stackItems={true}
         itemHeightRatio={0.75}
         showCursorLine
         canMove={true}

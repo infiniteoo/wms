@@ -29,6 +29,7 @@ const ContextMenu = ({
     if (groupDetails) {
       setEditedGroupTitle(groupDetails.title);
       setEditedGroupRightTitle(groupDetails.rightTitle);
+      setEditedStart(groupDetails.startTime);
     }
   }, [itemDetails, groupDetails]);
 
@@ -37,7 +38,7 @@ const ContextMenu = ({
     const start = new Date(editedStart);
     const end = new Date(editedEnd);
 
-    onSave(editedTitle, start, end); // Pass the Date objects to the onSave function
+    onSave(editedTitle, start, end, groupDetails); // Pass the Date objects to the onSave function
     setIsEditing(false);
   };
 
@@ -99,10 +100,14 @@ const ContextMenu = ({
         </div>
       ) : itemDetails ? (
         <div>
-          <p>Employee #: {groupDetails.id}</p>
-          <p>
-            Employee: {groupDetails.title} {groupDetails.rightTitle}
-          </p>
+          {groupDetails ? (
+            <>
+              <p>Employee #: {groupDetails.id}</p>
+              <p>
+                Employee: {groupDetails.title} {groupDetails.rightTitle}
+              </p>
+            </>
+          ) : null}
           <p>Event: {itemDetails.title}</p>
           <p>Start Time: {getDateFromMilliseconds(itemDetails.start)}</p>
           <p>End Time: {getDateFromMilliseconds(itemDetails.end)}</p>
