@@ -17,6 +17,8 @@ import moment from "moment";
 export default function Selectable({}) {
   const localizer = momentLocalizer(moment);
   const [myEvents, setEvents] = useState([]);
+  const [view, setView] = useState(Views.WEEK);
+  const [date, setDate] = useState(new Date());
 
   useEffect(() => {
     const fetchAppointments = async () => {
@@ -71,6 +73,10 @@ export default function Selectable({}) {
     []
   );
 
+  const onNavigate = useCallback((newDate) => setDate(newDate), [setDate]);
+
+  const onView = useCallback((newView) => setView(newView), [setView]);
+
   const { defaultDate, scrollToTime } = useMemo(
     () => ({
       defaultDate: new Date(2015, 3, 12),
@@ -90,8 +96,12 @@ export default function Selectable({}) {
           onSelectEvent={handleSelectEvent}
           onSelectSlot={handleSelectSlot}
           selectable
+          onNavigate={onNavigate}
+          onView={onView}
           scrollToTime={scrollToTime}
           style={{ width: "90%", height: "80vh" }}
+          date={date}
+          view={view}
         />
       </div>
     </Fragment>
