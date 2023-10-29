@@ -98,7 +98,17 @@ export default function Selectable({}) {
       .select("*");
 
     if (data) {
-      console.log("Event dropped and updated:", data[0]);
+      const updatedEventData = data[0];
+      console.log("Event dragged and dropped:", updatedEventData);
+      data[0].start = new Date(data[0].start);
+      data[0].end = new Date(data[0].end);
+
+      // Find and update the existing event in myEvents state
+      setEvents((prev) =>
+        prev.map((event) =>
+          event.id === updatedEventData.id ? updatedEventData : event
+        )
+      );
     }
   };
 
