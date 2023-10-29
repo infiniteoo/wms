@@ -1,52 +1,56 @@
-import * as React from "react";
-import Paper from "@mui/material/Paper";
-import { ViewState } from "@devexpress/dx-react-scheduler";
-import {
-  Scheduler,
-  DayView,
-  Appointments,
-} from "@devexpress/dx-react-scheduler-material-ui";
-import { Calendar, momentLocalizer } from "react-big-calendar";
-import moment from "moment";
+import React, { Fragment, useState, useCallback, useMemo } from "react";
+import PropTypes from "prop-types";
+import { Calendar, Views, DateLocalizer } from "react-big-calendar";
+import DemoLink from "./DemoLink.component";
+import events from "./events";
+import { momentLocalizer } from "react-big-calendar";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 
-const localizer = momentLocalizer(moment);
+import moment from "moment";
 
-const currentDate = Date.now();
-const schedulerData = [
-  {
-    startDate: "2018-11-01T09:45",
-    endDate: "2018-11-01T11:00",
-    title: "Meeting",
-  },
-  {
-    startDate: "2018-11-01T12:00",
-    endDate: "2018-11-01T13:30",
-    title: "Go to a gym",
-  },
-];
+export default function Selectable({}) {
+  const localizer = momentLocalizer(moment);
+  const [myEvents, setEvents] = useState(events);
 
-let state = {
-  events: [
-    {
-      start: moment().toDate(),
-      end: moment().add(1, "days").toDate(),
-      title: "Some title",
+  const handleSelectSlot = useCallback(
+    ({ start, end }) => {
+      const title = window.prompt("New Event name");
+      if (title) {
+        setEvents((prev) => [...prev, { start, end, title }]);
+      }
     },
-  ],
-};
+    [setEvents]
+  );
 
-export default () => (
-  <div
-    className="flex flex-col justify-center items-center mt-7"
-    style={{}} // Set the height to fill the viewport
-  >
-    <Calendar
-      localizer={localizer}
-      defaultDate={new Date()}
-      defaultView="month"
-      events={state.events}
-      style={{ width: "90%", height: "80vh" }}
-    />
-  </div>
-);
+  const handleSelectEvent = useCallback(
+    (event) => window.alert(event.title),
+    []
+  );
+
+  const { defaultDate, scrollToTime } = useMemo(
+    () => ({
+      defaultDate: new Date(2015, 3, 12),
+      scrollToTime: new Date(1970, 1, 1, 6),
+    }),
+    []
+  );
+
+  return (
+    <Fragment>
+      {/*   <DemoLink fileName="selectable"></DemoLink> */}
+      <div className="flex flex-col justify-center items-center mt-7">
+        <Calendar
+          defaultDate={defaultDate}
+          defaultView={Views.WEEK}
+          events={myEvents}
+          localizer={localizer}
+          onSelectEvent={handleSelectEvent}
+          onSelectSlot={handleSelectSlot}
+          selectable
+          scrollToTime={scrollToTime}
+          style={{ width: "90%", height: "80vh" }}
+        />
+      </div>
+    </Fragment>
+  );
+}
