@@ -6,11 +6,15 @@ import React, {
   useEffect,
 } from "react";
 import PropTypes from "prop-types";
-import { Calendar, Views, DateLocalizer } from "react-big-calendar";
+import { Calendar, Views } from "react-big-calendar";
 import events from "./events";
 import { momentLocalizer } from "react-big-calendar";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import { supabase } from "../../../supabase";
+import withDragAndDrop from "react-big-calendar/lib/addons/dragAndDrop";
+import "react-big-calendar/lib/addons/dragAndDrop/styles.css";
+
+const DnDCalendar = withDragAndDrop(Calendar);
 
 import moment from "moment";
 
@@ -28,8 +32,8 @@ export default function Selectable({}) {
         const formattedData = data.map((appointment) => ({
           id: appointment.id,
           title: appointment.title,
-          start: new Date(appointment.start), // Convert to Date
-          end: new Date(appointment.end), // Convert to Date
+          start: new Date(appointment.start),
+          end: new Date(appointment.end),
         }));
 
         console.log("formattedData", formattedData);
@@ -54,9 +58,10 @@ export default function Selectable({}) {
 
         if (data) {
           const formattedData = data.map((appointment) => ({
-            ...appointment,
-            start: new Date(appointment.start).toString(), // Format start date
-            end: new Date(appointment.end).toString(), // Format end date
+            id: appointment.id,
+            title: appointment.title,
+            start: new Date(appointment.start),
+            end: new Date(appointment.end),
           }));
 
           console.log("formattedData", formattedData);
@@ -77,6 +82,58 @@ export default function Selectable({}) {
 
   const onView = useCallback((newView) => setView(newView), [setView]);
 
+  const onEventDrop = async (event) => {
+    // Handle event drop here (e.g., update the event's start and end times)
+    // Make a request to your backend to update the event's position
+    // Example request to update the event in the database:
+    const updatedEvent = {
+      id: event.event.id, // You may need to adjust the key to match your data
+      start: event.start,
+      end: event.end,
+    };
+
+    const { data, error } = await supabase
+      .from("appointments")
+      .upsert([updatedEvent])
+      .select("*");
+
+    if (data) {
+      console.log("Event dropped and updated:", data[0]);
+    }
+  };
+
+  const onEventResize = async (event) => {
+    // Handle event resize here (e.g., update the event's start and end times)
+    // Make a request to your backend to update the event's duration
+    // Example request to update the event in the database:
+    const updatedEvent = {
+      id: event.event.id, // You may need to adjust the key to match your data
+      start: event.start,
+      end: event.end,
+    };
+
+    console.log("updatedEvent", updatedEvent);
+
+    const { data, error } = await supabase
+      .from("appointments")
+      .upsert([updatedEvent])
+      .select("*");
+
+    if (data) {
+      const updatedEventData = data[0];
+      console.log("Event resized and updated:", updatedEventData);
+      data[0].start = new Date(data[0].start);
+      data[0].end = new Date(data[0].end);
+
+      // Find and update the existing event in myEvents state
+      setEvents((prev) =>
+        prev.map((event) =>
+          event.id === updatedEventData.id ? updatedEventData : event
+        )
+      );
+    }
+  };
+
   const { defaultDate, scrollToTime } = useMemo(
     () => ({
       defaultDate: new Date(2015, 3, 12),
@@ -88,9 +145,9 @@ export default function Selectable({}) {
   return (
     <Fragment>
       <div className="flex flex-col justify-center items-center mt-7">
-        <Calendar
+        <DnDCalendar
           defaultDate={defaultDate}
-          defaultView={Views.WEEK}
+          defaultView={view}
           events={myEvents}
           localizer={localizer}
           onSelectEvent={handleSelectEvent}
@@ -101,7 +158,8 @@ export default function Selectable({}) {
           scrollToTime={scrollToTime}
           style={{ width: "90%", height: "80vh" }}
           date={date}
-          view={view}
+          onEventDrop={onEventDrop} // Add event drop handler
+          onEventResize={onEventResize} // Add event resize handler
         />
       </div>
     </Fragment>
