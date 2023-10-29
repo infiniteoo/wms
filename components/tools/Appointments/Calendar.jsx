@@ -17,12 +17,18 @@ import "react-big-calendar/lib/addons/dragAndDrop/styles.css";
 const DnDCalendar = withDragAndDrop(Calendar);
 
 import moment from "moment";
+import Modal from "./Modal";
 
 export default function Selectable({}) {
   const localizer = momentLocalizer(moment);
   const [myEvents, setEvents] = useState([]);
   const [view, setView] = useState(Views.WEEK);
   const [date, setDate] = useState(new Date());
+  const [openModal, setOpenModal] = useState(false);
+
+  const closeModal = () => {
+    setOpenModal(false);
+  };
 
   useEffect(() => {
     const fetchAppointments = async () => {
@@ -73,21 +79,18 @@ export default function Selectable({}) {
     [setEvents]
   );
 
-  const handleSelectEvent = useCallback(
-    (event) => window.alert(event.title),
-    []
-  );
+  const handleSelectEvent = useCallback((event) => {
+    console.log("event", event);
+    setOpenModal(true);
+  });
 
   const onNavigate = useCallback((newDate) => setDate(newDate), [setDate]);
 
   const onView = useCallback((newView) => setView(newView), [setView]);
 
   const onEventDrop = async (event) => {
-    // Handle event drop here (e.g., update the event's start and end times)
-    // Make a request to your backend to update the event's position
-    // Example request to update the event in the database:
     const updatedEvent = {
-      id: event.event.id, // You may need to adjust the key to match your data
+      id: event.event.id,
       start: event.start,
       end: event.end,
     };
@@ -172,6 +175,7 @@ export default function Selectable({}) {
           onEventResize={onEventResize} // Add event resize handler
         />
       </div>
+      {openModal && <Modal closeModal={closeModal} />}
     </Fragment>
   );
 }
