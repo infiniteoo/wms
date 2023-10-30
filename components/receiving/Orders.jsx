@@ -51,6 +51,32 @@ const Orders = () => {
     }, 0);
   };
 
+  const handleStatusChange = async (rowId, newStatus) => {
+    try {
+      const { data, error } = await supabase
+        .from("incoming_orders")
+        .update({ status: newStatus })
+        .eq("id", rowId)
+        .select();
+      if (error) {
+        console.error(error);
+      } else {
+        // Update the local state to reflect the new status
+        setInventory((inventory) =>
+          inventory.map((item) => {
+            if (item.id === rowId) {
+              return { ...item, status: newStatus };
+            } else {
+              return item;
+            }
+          })
+        );
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   const confirmDelete = async () => {
     if (selectedRows.length > 0) {
       // Create an array to store promises for each delete operation
@@ -295,7 +321,6 @@ const Orders = () => {
                       ? "bg-gray-100"
                       : "hover:bg-gray-200"
                   }`}
-                  onClick={() => handleRowClick(item)}
                 >
                   <td className="py-2">
                     <input
@@ -323,7 +348,20 @@ const Orders = () => {
                   <td className="py-2 text-center">
                     {formatTime(item.appointment_time)}
                   </td>
-                  <td className="py-2 text-center">{item.status}</td>
+                  <td className="py-2 text-center">
+                    {/* Dropdown to change the status */}
+                    <select
+                      value={item.status}
+                      onChange={(e) =>
+                        handleStatusChange(item.id, e.target.value)
+                      }
+                    >
+                      <option value="Unloading">Unloading</option>
+                      <option value="Completed">Completed</option>
+                      <option value="Rejected">Rejected</option>
+                      <option value="Pending">Pending</option>
+                    </select>
+                  </td>
                   <td className="py-2 text-center">{item.created_by}</td>
                   <td className="py-2 text-center">
                     {item.completed ? "Y" : "N"}

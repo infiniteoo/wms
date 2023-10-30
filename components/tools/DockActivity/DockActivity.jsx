@@ -6,30 +6,7 @@ const DockActivity = () => {
   const [dockDoors, setDockDoors] = useState([]);
   const [sliderChanged, setSliderChanged] = useState(false);
 
-  const handleTotalSpotsChange = (event) => {
-    setInputTotalSpots(parseInt(event.target.value, 10));
-    setSliderChanged(true);
-  };
-
   useEffect(() => {
-    if (sliderChanged) {
-      const generateDockDoors = () => {
-        const doors = [];
-        for (let i = 1; i <= inputTotalSpots; i++) {
-          const randomColor = getRandomColor();
-          doors.push({
-            id: i,
-            name: `Dock ${i}`,
-            color: randomColor,
-          });
-        }
-        setDockDoors(doors);
-        setSliderChanged(false); // Reset the sliderChanged flag
-      };
-
-      generateDockDoors();
-    }
-
     // Fetch dockDoors data from the database
     const fetchDockDoorsData = async () => {
       try {
