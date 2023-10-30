@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { CompactPicker } from "react-color"; // Import SketchPicker from react-color
+import { supabase } from "../../supabase";
 
 const DockDoors = () => {
   const [totalSpots, setTotalSpots] = useState(1);
@@ -50,9 +51,50 @@ const DockDoors = () => {
       )
     );
   };
+  const handleSave = async () => {
+    try {
+      // Fetch the existing config data from Supabase
+      const { data: existingConfigData, error: configError } = await supabase
+        .from("config")
+        .select("config")
+        .eq("id", 1);
 
-  const handleSave = () => {
-    console.log("Updated Dock Doors:", dockDoors);
+      if (configError) {
+        console.error(
+          "Error fetching existing config data:",
+          configError.message
+        );
+        return;
+      }
+
+      // Extract the existing configuration
+      const existingConfig = existingConfigData[0]?.config || {};
+
+      // Create a new config object by combining the existing configuration with dock doors data
+      const newConfig = {
+        ...existingConfig,
+        dockDoors: dockDoors, // Assuming dockDoors is an array of dock door data
+      };
+
+      // Update the config data in the Supabase "config" table
+      const { data: updatedData, error: updateError } = await supabase
+        .from("config")
+        .upsert([
+          {
+            id: 1,
+            config: newConfig,
+          },
+        ]);
+
+      if (updateError) {
+        console.error("Error updating config data:", updateError.message);
+        return;
+      }
+
+      console.log("Config data updated successfully:", updatedData);
+    } catch (error) {
+      console.error("Error while updating config data:", error);
+    }
   };
 
   return (
