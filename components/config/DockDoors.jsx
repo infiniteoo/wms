@@ -1,31 +1,63 @@
 import React, { useState, useEffect } from "react";
-import { CompactPicker } from "react-color"; // Import SketchPicker from react-color
+import { CompactPicker } from "react-color";
 import { supabase } from "../../supabase";
 
 const DockDoors = () => {
-  const [totalSpots, setTotalSpots] = useState(1);
+  const [inputTotalSpots, setInputTotalSpots] = useState(1);
   const [dockDoors, setDockDoors] = useState([]);
+  const [sliderChanged, setSliderChanged] = useState(false);
 
   const handleTotalSpotsChange = (event) => {
-    setTotalSpots(parseInt(event.target.value, 10));
+    setInputTotalSpots(parseInt(event.target.value, 10));
+    setSliderChanged(true);
   };
 
   useEffect(() => {
-    const generateDockDoors = () => {
-      const doors = [];
-      for (let i = 1; i <= totalSpots; i++) {
-        const randomColor = getRandomColor();
-        doors.push({
-          id: i,
-          name: `Dock ${i}`,
-          color: randomColor,
-        });
+    if (sliderChanged) {
+      const generateDockDoors = () => {
+        const doors = [];
+        for (let i = 1; i <= inputTotalSpots; i++) {
+          const randomColor = getRandomColor();
+          doors.push({
+            id: i,
+            name: `Dock ${i}`,
+            color: randomColor,
+          });
+        }
+        setDockDoors(doors);
+        setSliderChanged(false); // Reset the sliderChanged flag
+      };
+
+      generateDockDoors();
+    }
+
+    // Fetch dockDoors data from the database
+    const fetchDockDoorsData = async () => {
+      try {
+        const { data, error } = await supabase
+          .from("config")
+          .select("config")
+          .eq("id", 1);
+
+        if (error) {
+          console.error("Error fetching dockDoors data:", error.message);
+          return;
+        }
+
+        if (data.length > 0) {
+          const existingDockDoors = data[0].config.dockDoors;
+          if (existingDockDoors) {
+            setDockDoors(existingDockDoors);
+            setInputTotalSpots(existingDockDoors.length); // Set slider value
+          }
+        }
+      } catch (error) {
+        console.error("Error fetching dockDoors data:", error);
       }
-      setDockDoors(doors);
     };
 
-    generateDockDoors();
-  }, [totalSpots]);
+    fetchDockDoorsData();
+  }, [inputTotalSpots, sliderChanged]);
 
   const getRandomColor = () => {
     const letters = "0123456789ABCDEF";
@@ -51,6 +83,7 @@ const DockDoors = () => {
       )
     );
   };
+
   const handleSave = async () => {
     try {
       // Fetch the existing config data from Supabase
@@ -107,12 +140,12 @@ const DockDoors = () => {
               type="range"
               min="1"
               max="50"
-              value={totalSpots}
+              value={inputTotalSpots}
               onChange={handleTotalSpotsChange}
               className="w-2/3 ml-5 items-center justify-center text-center mt-2"
             />
             <span className="ml-3 bg-blue-500 rounded-full text-white py-3 px-4 ">
-              {totalSpots}
+              {inputTotalSpots}
             </span>
           </label>
         </div>
