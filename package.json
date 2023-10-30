@@ -28,6 +28,7 @@
     "react-big-calendar": "^1.8.4",
     "react-calendar-timeline": "^0.28.0",
     "react-chartjs-2": "^5.2.0",
+    "react-color": "^2.19.3",
     "react-datetime": "^3.2.0",
     "react-dom": "^18",
     "uuid": "^9.0.1",
