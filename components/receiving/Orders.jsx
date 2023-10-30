@@ -383,11 +383,11 @@ const Orders = () => {
               {/* Adjust the width as needed */}
               <col style={{ width: "120px" }} />{" "}
               {/* Adjust the width as needed */}
-              <col style={{ width: "120px" }} />{" "}
+              <col style={{ width: "160px" }} />{" "}
               {/* Adjust the width as needed */}
-              <col style={{ width: "80px" }} />{" "}
+              <col style={{ width: "160px" }} />{" "}
               {/* Adjust the width as needed */}
-              <col style={{ width: "100px" }} />{" "}
+              <col style={{ width: "160px" }} />{" "}
               {/* Adjust the width as needed */}
             </colgroup>
             <thead className="bg-gray-800 text-white">
@@ -479,7 +479,7 @@ const Orders = () => {
                     {/* Step 3: Populate the operator select dropdown with employee names */}
                     <select
                       value={selectedOperator}
-                      onChange={(e) => setSelectedOperator(e.target.value)}
+                      onChange={(e) => handleOperatorChange(e.target.value)}
                     >
                       <option value="">Select Operator</option>
                       {operators.map((operator, index) => (

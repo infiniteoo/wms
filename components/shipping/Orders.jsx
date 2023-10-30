@@ -18,6 +18,10 @@ const Orders = () => {
   const user = useUser();
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [itemToDelete, setItemToDelete] = useState(null);
+  const [operators, setOperators] = useState([]);
+  const [selectedOperator, setSelectedOperator] = useState("");
+  const [dockDoors, setDockDoors] = useState([]); // State for dock door options
+  const [selectedDockDoor, setSelectedDockDoor] = useState(""); // State for the selected dock door
 
   const cancelDelete = () => {
     // Cancel the delete operation and close the modal
@@ -51,6 +55,82 @@ const Orders = () => {
     }, 0);
   };
 
+  const handleStatusChange = async (rowId, newStatus) => {
+    try {
+      const { data, error } = await supabase
+        .from("outbound_orders")
+        .update({ status: newStatus })
+        .eq("id", rowId)
+        .select();
+      if (error) {
+        console.error(error);
+      } else {
+        // Update the local state to reflect the new status
+        setInventory((inventory) =>
+          inventory.map((item) => {
+            if (item.id === rowId) {
+              return { ...item, status: newStatus };
+            } else {
+              return item;
+            }
+          })
+        );
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  const handleOperatorChange = async (rowId, newOperator) => {
+    try {
+      const { data, error } = await supabase
+        .from("outbound_orders")
+        .update({ unloaded_by: newOperator })
+        .eq("id", rowId)
+        .select();
+      if (error) {
+        console.error(error);
+      } else {
+        // Update the local state to reflect the new status
+        setInventory((inventory) =>
+          inventory.map((item) => {
+            if (item.id === rowId) {
+              return { ...item, unloaded_by: newOperator };
+            } else {
+              return item;
+            }
+          })
+        );
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  const handleDoorChange = async (rowId, newDoor) => {
+    try {
+      const { data, error } = await supabase
+        .from("outbound_orders")
+        .update({ assigned_dock_door: newDoor })
+        .eq("id", rowId)
+        .select();
+      if (error) {
+        console.error(error);
+      } else {
+        // Update the local state to reflect the new status
+        setInventory((inventory) =>
+          inventory.map((item) => {
+            if (item.id === rowId) {
+              return { ...item, assigned_dock_door: newDoor };
+            } else {
+              return item;
+            }
+          })
+        );
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   const confirmDelete = async () => {
     if (selectedRows.length > 0) {
       // Create an array to store promises for each delete operation
@@ -58,7 +138,7 @@ const Orders = () => {
         try {
           // Delete the item
           const { data, error } = await supabase
-            .from("incoming_orders")
+            .from("outbound_orders")
             .delete()
             .eq("id", row.id)
             .select();
@@ -87,10 +167,53 @@ const Orders = () => {
     }
   };
 
-  console.log("selectedRows", selectedRows);
   useEffect(() => {
+    // Step 2: Fetch employee names from Supabase when the component loads
+    fetchDockDoors();
+    fetchOperators();
     fetchInventory();
-  }, [currentPage, searchTerm]); // Listen for changes in currentPage and searchTerm
+  }, [currentPage, searchTerm]);
+
+  const fetchDockDoors = async () => {
+    try {
+      // Step 2: Fetch dock door options from the Supabase config table
+      const { data, error } = await supabase
+        .from("config")
+        .select("config")
+        .eq("id", 1);
+
+      if (error) {
+        console.error(error);
+      } else {
+        // Extract the dock door options from the data and set the state
+        if (data.length === 1) {
+          console.log("data", data);
+          const dockDoorOptions = data[0].config.dockDoors.map(
+            (dockDoor) => dockDoor.name
+          );
+
+          setDockDoors(dockDoorOptions);
+        }
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const fetchOperators = async () => {
+    try {
+      const { data, error } = await supabase.from("employees").select("name");
+      if (error) {
+        console.error(error);
+      } else {
+        // Extract the employee names from the data and set the state
+        const employeeNames = data.map((employee) => employee.name);
+        setOperators(employeeNames);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   const fetchInventory = async () => {
     try {
@@ -120,13 +243,12 @@ const Orders = () => {
   const onSave = async (formData) => {
     console.log("form data on save: ", formData);
     let po_number;
+    s;
     if (formData.po_number === "") {
       po_number = generateRandomPoNumber();
     } else {
       po_number = formData.po_number;
     }
-
-    console.log("po number: ", po_number);
 
     const {
       order_lines,
@@ -261,11 +383,11 @@ const Orders = () => {
               {/* Adjust the width as needed */}
               <col style={{ width: "120px" }} />{" "}
               {/* Adjust the width as needed */}
-              <col style={{ width: "120px" }} />{" "}
+              <col style={{ width: "160px" }} />{" "}
               {/* Adjust the width as needed */}
-              <col style={{ width: "80px" }} />{" "}
+              <col style={{ width: "160px" }} />{" "}
               {/* Adjust the width as needed */}
-              <col style={{ width: "100px" }} />{" "}
+              <col style={{ width: "160px" }} />{" "}
               {/* Adjust the width as needed */}
             </colgroup>
             <thead className="bg-gray-800 text-white">
@@ -279,8 +401,8 @@ const Orders = () => {
                 <th className="py-2">Appt. Date</th>
                 <th className="py-2">Appt. Time</th>
                 <th className="py-2">Status</th>
-                <th className="py-2">Created By</th>
-                <th className="py-2">Completed</th>
+                <th className="py-2">Dock Door</th>
+                <th className="py-2">Operator</th>
               </tr>
             </thead>
             <tbody>
@@ -296,7 +418,6 @@ const Orders = () => {
                       ? "bg-gray-100"
                       : "hover:bg-gray-200"
                   }`}
-                  onClick={() => handleRowClick(item)}
                 >
                   <td className="py-2">
                     <input
@@ -324,10 +445,49 @@ const Orders = () => {
                   <td className="py-2 text-center">
                     {formatTime(item.appointment_time)}
                   </td>
-                  <td className="py-2 text-center">{item.status}</td>
-                  <td className="py-2 text-center">{item.created_by}</td>
                   <td className="py-2 text-center">
-                    {item.completed ? "Y" : "N"}
+                    {/* Dropdown to change the status */}
+                    <select
+                      value={item.status}
+                      onChange={(e) =>
+                        handleStatusChange(item.id, e.target.value)
+                      }
+                    >
+                      <option value="Unloading">Unloading</option>
+                      <option value="Completed">Completed</option>
+                      <option value="Rejected">Rejected</option>
+                      <option value="Pending">Pending</option>
+                    </select>
+                  </td>
+                  <td className="py-2 text-center">
+                    <select
+                      value={item.assigned_dock_door}
+                      onChange={(e) =>
+                        handleDoorChange(item.id, e.target.value)
+                      }
+                    >
+                      <option value="">Select Dock Door</option>
+                      {/* Step 3: Populate the dock door select dropdown with options */}
+                      {dockDoors.map((dockDoor, index) => (
+                        <option key={index} value={dockDoor}>
+                          {dockDoor}
+                        </option>
+                      ))}
+                    </select>
+                  </td>
+                  <td className="py-2 text-center">
+                    {/* Step 3: Populate the operator select dropdown with employee names */}
+                    <select
+                      value={selectedOperator}
+                      onChange={(e) => handleOperatorChange(e.target.value)}
+                    >
+                      <option value="">Select Operator</option>
+                      {operators.map((operator, index) => (
+                        <option key={index} value={operator}>
+                          {operator}
+                        </option>
+                      ))}
+                    </select>
                   </td>
                 </tr>
               ))}
