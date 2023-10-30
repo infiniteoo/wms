@@ -3,6 +3,7 @@ import { supabase } from "../../supabase";
 
 const Variables = () => {
   const [totalSpots, setTotalSpots] = useState(0);
+  const [config, setConfig] = useState({}); // Initial config value
 
   const handleTotalSpotsChange = (event) => {
     setTotalSpots(event.target.value);
@@ -10,21 +11,20 @@ const Variables = () => {
 
   useEffect(() => {
     const fetchVariables = async () => {
-      try {
-        // Fetch the TOTAL_SPOTS_IN_WAREHOUSE value from the "config" table
-        const { data, error } = await supabase
-          .from("config")
-          .select("TOTAL_SPOTS_IN_WAREHOUSE")
-          .single();
+      const { data, error } = await supabase
+        .from("config")
+        .select("*")
+        .eq("id", 1);
 
-        if (error) {
-          console.error("Error fetching variable:", error.message);
-        } else if (data) {
-          // If the value is found, update the state
-          setTotalSpots(data.TOTAL_SPOTS_IN_WAREHOUSE);
-        }
-      } catch (error) {
-        console.error("Error while fetching variables:", error);
+      if (error) {
+        console.error("Error fetching variables:", error.message);
+      }
+
+      if (data) {
+        const newConfig = data[0].config;
+        console.log("config", newConfig);
+        setConfig(newConfig);
+        setTotalSpots(newConfig.TOTAL_SPOTS_IN_WAREHOUSE || 0);
       }
     };
 
@@ -36,7 +36,8 @@ const Variables = () => {
       // Update the TOTAL_SPOTS_IN_WAREHOUSE value in the "config" table
       const { data, error } = await supabase.from("config").upsert([
         {
-          TOTAL_SPOTS_IN_WAREHOUSE: totalSpots,
+          id: 1,
+          config: { TOTAL_SPOTS_IN_WAREHOUSE: totalSpots },
         },
       ]);
 
