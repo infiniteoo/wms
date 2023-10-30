@@ -76,6 +76,56 @@ const Orders = () => {
       console.error(error);
     }
   };
+  const handleOperatorChange = async (rowId, newOperator) => {
+    try {
+      const { data, error } = await supabase
+        .from("incoming_orders")
+        .update({ unloaded_by: newOperator })
+        .eq("id", rowId)
+        .select();
+      if (error) {
+        console.error(error);
+      } else {
+        // Update the local state to reflect the new status
+        setInventory((inventory) =>
+          inventory.map((item) => {
+            if (item.id === rowId) {
+              return { ...item, unloaded_by: newOperator };
+            } else {
+              return item;
+            }
+          })
+        );
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  const handleDoorChange = async (rowId, newDoor) => {
+    try {
+      const { data, error } = await supabase
+        .from("incoming_orders")
+        .update({ assigned_dock_door: newDoor })
+        .eq("id", rowId)
+        .select();
+      if (error) {
+        console.error(error);
+      } else {
+        // Update the local state to reflect the new status
+        setInventory((inventory) =>
+          inventory.map((item) => {
+            if (item.id === rowId) {
+              return { ...item, assigned_dock_door: newDoor };
+            } else {
+              return item;
+            }
+          })
+        );
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   const confirmDelete = async () => {
     if (selectedRows.length > 0) {
@@ -304,8 +354,8 @@ const Orders = () => {
                 <th className="py-2">Appt. Date</th>
                 <th className="py-2">Appt. Time</th>
                 <th className="py-2">Status</th>
-                <th className="py-2">Created By</th>
-                <th className="py-2">Completed</th>
+                <th className="py-2">Dock Door</th>
+                <th className="py-2">Operator</th>
               </tr>
             </thead>
             <tbody>
@@ -362,9 +412,33 @@ const Orders = () => {
                       <option value="Pending">Pending</option>
                     </select>
                   </td>
-                  <td className="py-2 text-center">{item.created_by}</td>
                   <td className="py-2 text-center">
-                    {item.completed ? "Y" : "N"}
+                    {/* Dropdown to change the status */}
+                    <select
+                      value={item.assigned_dock_door}
+                      onChange={(e) =>
+                        handleDoorChange(item.id, e.target.value)
+                      }
+                    >
+                      <option value="22">22</option>
+                      <option value="23">23</option>
+                      <option value="24">24</option>
+                      <option value="25">25</option>
+                    </select>
+                  </td>
+                  <td className="py-2 text-center">
+                    {/* Dropdown to change the status */}
+                    <select
+                      value={item.unloaded_by}
+                      onChange={(e) =>
+                        handleOperatorChange(item.id, e.target.value)
+                      }
+                    >
+                      <option value="Bob">Bob</option>
+                      <option value="Frank">Frank</option>
+                      <option value="Joe">Joe</option>
+                      <option value="Sam">Sam</option>
+                    </select>
                   </td>
                 </tr>
               ))}
