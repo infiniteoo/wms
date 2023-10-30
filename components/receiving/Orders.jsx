@@ -18,6 +18,8 @@ const Orders = () => {
   const user = useUser();
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [itemToDelete, setItemToDelete] = useState(null);
+  const [operators, setOperators] = useState([]);
+  const [selectedOperator, setSelectedOperator] = useState(""); // State for the selected operator
 
   const cancelDelete = () => {
     // Cancel the delete operation and close the modal
@@ -163,10 +165,26 @@ const Orders = () => {
     }
   };
 
-  console.log("selectedRows", selectedRows);
   useEffect(() => {
+    // Step 2: Fetch employee names from Supabase when the component loads
+    fetchOperators();
     fetchInventory();
-  }, [currentPage, searchTerm]); // Listen for changes in currentPage and searchTerm
+  }, [currentPage, searchTerm]);
+
+  const fetchOperators = async () => {
+    try {
+      const { data, error } = await supabase.from("employees").select("name");
+      if (error) {
+        console.error(error);
+      } else {
+        // Extract the employee names from the data and set the state
+        const employeeNames = data.map((employee) => employee.name);
+        setOperators(employeeNames);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   const fetchInventory = async () => {
     try {
@@ -427,17 +445,17 @@ const Orders = () => {
                     </select>
                   </td>
                   <td className="py-2 text-center">
-                    {/* Dropdown to change the status */}
+                    {/* Step 3: Populate the operator select dropdown with employee names */}
                     <select
-                      value={item.unloaded_by}
-                      onChange={(e) =>
-                        handleOperatorChange(item.id, e.target.value)
-                      }
+                      value={selectedOperator}
+                      onChange={(e) => setSelectedOperator(e.target.value)}
                     >
-                      <option value="Bob">Bob</option>
-                      <option value="Frank">Frank</option>
-                      <option value="Joe">Joe</option>
-                      <option value="Sam">Sam</option>
+                      <option value="">Select Operator</option>
+                      {operators.map((operator, index) => (
+                        <option key={index} value={operator}>
+                          {operator}
+                        </option>
+                      ))}
                     </select>
                   </td>
                 </tr>
