@@ -19,7 +19,9 @@ const Orders = () => {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [itemToDelete, setItemToDelete] = useState(null);
   const [operators, setOperators] = useState([]);
-  const [selectedOperator, setSelectedOperator] = useState(""); // State for the selected operator
+  const [selectedOperator, setSelectedOperator] = useState("");
+  const [dockDoors, setDockDoors] = useState([]); // State for dock door options
+  const [selectedDockDoor, setSelectedDockDoor] = useState(""); // State for the selected dock door
 
   const cancelDelete = () => {
     // Cancel the delete operation and close the modal
@@ -167,9 +169,36 @@ const Orders = () => {
 
   useEffect(() => {
     // Step 2: Fetch employee names from Supabase when the component loads
+    fetchDockDoors();
     fetchOperators();
     fetchInventory();
   }, [currentPage, searchTerm]);
+
+  const fetchDockDoors = async () => {
+    try {
+      // Step 2: Fetch dock door options from the Supabase config table
+      const { data, error } = await supabase
+        .from("config")
+        .select("config")
+        .eq("id", 1);
+
+      if (error) {
+        console.error(error);
+      } else {
+        // Extract the dock door options from the data and set the state
+        if (data.length === 1) {
+          console.log("data", data);
+          const dockDoorOptions = data[0].config.dockDoors.map(
+            (dockDoor) => dockDoor.name
+          );
+
+          setDockDoors(dockDoorOptions);
+        }
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   const fetchOperators = async () => {
     try {
@@ -431,17 +460,19 @@ const Orders = () => {
                     </select>
                   </td>
                   <td className="py-2 text-center">
-                    {/* Dropdown to change the status */}
                     <select
                       value={item.assigned_dock_door}
                       onChange={(e) =>
                         handleDoorChange(item.id, e.target.value)
                       }
                     >
-                      <option value="22">22</option>
-                      <option value="23">23</option>
-                      <option value="24">24</option>
-                      <option value="25">25</option>
+                      <option value="">Select Dock Door</option>
+                      {/* Step 3: Populate the dock door select dropdown with options */}
+                      {dockDoors.map((dockDoor, index) => (
+                        <option key={index} value={dockDoor}>
+                          {dockDoor}
+                        </option>
+                      ))}
                     </select>
                   </td>
                   <td className="py-2 text-center">
