@@ -82,6 +82,7 @@ const Orders = () => {
   };
   const handleOperatorChange = async (rowId, newOperator) => {
     try {
+      setSelectedOperator(newOperator);
       const { data, error } = await supabase
         .from("outbound_orders")
         .update({ unloaded_by: newOperator })
@@ -90,6 +91,7 @@ const Orders = () => {
       if (error) {
         console.error(error);
       } else {
+        setSelectedOperator("");
         // Update the local state to reflect the new status
         setInventory((inventory) =>
           inventory.map((item) => {
@@ -453,7 +455,7 @@ const Orders = () => {
                         handleStatusChange(item.id, e.target.value)
                       }
                     >
-                      <option value="Unloading">Unloading</option>
+                      <option value="Loading">Loading</option>
                       <option value="Completed">Completed</option>
                       <option value="Rejected">Rejected</option>
                       <option value="Pending">Pending</option>
@@ -478,8 +480,10 @@ const Orders = () => {
                   <td className="py-2 text-center">
                     {/* Step 3: Populate the operator select dropdown with employee names */}
                     <select
-                      value={selectedOperator}
-                      onChange={(e) => handleOperatorChange(e.target.value)}
+                      value={item.unloaded_by}
+                      onChange={(e) =>
+                        handleOperatorChange(item.id, e.target.value)
+                      }
                     >
                       <option value="">Select Operator</option>
                       {operators.map((operator, index) => (

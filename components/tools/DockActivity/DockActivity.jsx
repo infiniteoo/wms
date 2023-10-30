@@ -122,24 +122,31 @@ const DockActivity = () => {
                 style={{ backgroundColor: "white" }}
                 className="blank-lane border-2 border-black w-full text-center justify-center items-center text-5xl font-bold pt-7"
               >
-                {inboundOrders.map((order) => (
-                  <div key={order.id}>
-                    {order.assigned_dock_door === door.name ? (
-                      <UnloadingInfo order={order} />
-                    ) : (
-                      "Empty"
-                    )}
-                  </div>
-                ))}
-                {outboundOrders.map((order) => (
-                  <div key={order.id}>
-                    {order.assigned_dock_door === door.name ? (
-                      <UnloadingInfo order={order} />
-                    ) : (
-                      "Empty"
-                    )}
-                  </div>
-                ))}
+                {inboundOrders.length === 0 && outboundOrders.length === 0 ? (
+                  "Empty"
+                ) : (
+                  <>
+                    {inboundOrders.map((order) => (
+                      <div key={order.id}>
+                        {order.assigned_dock_door === door.name ? (
+                          <UnloadingInfo order={order} />
+                        ) : null}
+                      </div>
+                    ))}
+                    {outboundOrders.map((order) => (
+                      <div key={order.id}>
+                        {order.assigned_dock_door === door.name ? (
+                          <UnloadingInfo order={order} />
+                        ) : null}
+                      </div>
+                    ))}
+                    {inboundOrders
+                      .concat(outboundOrders)
+                      .every((order) => order.assigned_dock_door !== door.name)
+                      ? "Empty"
+                      : null}
+                  </>
+                )}
               </div>
             </div>
           ))}

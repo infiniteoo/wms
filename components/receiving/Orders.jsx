@@ -5,6 +5,7 @@ import ReceivingToolbar from "./ReceivingToolbar";
 import OrderModal from "./OrderModal";
 import { useUser } from "@clerk/clerk-react";
 import DeleteConfirmationModal from "./ConfirmationModal";
+import { InternetModule } from "@faker-js/faker";
 
 const Orders = () => {
   const [inventory, setInventory] = useState([]);
@@ -82,15 +83,19 @@ const Orders = () => {
   };
   const handleOperatorChange = async (rowId, newOperator) => {
     try {
+      setSelectedOperator(newOperator);
+      // Update the unloaded_by field of the order in the database
       const { data, error } = await supabase
         .from("incoming_orders")
         .update({ unloaded_by: newOperator })
         .eq("id", rowId)
         .select();
+
       if (error) {
         console.error(error);
       } else {
-        // Update the local state to reflect the new status
+        setSelectedOperator("");
+        // Update the local state to reflect the new operator
         setInventory((inventory) =>
           inventory.map((item) => {
             if (item.id === rowId) {
@@ -105,6 +110,7 @@ const Orders = () => {
       console.error(error);
     }
   };
+
   const handleDoorChange = async (rowId, newDoor) => {
     try {
       const { data, error } = await supabase
@@ -478,8 +484,10 @@ const Orders = () => {
                   <td className="py-2 text-center">
                     {/* Step 3: Populate the operator select dropdown with employee names */}
                     <select
-                      value={selectedOperator}
-                      onChange={(e) => handleOperatorChange(e.target.value)}
+                      value={item.unloaded_by}
+                      onChange={(e) =>
+                        handleOperatorChange(item.id, e.target.value)
+                      }
                     >
                       <option value="">Select Operator</option>
                       {operators.map((operator, index) => (
