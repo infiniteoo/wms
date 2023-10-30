@@ -5,19 +5,17 @@ import React, {
   useMemo,
   useEffect,
 } from "react";
-import PropTypes from "prop-types";
+
 import { Calendar, Views } from "react-big-calendar";
-import events from "./events";
 import { momentLocalizer } from "react-big-calendar";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import { supabase } from "../../../supabase";
 import withDragAndDrop from "react-big-calendar/lib/addons/dragAndDrop";
 import "react-big-calendar/lib/addons/dragAndDrop/styles.css";
-
-const DnDCalendar = withDragAndDrop(Calendar);
-
 import moment from "moment";
 import Modal from "./Modal";
+
+const DnDCalendar = withDragAndDrop(Calendar);
 
 export default function Selectable({}) {
   const localizer = momentLocalizer(moment);
@@ -30,6 +28,11 @@ export default function Selectable({}) {
   const closeModal = () => {
     setOpenModal(false);
   };
+
+  useEffect(() => {
+    console.log("myEvents", myEvents);
+    console.log("view", view);
+  }, [myEvents, view]);
 
   useEffect(() => {
     const fetchAppointments = async () => {
@@ -128,11 +131,8 @@ export default function Selectable({}) {
   };
 
   const onEventResize = async (event) => {
-    // Handle event resize here (e.g., update the event's start and end times)
-    // Make a request to your backend to update the event's duration
-    // Example request to update the event in the database:
     const updatedEvent = {
-      id: event.event.id, // You may need to adjust the key to match your data
+      id: event.event.id,
       start: event.start,
       end: event.end,
     };
@@ -183,8 +183,9 @@ export default function Selectable({}) {
           scrollToTime={scrollToTime}
           style={{ width: "90%", height: "80vh" }}
           date={date}
-          onEventDrop={onEventDrop} // Add event drop handler
-          onEventResize={onEventResize} // Add event resize handler
+          view={view}
+          onEventDrop={onEventDrop}
+          onEventResize={onEventResize}
         />
       </div>
       {openModal && (
