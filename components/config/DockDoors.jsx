@@ -1,4 +1,3 @@
-import { Mr_Dafoe } from "next/font/google";
 import React, { useState, useEffect } from "react";
 
 const DockDoors = () => {
@@ -41,30 +40,40 @@ const DockDoors = () => {
   }, [totalSpots]);
 
   return (
-    <div>
-      <label className="font-bold">
-        Total Spots in Dock Yard:
-        <input
-          type="range"
-          min="1"
-          max="50"
-          value={totalSpots}
-          onChange={handleTotalSpotsChange}
-          className="w-1/3 ml-5 items-center justify-center text-center mt-2"
-        />
-        {totalSpots}
-      </label>
+    <div className="flex flex-col mt-8">
+      <div className="flex flex-row">
+        <div className="flex flex-col">
+          <label className="font-bold ml-2">
+            Total Spots in Dock Yard:
+            <input
+              type="range"
+              min="1"
+              max="50"
+              value={totalSpots}
+              onChange={handleTotalSpotsChange}
+              className="w-2/3 ml-5 items-center justify-center text-center mt-2"
+            />
+            <span className="ml-3 bg-blue-500 rounded-full text-white py-3 px-4">
+              {totalSpots}
+            </span>
+          </label>
+        </div>
+      </div>
+
       <div
         className="dock-yard mt-5 overflow-y-scroll border-2 border-gray-300 rounded-md p-5 m-2"
         style={{ maxHeight: "70vh", maxWidth: "90vw" }}
       >
-        <div className="grid grid-cols-2 gap-2">
+        <div className="flex flex-col gap-2">
           {dockDoors.map((door, index) => (
-            <div className="flex flex-row justify-center text-center">
-              <div key={index} className="ml-3 mb-6 w-full p-5">
-                {door}
+            <div
+              key={index}
+              className="flex flex-row justify-center text-center"
+            >
+              <div className="ml-3 mb-6 w-11/12 p-5 px-5 text-3xl">{door}</div>
+              <div className="blank-lane border-2 border-black w-full text-center justify-center items-center text-5xl font-bold pt-7">
+                Empty
               </div>
-              <div className="border-2 border-black w-full"></div>
             </div>
           ))}
         </div>
