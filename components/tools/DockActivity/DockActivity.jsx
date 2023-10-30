@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { supabase } from "../../../supabase";
+import UnloadingInfo from "./UnloadingInfo";
 
 const DockActivity = () => {
   const [inputTotalSpots, setInputTotalSpots] = useState(1);
   const [dockDoors, setDockDoors] = useState([]);
   const [sliderChanged, setSliderChanged] = useState(false);
+  const [inboundOrders, setInboundOrders] = useState([]);
+  const [outboundOrders, setOutboundOrders] = useState([]);
 
   useEffect(() => {
     // Fetch dockDoors data from the database
@@ -35,14 +38,56 @@ const DockActivity = () => {
     fetchDockDoorsData();
   }, [inputTotalSpots, sliderChanged]);
 
-  const getRandomColor = () => {
-    const letters = "0123456789ABCDEF";
-    let color = "#";
-    for (let i = 0; i < 6; i++) {
-      color += letters[Math.floor(Math.random() * 16)];
-    }
-    return color;
-  };
+  useEffect(() => {
+    // query the incoming_orders and outgoing_orders tables for orders with status  "unloading" and "loading" respectively and load them into states
+
+    const fetchIncomingOrders = async () => {
+      try {
+        const { data, error } = await supabase
+          .from("incoming_orders  ")
+          .select("*")
+          .eq("status", "Unloading");
+
+        if (error) {
+          console.error("Error fetching incoming orders:", error.message);
+          return;
+        }
+
+        if (data.length > 0) {
+          const incomingOrders = data;
+          console.log(incomingOrders);
+          setInboundOrders(incomingOrders);
+        }
+      } catch (error) {
+        console.error("Error fetching incoming orders:", error);
+      }
+    };
+
+    const fetchOutgoingOrders = async () => {
+      try {
+        const { data, error } = await supabase
+          .from("outbound_orders")
+          .select("*")
+          .eq("status", "Loading");
+
+        if (error) {
+          console.error("Error fetching outgoing orders:", error.message);
+          return;
+        }
+
+        if (data.length > 0) {
+          const outgoingOrders = data;
+          console.log(outgoingOrders);
+          setOutboundOrders(outgoingOrders);
+        }
+      } catch (error) {
+        console.error("Error fetching outgoing orders:", error);
+      }
+    };
+
+    fetchIncomingOrders();
+    fetchOutgoingOrders();
+  }, []);
 
   const handleDoorNameChange = (id, newName) => {
     setDockDoors((prevDockDoors) =>
@@ -77,13 +122,24 @@ const DockActivity = () => {
                 style={{ backgroundColor: "white" }}
                 className="blank-lane border-2 border-black w-full text-center justify-center items-center text-5xl font-bold pt-7"
               >
-                <img
-                  src="bigrig.svg"
-                  alt="Big Rig"
-                  width="200"
-                  height="200"
-                  className="float-right mr-1"
-                />
+                {inboundOrders.map((order) => (
+                  <div key={order.id}>
+                    {order.assigned_dock_door === door.name ? (
+                      <UnloadingInfo order={order} />
+                    ) : (
+                      "Empty"
+                    )}
+                  </div>
+                ))}
+                {outboundOrders.map((order) => (
+                  <div key={order.id}>
+                    {order.assigned_dock_door === door.name ? (
+                      <UnloadingInfo order={order} />
+                    ) : (
+                      "Empty"
+                    )}
+                  </div>
+                ))}
               </div>
             </div>
           ))}
