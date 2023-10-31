@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { supabase } from "../../supabase";
-import { TOTAL_SPOTS_IN_WAREHOUSE } from "@/constants";
+/* import { TOTAL_SPOTS_IN_WAREHOUSE } from "@/constants"; */
 
 const OccupancyProgress = () => {
   const [inventory, setInventory] = useState([]);
   const [totalCount, setTotalCount] = useState(0);
+  const [TOTAL_SPOTS_IN_WAREHOUSE, setTotalSpotsInWarehouse] = useState(0);
 
   async function getTotalRowCount() {
     try {
@@ -24,8 +25,27 @@ const OccupancyProgress = () => {
     }
   }
 
+  async function getTotalSpots() {
+    try {
+      const { data, error } = await supabase
+        .from("config")
+        .select("*")
+        .eq("id", 1);
+
+      if (data) {
+        setTotalSpotsInWarehouse(data[0].config.TOTAL_SPOTS_IN_WAREHOUSE);
+      } else {
+        setTotalCount(0); // Update with 0 if no data is available (e.g., empty table)
+      }
+    } catch (error) {
+      console.error("Error getting total row count:", error);
+      setTotalCount(0); // Update with 0 in case of an error
+    }
+  }
+
   useEffect(() => {
     getTotalRowCount();
+    getTotalSpots();
   }, []);
 
   // Calculate the number of occupied spots
@@ -36,8 +56,6 @@ const OccupancyProgress = () => {
 
   return (
     <div className="p-4 w-full">
-      
-
       <div className="bg-white rounded-lg p-4 shadow-md">
         <h2 className="text-lg font-semibold">Warehouse Occupancy</h2>
         <p>Total Spots: {TOTAL_SPOTS_IN_WAREHOUSE}</p>

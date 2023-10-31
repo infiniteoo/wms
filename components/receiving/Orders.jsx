@@ -264,7 +264,6 @@ const Orders = () => {
   const onSave = async (formData) => {
     console.log("form data on save: ", formData);
     let po_number;
-    s;
     if (formData.po_number === "") {
       po_number = generateRandomPoNumber();
     } else {
