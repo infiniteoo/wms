@@ -11,9 +11,9 @@ const DeleteConfirmationModal = ({
     showDeleteModal && (
       <div className="modal">
         <div className="modal-content text-center">
-          <div className="text-xl font-bold">Confirm Deletion</div>
+          <div className="text-xl font-bold">Confirm Archive</div>
           <p className="mb-5">
-            Are you sure you want to delete the selected order(s)?
+            Are you sure you want to archive the selected order(s)?
           </p>
           {selectedRows.map((item) => (
             <div key={item.id}>

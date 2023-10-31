@@ -13,7 +13,7 @@ const ActionDropdown = ({
     setSelectedRows([]);
     setActionModifier("");
     setIsOpen(true);
-    
+
     // open modal to add item
   };
   const handleDeleteItem = async () => {
@@ -52,7 +52,7 @@ const ActionDropdown = ({
         handleAddItem();
         break;
       case "delete":
-        console.log("Delete Order");
+        console.log("Archive Order");
         handleDeleteItem();
         break;
       default:
@@ -70,8 +70,8 @@ const ActionDropdown = ({
         Actions
       </option>
       <option value="edit">Edit Order</option>
-      <option value="add">Add Order</option>
-      <option value="delete">Delete Order</option>
+      <option value="add">New Order</option>
+      <option value="delete">Archive Order</option>
     </select>
   );
 };
