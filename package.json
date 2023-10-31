@@ -19,6 +19,7 @@
     "@supabase/storage-js": "^2.5.4",
     "@supabase/supabase-js": "^2.38.1",
     "chart.js": "^4.4.0",
+    "cross-fetch": "^4.0.0",
     "faker": "^6.6.6",
     "interactjs": "^1.10.19",
     "moment": "^2.29.4",
