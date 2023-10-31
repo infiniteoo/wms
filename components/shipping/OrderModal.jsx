@@ -26,14 +26,14 @@ const OrderModal = ({ isOpen, closeModal, onSave, selectedRows }) => {
   };
   const formatTime = (date) => {
     console.log("date: ", date);
-    
+
     console.log("formatted time: ", moment(date).format("HH:mm A"));
     // Use the format you want, for example, "HH:mm"
     return moment(date).format("HH:mm A");
   };
   const formatDate = (date) => {
     console.log("date: ", date);
-    
+
     console.log("formatted time: ", moment(date).format("YYYY-MM-DD"));
     // Use the format you want, for example, "HH:mm"
     return moment(date).format("YYYY-MM-DD");
@@ -53,11 +53,11 @@ const OrderModal = ({ isOpen, closeModal, onSave, selectedRows }) => {
       if (!formData.po_number) {
         // Generate a new PO number here (you can implement your logic)
         const newPoNumber = generateRandomPoNumber();
-  
+
         // Update the newOrderLine with the generated PO number
         newOrderLine.po_number = newPoNumber;
       }
-  
+
       setOrderLines([...orderLines, newOrderLine]);
       setOrderLineTags([...orderLineTags, newOrderLine.item_number]);
       setNewOrderLine({
@@ -71,8 +71,6 @@ const OrderModal = ({ isOpen, closeModal, onSave, selectedRows }) => {
       console.log("order lines: ", orderLines);
     }
   };
-  
-  
 
   const removeOrderLine = (index) => {
     const updatedOrderLines = [...orderLines];
@@ -86,7 +84,7 @@ const OrderModal = ({ isOpen, closeModal, onSave, selectedRows }) => {
 
   const initialFormData = {
     po_number: "",
-    
+
     carrier: "",
     trailer_number: "",
     appointment_date: "",
@@ -101,7 +99,6 @@ const OrderModal = ({ isOpen, closeModal, onSave, selectedRows }) => {
 
   useEffect(() => {
     if (selectedRows.length === 1) {
-
       const {
         po_number,
         order_lines,
@@ -129,7 +126,7 @@ const OrderModal = ({ isOpen, closeModal, onSave, selectedRows }) => {
       // No row selected, reset the form data
       setFormData(initialFormData);
     }
-    console.log("formdata in selectedrow useeeffects: ", formData)
+    console.log("formdata in selectedrow useeeffects: ", formData);
   }, [selectedRows]);
 
   useEffect(() => {
@@ -143,10 +140,7 @@ const OrderModal = ({ isOpen, closeModal, onSave, selectedRows }) => {
     }
   }, [selectedRows]);
 
-  useEffect(() => {
-
-
-  }, []);
+  useEffect(() => {}, []);
   const handleChange = (e) => {
     const { name, value } = e.target;
     console.log("name: ", name);
@@ -158,8 +152,8 @@ const OrderModal = ({ isOpen, closeModal, onSave, selectedRows }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log('order lines in handlesubmit: ', orderLines)
-    console.log('form data in handlesubmit before mutation: ', formData)
+    console.log("order lines in handlesubmit: ", orderLines);
+    console.log("form data in handlesubmit before mutation: ", formData);
     formData.order_lines = orderLines;
     console.log("form data inhandlesubmit: ", formData);
     onSave(formData);
@@ -173,7 +167,7 @@ const OrderModal = ({ isOpen, closeModal, onSave, selectedRows }) => {
       .toISOString()
       .split("T")[0];
   }
-  console.log('apt time: ', formData.appointment_time)
+  console.log("apt time: ", formData.appointment_time);
   let formattedAppointmentTime = formatTime(formData.appointment_time);
   console.log("formatted appointment time: ", formattedAppointmentTime);
 
@@ -234,9 +228,12 @@ const OrderModal = ({ isOpen, closeModal, onSave, selectedRows }) => {
             />
           </div>
           <div className="">
-            {orderLineTags.map((tag) => {
+            {orderLineTags.map((tag, index) => {
               return (
-                <span className="bg-gray-300 rounded-full px-2 py-1 mx-1 text-xs">
+                <span
+                  className="bg-gray-300 rounded-full px-2 py-1 mx-1 text-xs"
+                  key={index}
+                >
                   {tag}
                   <div className="inline-block ml-1">
                     <span

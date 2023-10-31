@@ -61,11 +61,6 @@ const DisplayInventory = () => {
     }
   };
 
-  console.log("selectedRows", selectedRows);
-  useEffect(() => {
-    fetchInventory();
-  }, [currentPage, searchTerm]); // Listen for changes in currentPage and searchTerm
-
   const fetchInventory = async () => {
     try {
       const { data, error } = await supabase
@@ -86,6 +81,10 @@ const DisplayInventory = () => {
       console.error(error);
     }
   };
+
+  useEffect(() => {
+    fetchInventory();
+  }, [currentPage, searchTerm]);
 
   const closeModal = () => {
     setIsOpen(false);

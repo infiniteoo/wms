@@ -229,9 +229,12 @@ const OrderModal = ({ isOpen, closeModal, onSave, selectedRows }) => {
             />
           </div>
           <div className="">
-            {orderLineTags.map((tag) => {
+            {orderLineTags.map((tag, index) => {
               return (
-                <span className="bg-gray-300 rounded-full px-2 py-1 mx-1 text-xs">
+                <span
+                  className="bg-gray-300 rounded-full px-2 py-1 mx-1 text-xs"
+                  key={index}
+                >
                   {tag}
                   <div className="inline-block ml-1">
                     <span
