@@ -103,7 +103,7 @@ const Paperwork = () => {
       </div>
 
       <div className="w-full ml-2">
-        {/*     <PDFViewer width="100%" height={500}>
+        <PDFViewer width="100%" height={500}>
           {selectedOrder && (
             <Document>
               <Page size="A4" style={styles.page}>
@@ -238,7 +238,7 @@ const Paperwork = () => {
               </Page>
             </Document>
           )}
-        </PDFViewer> */}
+        </PDFViewer>
       </div>
     </div>
   );
