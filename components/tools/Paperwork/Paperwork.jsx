@@ -172,11 +172,8 @@ const Paperwork = () => {
                   <View style={styles.grid}>
                     {selectedOrder.order_lines &&
                       selectedOrder.order_lines.map((line, index) => (
-                        <>
-                          <View
-                            key={index}
-                            style={{ width: "50%", marginBottom: 10 }}
-                          >
+                        <View key={index}>
+                          <View style={{ width: "50%", marginBottom: 10 }}>
                             <Text
                               style={[
                                 styles.text,
@@ -209,13 +206,13 @@ const Paperwork = () => {
                               Manufactured Date: {line.manufacturing_date}
                             </Text>
                           </View>
-                        </>
+                        </View>
                       ))}
                   </View>
                   <View style={{ flexDirection: "row" }}>
                     <View style={styles.column}>
                       <Text style={styles.text}>Seal Number</Text>
-                      <Text style={styles.text}>__________________</Text>
+                      <Text sstyle={styles.text}>__________________</Text>
                     </View>
                     <View style={styles.column}>
                       <Text style={styles.text}>Driver Name (Printed)</Text>
