@@ -57,9 +57,12 @@ const Orders = () => {
 
   const handleStatusChange = async (rowId, newStatus) => {
     try {
+      let completed;
+      newStatus === "Completed" ? (completed = true) : (completed = false);
+
       const { data, error } = await supabase
         .from("outbound_orders")
-        .update({ status: newStatus })
+        .update({ status: newStatus, completed: completed })
         .eq("id", rowId)
         .select();
       if (error) {
