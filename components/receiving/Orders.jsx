@@ -519,20 +519,25 @@ const Orders = () => {
       )}
 
       <div className="pagination text-center mt-10">
-        <button
-          onClick={() => handlePageChange(currentPage - 1)}
-          disabled={currentPage === 1}
-          className="px-4 py-2 rounded-md bg-blue-500 text-white text-lg hover:bg-blue-600 focus:outline-none focus:ring focus:ring-blue-300"
-        >
-          &laquo; Previous Page
-        </button>
-        <button
-          onClick={() => handlePageChange(currentPage + 1)}
-          disabled={inventory && inventory.length < itemsPerPage}
-          className="px-4 py-2 rounded-md bg-blue-500 text-white text-lg hover:bg-blue-600 ml-4 focus:outline-none focus:ring focus:ring-blue-300"
-        >
-          Next Page &raquo;
-        </button>
+        {inventory && inventory.length > itemsPerPage && (
+          <>
+            {" "}
+            <button
+              onClick={() => handlePageChange(currentPage - 1)}
+              disabled={currentPage === 1}
+              className="px-4 py-2 rounded-md bg-blue-500 text-white text-lg hover:bg-blue-600 focus:outline-none focus:ring focus:ring-blue-300"
+            >
+              &laquo; Previous Page
+            </button>
+            <button
+              onClick={() => handlePageChange(currentPage + 1)}
+              disabled={inventory && inventory.length < itemsPerPage}
+              className="px-4 py-2 rounded-md bg-blue-500 text-white text-lg hover:bg-blue-600 ml-4 focus:outline-none focus:ring focus:ring-blue-300"
+            >
+              Next Page &raquo;
+            </button>
+          </>
+        )}
         {isOpen && (
           <OrderModal
             setIsOpen={setIsOpen}

@@ -218,6 +218,13 @@ const Paperwork = () => {
                       <Text style={styles.text}>__________________</Text>
                     </View>
                   </View>
+                  <View style={styles.box}>
+                    <Text style={{ fontWeight: "bold" }}>
+                      Thank you for your business, and please have a safe
+                      journey! If you have any questions, please contact us at
+                      1-800-555-5555.
+                    </Text>
+                  </View>
                 </View>
               </Page>
             </Document>
