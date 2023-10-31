@@ -173,32 +173,44 @@ const Paperwork = () => {
                   <View style={styles.grid}>
                     {selectedOrder.order_lines &&
                       selectedOrder.order_lines.map((line, index) => (
-                        <View
-                          key={index}
-                          style={{ marginBottom: 10, width: "50%" }}
-                        >
-                          <Text style={styles.text}>
-                            Order Line #{index + 1}
-                          </Text>
-                          <Text style={styles.text}>
-                            Item: {line.item_number}
-                          </Text>
-                          <Text style={styles.text}>
-                            Quantity: {line.po_number}
-                          </Text>
-                          <Text style={styles.text}>
-                            Lot Number: {line.lot_number}
-                          </Text>
-                          <Text style={styles.text}>
-                            Description: {line.description}
-                          </Text>
-                          <Text style={styles.text}>
-                            Expiration Date: {line.expiration_date}
-                          </Text>
-                          <Text style={styles.text}>
-                            Manufactured Date: {line.manufactured_date}
-                          </Text>
-                        </View>
+                        <>
+                          <View
+                            key={index}
+                            style={{ width: "50%", marginBottom: 10 }}
+                          >
+                            <Text
+                              style={[
+                                styles.text,
+                                {
+                                  backgroundColor: "lightgray",
+                                  width: "50%",
+                                },
+                              ]}
+                            >
+                              Order Line #{index + 1}
+                            </Text>
+                            <Text style={styles.text}>
+                              Item: {line.item_number}
+                            </Text>
+                            <Text style={styles.text}>
+                              Quantity: {line.cases}
+                            </Text>
+                            <Text style={styles.text}>
+                              Lot Number: {line.lot_number}
+                            </Text>
+                          </View>
+                          <View style={{ width: "50%", marginBottom: 10 }}>
+                            <Text style={styles.text}>
+                              Description: {line.description}
+                            </Text>
+                            <Text style={styles.text}>
+                              Expiration Date: {line.expiration_date}
+                            </Text>
+                            <Text style={styles.text}>
+                              Manufactured Date: {line.manufacturing_date}
+                            </Text>
+                          </View>
+                        </>
                       ))}
                   </View>
                   <View style={{ flexDirection: "row" }}>

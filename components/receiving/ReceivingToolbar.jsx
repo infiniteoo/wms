@@ -44,7 +44,7 @@ const ReceivingToolbar = ({
       </div>
 
       <div className="flex items-center">
-        <div className={`switch-container mr-6 `}>
+        {/* <div className={`switch-container mr-6 `}>
           <label
             title="Hide Completed"
             className={`switch ${
@@ -61,7 +61,7 @@ const ReceivingToolbar = ({
             />
             <span className={`slider`}></span>
           </label>
-        </div>
+        </div> */}
 
         <RefreshButton
           setInventory={setInventory}
