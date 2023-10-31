@@ -471,7 +471,7 @@ const Orders = () => {
                       item.status // Display the text value when the order is completed
                     ) : (
                       <select
-                        value={item.status}
+                        value={item.status || ""}
                         onChange={(e) =>
                           handleStatusChange(item.id, e.target.value)
                         }
@@ -489,7 +489,7 @@ const Orders = () => {
                       item.assigned_dock_door // Display the text value when the order is completed
                     ) : (
                       <select
-                        value={item.assigned_dock_door}
+                        value={item.assigned_dock_door || ""}
                         onChange={(e) =>
                           handleDoorChange(item.id, e.target.value)
                         }
@@ -510,7 +510,7 @@ const Orders = () => {
                       item.unloaded_by // Display the text value when the order is completed
                     ) : (
                       <select
-                        value={item.unloaded_by}
+                        value={item.unloaded_by || ""}
                         onChange={(e) =>
                           handleOperatorChange(item.id, e.target.value)
                         }

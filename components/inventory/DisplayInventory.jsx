@@ -218,27 +218,27 @@ const DisplayInventory = () => {
         <div className="table-container h-80 overflow-y-auto mt-1">
           <table className="rounded-lg overflow-hidden text-sm w-full">
             <colgroup>
-              <col style={{ width: "40px" }} />{" "}
+              <col style={{ width: "40px" }} />
               {/* Adjust the width as needed */}
-              <col style={{ width: "100px" }} />{" "}
+              <col style={{ width: "100px" }} />
               {/* Adjust the width as needed */}
-              <col style={{ width: "100px" }} />{" "}
+              <col style={{ width: "100px" }} />
               {/* Adjust the width as needed */}
-              <col style={{ width: "200px" }} />{" "}
+              <col style={{ width: "200px" }} />
               {/* Adjust the width as needed */}
-              <col style={{ width: "100px" }} />{" "}
+              <col style={{ width: "100px" }} />
               {/* Adjust the width as needed */}
-              <col style={{ width: "60px" }} />{" "}
+              <col style={{ width: "60px" }} />
               {/* Adjust the width as needed */}
-              <col style={{ width: "120px" }} />{" "}
+              <col style={{ width: "120px" }} />
               {/* Adjust the width as needed */}
-              <col style={{ width: "120px" }} />{" "}
+              <col style={{ width: "120px" }} />
               {/* Adjust the width as needed */}
-              <col style={{ width: "80px" }} />{" "}
+              <col style={{ width: "80px" }} />
               {/* Adjust the width as needed */}
-              <col style={{ width: "120px" }} />{" "}
+              <col style={{ width: "120px" }} />
               {/* Adjust the width as needed */}
-              <col style={{ width: "120px" }} />{" "}
+              <col style={{ width: "120px" }} />
               {/* Adjust the width as needed */}
             </colgroup>
             <thead className="bg-gray-800 text-white">
