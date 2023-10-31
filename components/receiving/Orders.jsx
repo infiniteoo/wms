@@ -62,6 +62,16 @@ const Orders = () => {
       // if newStatus === Completed then set completed to true
       newStatus === "Completed" ? (completed = true) : (completed = false);
 
+      // display popup modal to confirm coompletion
+      if (newStatus === "Completed") {
+        const confirm = window.confirm(
+          "Are you sure you want to mark this order as completed?"
+        );
+        if (!confirm) {
+          return;
+        }
+      }
+
       const { data, error } = await supabase
         .from("incoming_orders")
         .update({ status: newStatus, completed: completed })
