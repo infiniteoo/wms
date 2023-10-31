@@ -23,6 +23,7 @@
     "interactjs": "^1.10.19",
     "moment": "^2.29.4",
     "next": "13.5.5",
+    "node-fetch": "^3.3.2",
     "prop-types": "^15.8.1",
     "randomcolor": "^0.6.2",
     "react": "^18",
