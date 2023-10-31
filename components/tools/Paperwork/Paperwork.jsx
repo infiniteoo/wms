@@ -16,7 +16,8 @@ const Paperwork = () => {
       const { data, error } = await supabase
         .from("outbound_orders")
         .select("*")
-        .eq("completed", true);
+        .eq("completed", true)
+        .is("archived", false);
 
       if (error) console.log("error", error);
       if (data) setCompletedOrders(data);
@@ -102,8 +103,8 @@ const Paperwork = () => {
         </ul>
       </div>
 
-      <div className="right-column w-full ml-2">
-        <PDFViewer width="100%" height={800}>
+      <div className="w-full ml-2">
+        <PDFViewer width="100%" height={500}>
           {selectedOrder && (
             <Document>
               <Page size="A4" style={styles.page}>

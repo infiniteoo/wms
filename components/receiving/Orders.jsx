@@ -95,6 +95,7 @@ const Orders = () => {
       console.error(error);
     }
   };
+
   const handleOperatorChange = async (rowId, newOperator) => {
     try {
       setSelectedOperator(newOperator);
@@ -159,7 +160,7 @@ const Orders = () => {
           // Delete the item
           const { data, error } = await supabase
             .from("incoming_orders")
-            .delete()
+            .update({ archived: true })
             .eq("id", row.id)
             .select();
           if (error) {
@@ -339,6 +340,7 @@ const Orders = () => {
       }
     }
   };
+
   const handlePageChange = (page) => {
     setCurrentPage(page);
   };
@@ -466,50 +468,63 @@ const Orders = () => {
                     {formatTime(item.appointment_time)}
                   </td>
                   <td className="py-2 text-center">
-                    {/* Dropdown to change the status */}
-                    <select
-                      value={item.status}
-                      onChange={(e) =>
-                        handleStatusChange(item.id, e.target.value)
-                      }
-                    >
-                      <option value="Unloading">Unloading</option>
-                      <option value="Completed">Completed</option>
-                      <option value="Rejected">Rejected</option>
-                      <option value="Pending">Pending</option>
-                    </select>
+                    {item.completed ? (
+                      item.status // Display the text value when the order is completed
+                    ) : (
+                      <select
+                        value={item.status}
+                        onChange={(e) =>
+                          handleStatusChange(item.id, e.target.value)
+                        }
+                      >
+                        <option value="Unloading">Unloading</option>
+                        <option value="Completed">Completed</option>
+                        <option value="Rejected">Rejected</option>
+                        <option value="Pending">Pending</option>
+                      </select>
+                    )}
                   </td>
+
                   <td className="py-2 text-center">
-                    <select
-                      value={item.assigned_dock_door}
-                      onChange={(e) =>
-                        handleDoorChange(item.id, e.target.value)
-                      }
-                    >
-                      <option value="">Select Dock Door</option>
-                      {/* Step 3: Populate the dock door select dropdown with options */}
-                      {dockDoors.map((dockDoor, index) => (
-                        <option key={index} value={dockDoor}>
-                          {dockDoor}
-                        </option>
-                      ))}
-                    </select>
+                    {item.completed ? (
+                      item.assigned_dock_door // Display the text value when the order is completed
+                    ) : (
+                      <select
+                        value={item.assigned_dock_door}
+                        onChange={(e) =>
+                          handleDoorChange(item.id, e.target.value)
+                        }
+                      >
+                        <option value="">Select Dock Door</option>
+                        {/* Step 3: Populate the dock door select dropdown with options */}
+                        {dockDoors.map((dockDoor, index) => (
+                          <option key={index} value={dockDoor}>
+                            {dockDoor}
+                          </option>
+                        ))}
+                      </select>
+                    )}
                   </td>
+
                   <td className="py-2 text-center">
-                    {/* Step 3: Populate the operator select dropdown with employee names */}
-                    <select
-                      value={item.unloaded_by}
-                      onChange={(e) =>
-                        handleOperatorChange(item.id, e.target.value)
-                      }
-                    >
-                      <option value="">Select Operator</option>
-                      {operators.map((operator, index) => (
-                        <option key={index} value={operator}>
-                          {operator}
-                        </option>
-                      ))}
-                    </select>
+                    {item.completed ? (
+                      item.unloaded_by // Display the text value when the order is completed
+                    ) : (
+                      <select
+                        value={item.unloaded_by}
+                        onChange={(e) =>
+                          handleOperatorChange(item.id, e.target.value)
+                        }
+                      >
+                        <option value="">Select Operator</option>
+                        {/* Step 3: Populate the operator select dropdown with employee names */}
+                        {operators.map((operator, index) => (
+                          <option key={index} value={operator}>
+                            {operator}
+                          </option>
+                        ))}
+                      </select>
+                    )}
                   </td>
                 </tr>
               ))}
