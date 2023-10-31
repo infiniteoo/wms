@@ -7,7 +7,6 @@ import {
   View,
   StyleSheet,
   PDFViewer,
-  Image,
 } from "@react-pdf/renderer";
 
 const Paperwork = () => {
@@ -227,7 +226,7 @@ const Paperwork = () => {
                       <Text style={styles.text}>__________________</Text>
                     </View>
                     <View style={styles.column}>
-                      <Text style={styles.text}>Today's Date</Text>
+                      <Text style={styles.text}>Current Date</Text>
                       <Text style={styles.text}>__________________</Text>
                     </View>
                   </View>
