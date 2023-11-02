@@ -3,6 +3,7 @@ import { useState } from "react";
 import "./Inventory.css"; // Import your CSS file for custom styling
 import DisplayInventory from "./DisplayInventory";
 import InventoryDashboard from "./InventoryDashboard";
+import Incidents from "./Incidents/Incidents.jsx";
 
 const Inventory = ({}) => {
   const [activeTab, setActiveTab] = useState("dashboard");
@@ -17,9 +18,9 @@ const Inventory = ({}) => {
         return <InventoryDashboard />;
       case "database":
         return <DisplayInventory />;
-      case "tab3":
-        return null;
-      case "tab4":
+      case "incidents":
+        return <Incidents />;
+      case "":
         return null;
       case "tab5":
         return null;
@@ -43,6 +44,12 @@ const Inventory = ({}) => {
             onClick={() => handleTabClick("database")}
           >
             database
+          </li>
+          <li
+            className={activeTab === "incidents" ? "active" : ""}
+            onClick={() => handleTabClick("incidents")}
+          >
+            incidents
           </li>
         </ul>
       </div>
