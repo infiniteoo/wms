@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 
 import ReportTable from "./ReportTable";
-import { supabase } from "@/supabase";
 
 const Incidents = () => {
   return (

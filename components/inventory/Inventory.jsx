@@ -4,6 +4,8 @@ import "./Inventory.css"; // Import your CSS file for custom styling
 import DisplayInventory from "./DisplayInventory";
 import InventoryDashboard from "./InventoryDashboard";
 import Incidents from "./Incidents/Incidents.jsx";
+import Labels from "./Labels/Labels.jsx";
+import Timeline from "./Timeline/Timeline.jsx";
 
 const Inventory = ({}) => {
   const [activeTab, setActiveTab] = useState("dashboard");
@@ -20,10 +22,10 @@ const Inventory = ({}) => {
         return <DisplayInventory />;
       case "incidents":
         return <Incidents />;
-      case "":
-        return null;
-      case "tab5":
-        return null;
+      case "labels":
+        return <Labels />;
+      case "timeline":
+        return <Timeline />;
       default:
         return;
     }
@@ -50,6 +52,18 @@ const Inventory = ({}) => {
             onClick={() => handleTabClick("incidents")}
           >
             incidents
+          </li>
+          <li
+            className={activeTab === "labels" ? "active" : ""}
+            onClick={() => handleTabClick("labels")}
+          >
+            labels
+          </li>
+          <li
+            className={activeTab === "timeline" ? "active" : ""}
+            onClick={() => handleTabClick("timeline")}
+          >
+            timeline
           </li>
         </ul>
       </div>
