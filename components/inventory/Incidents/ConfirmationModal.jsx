@@ -13,15 +13,15 @@ const DeleteConfirmationModal = ({
         <div className="modal-content text-center">
           <div className="text-xl font-bold">Confirm Archive</div>
           <p className="mb-5">
-            Are you sure you want to archive the selected order(s)?
+            Are you sure you want to archive the selected incident(s)?
           </p>
           {selectedRows.map((item) => (
-            <div key={item.id}>
+            <div key={item._id}>
               <p className="text-xl">
                 <span className="text-2xl text-center items-center justify-center">
                   •
                 </span>{" "}
-                {item.po_number} - {item.carrier}
+                LPN: {item.barcodeData} - Submitted By: {item.sibmitedBy}
               </p>
             </div>
           ))}

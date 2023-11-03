@@ -44,15 +44,12 @@ const ActionDropdown = ({
     setActionModifier(event.target.value);
     switch (event.target.value) {
       case "edit":
-        console.log("Edit Order");
+        console.log("Edit Incident");
         handleEditItem();
         break;
-      case "add":
-        console.log("Add Order");
-        handleAddItem();
-        break;
+
       case "delete":
-        console.log("Archive Order");
+        console.log("Archive Incident");
         handleDeleteItem();
         break;
       default:
@@ -69,9 +66,9 @@ const ActionDropdown = ({
       <option value="" disabled defaultValue hidden>
         Actions
       </option>
-      <option value="edit">Edit Order</option>
-      <option value="add">New Order</option>
-      <option value="delete">Archive Order</option>
+      <option value="edit">Edit Incident</option>
+
+      <option value="delete">Archive Incident</option>
     </select>
   );
 };

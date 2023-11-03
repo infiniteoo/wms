@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import "./Inventory.css"; // Import your CSS file for custom styling
+import "./Inventory.css";
 import DisplayInventory from "./DisplayInventory";
 import InventoryDashboard from "./InventoryDashboard";
 import Incidents from "./Incidents/Incidents.jsx";

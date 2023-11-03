@@ -19,9 +19,7 @@ const ReportTable = () => {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [itemToDelete, setItemToDelete] = useState(null);
   const [operators, setOperators] = useState([]);
-  const [selectedOperator, setSelectedOperator] = useState("");
-  const [dockDoors, setDockDoors] = useState([]); // State for dock door options
-  const [selectedDockDoor, setSelectedDockDoor] = useState(""); // State for the selected dock door
+  const [selectedRowIndex, setSelectedRowIndex] = useState(null);
 
   const cancelDelete = () => {
     // Cancel the delete operation and close the modal
@@ -215,28 +213,29 @@ const ReportTable = () => {
     }
 
     const {
-      order_lines,
-      carrier,
-      trailer_number,
-      appointment_date,
-      appointment_time,
+      _id,
+      barcodeData,
+      description,
+      image,
+      date,
+      location,
+      submittedBy,
+      resolved,
+      assignedTo,
+      archived,
     } = formData;
 
     const item = {
-      po_number,
-      order_lines,
-      carrier,
-      trailer_number,
-      appointment_date,
-      appointment_time,
-      created_by: user.user.fullName,
-      completed: false,
-      unloaded_by: null,
-      currently_unloading: false,
-      assigned_dock_door: null,
-      last_updated: new Date(),
-      updated_by: user.user.fullName,
-      status: "Pending",
+      _id,
+      barcodeData,
+      description,
+      image,
+      date,
+      location,
+      submittedBy,
+      resolved,
+      assignedTo,
+      archived,
     };
     // if selectedRows is empty, add item to database
     if (selectedRows.length === 0) {
@@ -292,7 +291,8 @@ const ReportTable = () => {
     handleRowClick(rowItem);
   };
 
-  const handleRowClick = (rowItem) => {
+  const handleRowClick = (rowItem, index) => {
+    setSelectedRowIndex(index);
     setSelectedRows((prevSelectedRows) => {
       // Check if the clicked row is already selected
       const isRowSelected = prevSelectedRows.some(
@@ -333,9 +333,9 @@ const ReportTable = () => {
             <colgroup>
               <col style={{ width: "60px" }} />
               {/* Adjust the width as needed */}
-              <col style={{ width: "120spx" }} />
+              <col style={{ width: "60px" }} />
               {/* Adjust the width as needed */}
-              <col style={{ width: "100px" }} />
+              <col style={{ width: "1000px" }} />
               {/* Adjust the width as needed */}
               <col style={{ width: "100px" }} />
               {/* Adjust the width as needed */}
@@ -376,6 +376,7 @@ const ReportTable = () => {
                       ? "bg-gray-100"
                       : "hover:bg-gray-200"
                   }`}
+                  onClick={() => handleRowClick(item, index)} // Handle row click
                 >
                   <td className="py-2">
                     <input
@@ -388,7 +389,17 @@ const ReportTable = () => {
                     />
                     {selectedRows.includes(item._id) ? "✓" : null}
                   </td>
-                  <td className="py-2 text-center">{item.image}</td>
+                  <td className="py-2 text-center">
+                    {item.image ? (
+                      <img
+                        src={item.image} // Use the URL from your data
+                        alt="Thumbnail"
+                        style={{ width: "50px", height: "50px" }} // Adjust the width and height as needed
+                      />
+                    ) : (
+                      "No Image" // Display text when there is no image
+                    )}
+                  </td>
                   <td className="py-2 text-center">{item.description}</td>
                   <td className="py-2 text-center">{item.barcodeData}</td>
                   <td className="py-2 text-center">{formatDate(item.date)}</td>
@@ -400,7 +411,7 @@ const ReportTable = () => {
                       item.resolved // Display the text value when the order is completed
                     ) : (
                       <select
-                        value={item.resolved}
+                        value={item.resolved || ""}
                         onChange={(e) =>
                           handleStatusChange(item._id, e.target.value)
                         }
@@ -416,7 +427,7 @@ const ReportTable = () => {
                       item.assignedTo // Display the text value when the order is completed
                     ) : (
                       <select
-                        value={item.assignedTo}
+                        value={item.assignedTo || ""}
                         onChange={(e) =>
                           handleOperatorChange(item._id, e.target.value)
                         }
@@ -464,6 +475,7 @@ const ReportTable = () => {
             closeModal={closeModal}
             onSave={onSave}
             selectedRows={selectedRows}
+            operators={operators}
           />
         )}
         {showDeleteModal && (

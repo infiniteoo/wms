@@ -4,19 +4,30 @@ import Datetime from "react-datetime";
 import "react-datetime/css/react-datetime.css";
 import moment from "moment";
 import { v4 as uuidv4 } from "uuid";
+import { supabase } from "@/supabase";
 
 import { AiOutlinePlusCircle } from "@react-icons/all-files/ai/AiOutlinePlusCircle";
 
-const OrderModal = ({ isOpen, closeModal, onSave, selectedRows }) => {
-  const [orderLineTags, setOrderLineTags] = useState([]);
+const OrderModal = ({
+  isOpen,
+  closeModal,
+  onSave,
+  selectedRows,
+  operators,
+}) => {
   const [orderLines, setOrderLines] = useState([]);
+  const [selectedOperator, setSelectedOperator] = useState("");
   const [newOrderLine, setNewOrderLine] = useState({
-    item_number: "",
-    lot_number: "",
-    cases: "",
+    _id: "",
+    barcodeData: "",
     description: "",
-    manufacturing_date: "",
-    expiration_date: "",
+    image: "",
+    date: "",
+    location: "",
+    submittedBy: "",
+    resolved: "",
+    assignedTo: "",
+    archived: "",
   });
 
   const handleOrderLineChange = (e) => {
@@ -24,6 +35,27 @@ const OrderModal = ({ isOpen, closeModal, onSave, selectedRows }) => {
     setNewOrderLine({ ...newOrderLine, [name]: value });
     console.log("new order line: ", newOrderLine);
   };
+
+  const handleOperatorChange = async (rowId, newOperator) => {
+    try {
+      setSelectedOperator(newOperator);
+      const { data, error } = await supabase
+        .from("incidents")
+        .update({ assignedTo: newOperator })
+        .eq("_id", rowId)
+        .select();
+      if (error) {
+        console.error(error);
+      } else {
+        formData.assignedTo = newOperator;
+        setSelectedOperator("");
+        // Update the local state to reflect the new status
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   const formatTime = (date) => {
     console.log("date: ", date);
 
@@ -48,51 +80,17 @@ const OrderModal = ({ isOpen, closeModal, onSave, selectedRows }) => {
     return poNumber;
   };
 
-  const addOrderLine = () => {
-    if (newOrderLine.item_number) {
-      if (!formData.po_number) {
-        // Generate a new PO number here (you can implement your logic)
-        const newPoNumber = generateRandomPoNumber();
-
-        // Update the newOrderLine with the generated PO number
-        newOrderLine.po_number = newPoNumber;
-      }
-
-      setOrderLines([...orderLines, newOrderLine]);
-      setOrderLineTags([...orderLineTags, newOrderLine.item_number]);
-      setNewOrderLine({
-        item_number: "",
-        lot_number: "",
-        cases: "",
-        description: "",
-        manufacturing_date: "",
-        expiration_date: "",
-      });
-      console.log("order lines: ", orderLines);
-    }
-  };
-
-  const removeOrderLine = (index) => {
-    const updatedOrderLines = [...orderLines];
-    updatedOrderLines.splice(index, 1);
-    setOrderLines(updatedOrderLines);
-
-    const updatedOrderLineTags = [...orderLineTags];
-    updatedOrderLineTags.splice(index, 1);
-    setOrderLineTags(updatedOrderLineTags);
-  };
-
   const initialFormData = {
-    po_number: "",
-
-    carrier: "",
-    trailer_number: "",
-    appointment_date: "",
-    appointment_time: "",
-    staus: "Pending",
-    created_by: "",
-    completed: false,
-    order_lines: [],
+    _id: "",
+    barcodeData: "",
+    description: "",
+    image: "",
+    date: "",
+    location: "",
+    submittedBy: "",
+    resolved: "",
+    assignedTo: "",
+    archived: "",
   };
 
   const [formData, setFormData] = useState(initialFormData);
@@ -100,44 +98,35 @@ const OrderModal = ({ isOpen, closeModal, onSave, selectedRows }) => {
   useEffect(() => {
     if (selectedRows.length === 1) {
       const {
-        po_number,
-        order_lines,
-        carrier,
-        trailer_number,
-        appointment_date,
-        status,
-        created_by,
-        completed,
-        appointment_time,
+        _id,
+        barcodeData,
+        description,
+        image,
+        date,
+        location,
+        submittedBy,
+        resolved,
+        assignedTo,
+        archived,
       } = selectedRows[0];
 
       setFormData({
-        po_number,
-        order_lines,
-        carrier,
-        trailer_number,
-        appointment_date,
-        status,
-        appointment_time,
-        completed,
+        _id,
+        barcodeData,
+        description,
+        image,
+        date,
+        location,
+        submittedBy,
+        resolved,
+        assignedTo,
+        archived,
       });
-      setOrderLines(order_lines);
     } else {
       // No row selected, reset the form data
       setFormData(initialFormData);
     }
     console.log("formdata in selectedrow useeeffects: ", formData);
-  }, [selectedRows]);
-
-  useEffect(() => {
-    if (selectedRows.length === 1) {
-      const { order_lines } = selectedRows[0];
-      if (order_lines && order_lines.length > 0) {
-        const tags = order_lines.map((line) => line.item_number);
-        setOrderLineTags(tags);
-        console.log("order line tags: ", orderLineTags);
-      }
-    }
   }, [selectedRows]);
 
   useEffect(() => {}, []);
@@ -160,15 +149,13 @@ const OrderModal = ({ isOpen, closeModal, onSave, selectedRows }) => {
     closeModal();
   };
 
-  let formattedAppointmentDate = formatDate(formData.appointment_date); // Default value if formData.appointment_date is not a Date object
+  let formattedAppointmentDate = formatDate(formData.date);
 
-  if (formData.appointment_date instanceof Date) {
-    formattedAppointmentDate = formData.appointment_date
-      .toISOString()
-      .split("T")[0];
+  if (formData.date instanceof Date) {
+    formattedAppointmentDate = formData.date.toISOString().split("T")[0];
   }
-  console.log("apt time: ", formData.appointment_time);
-  let formattedAppointmentTime = formatTime(formData.appointment_time);
+  console.log("apt time: ", formData.time);
+  let formattedAppointmentTime = formatTime(formData.time);
   console.log("formatted appointment time: ", formattedAppointmentTime);
 
   return (
@@ -180,139 +167,109 @@ const OrderModal = ({ isOpen, closeModal, onSave, selectedRows }) => {
 
         <form onSubmit={handleSubmit} id="item-form">
           <div className="column">
-            <label htmlFor="carrier">Carrier:</label>
+            <label htmlFor="_id">ID:</label>
             <input
               type="text"
-              id="carrier"
-              name="carrier"
-              value={formData.carrier}
+              id="_id"
+              name="_id"
+              value={formData._id}
               onChange={handleChange}
-              required
+              readOnly
             />
-            <label htmlFor="trailer_number">Trailer Number:</label>
+            <label htmlFor="barcodeData">LPN Number:</label>
             <input
               type="text"
-              id="d"
-              name="trailer_number"
-              value={formData.trailer_number}
+              id="barcodeData"
+              name="barcodeData"
+              value={formData.barcodeData}
               onChange={handleChange}
-              required
+              readOnly
             />
           </div>
 
           <div className="column">
-            <label htmlFor="appointment_date">Appointment Date:</label>
+            <label htmlFor="date">Date Submitted:</label>
             <input
               type="date"
-              id="appointment_date"
-              name="appointment_date"
+              id="date"
+              name="date"
               value={formattedAppointmentDate}
+              onChange={handleChange}
+              readOnly
+            />
+            <label htmlFor="location">Location:</label>
+            <input
+              type="text"
+              id="location"
+              name="location"
+              value={formData.location}
               onChange={handleChange}
               required
             />
-
-            <label htmlFor="appointment_time">Appointment Time:</label>
-            <Datetime
-              id="appointment_time"
-              name="appointment_time"
-              value={formattedAppointmentTime}
-              dateFormat={false}
-              onChange={(date) =>
-                setFormData({ ...formData, appointment_time: date })
-              }
-              inputProps={{
-                placeholder: "HH:MM A",
-              }}
+          </div>
+          <label htmlFor="description">Description:</label>
+          <input
+            type="text"
+            id="description"
+            name="description"
+            value={formData.description}
+            onChange={handleChange}
+            required
+          />
+          <div className="column">
+            <label htmlFor="submittedBy">Submitted By:</label>
+            <input
+              type="text"
+              id="submittedBy"
+              name="submittedBy"
+              value={formData.submittedBy}
+              onChange={handleChange}
               required
-              timeFormat="HH:mm A"
             />
+            <label htmlFor="resolved">Resolved:</label>
+            <select
+              id="resolved"
+              name="resolved"
+              value={formData.resolved}
+              onChange={handleChange}
+              required
+            >
+              <option value="Y">Y</option>
+              <option value="N">N</option>
+            </select>
           </div>
-          <div className="">
-            {orderLineTags.map((tag, index) => {
-              return (
-                <span
-                  className="bg-gray-300 rounded-full px-2 py-1 mx-1 text-xs"
-                  key={index}
+
+          <div className="column">
+            {formData.resolved === "Y" ? (
+              formData.assignedTo // Display the text value when the order is completed
+            ) : (
+              <>
+                {" "}
+                <label htmlFor="assignedTo">Assigned To:</label>
+                <select
+                  value={formData.assignedTo}
+                  onChange={(e) =>
+                    handleOperatorChange(formData._id, e.target.value)
+                  }
                 >
-                  {tag}
-                  <div className="inline-block ml-1">
-                    <span
-                      className="text-red-500 cursor-pointer"
-                      onClick={() =>
-                        removeOrderLine(orderLineTags.indexOf(tag))
-                      }
-                    >
-                      x
-                    </span>
-                  </div>
-                </span>
-              );
-            })}
-          </div>
-          <div className="column" style={{ width: "100%" }}>
-            <div className="flex flex-row justify-between items-center">
-              <div className="text-xl">
-                <AiOutlinePlusCircle onClick={addOrderLine} />
-              </div>
-              <div>
-                <label htmlFor="item_number" className="font-bold">
-                  Add Order Line
-                </label>
-              </div>
-            </div>
-            <div className="flex flex-row">
-              <input
-                type="text"
-                id="item_number"
-                name="item_number"
-                value={newOrderLine.item_number}
-                onChange={handleOrderLineChange}
-                placeholder="Item Number"
-              />
-              <input
-                type="text"
-                id="lot_number"
-                name="lot_number"
-                value={newOrderLine.lot_number}
-                onChange={handleOrderLineChange}
-                placeholder="lot number"
-                className="mx-1"
-              />
-              <input
-                type="text"
-                id="cases"
-                name="cases"
-                value={newOrderLine.cases}
-                onChange={handleOrderLineChange}
-                placeholder="cases"
-              />
-            </div>
-            <div className="flex flex-row">
-              <input
-                type="text"
-                id="description"
-                name="description"
-                value={newOrderLine.description}
-                onChange={handleOrderLineChange}
-                placeholder="description"
-              />
-              <input
-                type="date"
-                id="manufacturing_date"
-                name="manufacturing_date"
-                value={newOrderLine.manufacturing_date}
-                onChange={handleOrderLineChange}
-                placeholder="manufacturing_date"
-              />
-              <input
-                type="date"
-                id="expiration_date"
-                name="expiration_date"
-                value={newOrderLine.expiration_date}
-                onChange={handleOrderLineChange}
-                placeholder="expiration_date"
-              />
-            </div>
+                  <option value="">Select Operator</option>
+                  {operators.map((operator, index) => (
+                    <option key={index} value={operator}>
+                      {operator}
+                    </option>
+                  ))}
+                </select>
+              </>
+            )}
+            <label htmlFor="archived">Archived:</label>
+            <input
+              type="text"
+              id="archived"
+              name="archived"
+              value={formData.archived}
+              onChange={handleChange}
+              required
+            />
           </div>
 
           <input type="submit" value="Save" />
