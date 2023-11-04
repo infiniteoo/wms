@@ -167,11 +167,7 @@ const OrderModal = ({
 
         <form onSubmit={handleSubmit} id="item-form">
           <div className="column">
-            <img
-              src={formData.image}
-              alt="item image"
-              className="rounded-lg "
-            />
+            <img src={formData.image}></img>
           </div>
 
           <div className="column">
@@ -184,7 +180,6 @@ const OrderModal = ({
               onChange={handleChange}
               readOnly
             />
-
             <label htmlFor="location">Location:</label>
             <input
               type="text"
@@ -194,25 +189,29 @@ const OrderModal = ({
               onChange={handleChange}
               required
             />
-            <label htmlFor="submittedBy">Submitted By:</label>
+            <label htmlFor="date">Date Submitted:</label>
+            <input
+              type="date"
+              id="date"
+              name="date"
+              value={formattedAppointmentDate}
+              onChange={handleChange}
+              readOnly
+            />
+          </div>
+          <div className="w-100 text-left">
+            {" "}
+            <label htmlFor="description">Description:</label>
             <input
               type="text"
-              id="submittedBy"
-              name="submittedBy"
-              value={formData.submittedBy}
+              id="description"
+              name="description"
+              value={formData.description}
               onChange={handleChange}
               required
             />
           </div>
-          <label htmlFor="description">Description:</label>
-          <input
-            type="text"
-            id="description"
-            name="description"
-            value={formData.description}
-            onChange={handleChange}
-            required
-          />
+
           <div className="column">
             <label htmlFor="resolved">Resolved:</label>
             <select
@@ -249,6 +248,15 @@ const OrderModal = ({
                 </select>
               </>
             )}
+            <label htmlFor="submittedBy">Submitted By:</label>
+            <input
+              type="text"
+              id="submittedBy"
+              name="submittedBy"
+              value={formData.submittedBy}
+              onChange={handleChange}
+              required
+            />
           </div>
 
           <input type="submit" value="Save" />

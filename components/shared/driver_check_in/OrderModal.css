@@ -30,7 +30,7 @@
             /* Adjust the width as needed to create a gap between the columns */
             float: left;
             margin-right: 2%;
-
+            /* Adjust this margin to create a gap between the columns */
         }
 
         label {

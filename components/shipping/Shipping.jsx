@@ -3,6 +3,7 @@ import { useState } from "react";
 import "./Shipping.css"; // Import your CSS file for custom styling
 import ShippingDashboard from "./ShippingDashboard";
 import Orders from "./Orders";
+import Drivers from "./../shared/driver_check_in/Drivers";
 
 const Shipping = ({}) => {
   const [activeTab, setActiveTab] = useState("dashboard");
@@ -17,8 +18,8 @@ const Shipping = ({}) => {
         return <ShippingDashboard />;
       case "orders":
         return <Orders />;
-      case "tab3":
-        return null;
+      case "driver check-in":
+        return <Drivers />;
       case "tab4":
         return null;
       case "tab5":
@@ -44,12 +45,13 @@ const Shipping = ({}) => {
           >
             orders
           </li>
-          {/* <li
-            className={activeTab === "RECEIVING" ? "active" : ""}
-            onClick={() => handleTabClick("RECEIVING")}
+          <li
+            className={activeTab === "driver check-in" ? "active" : ""}
+            onClick={() => handleTabClick("driver check-in")}
           >
-            RECEIVING
+            driver check-in
           </li>
+          {/*
           <li
             className={activeTab === "SYSTEM" ? "active" : ""}
             onClick={() => handleTabClick("SYSTEM")}

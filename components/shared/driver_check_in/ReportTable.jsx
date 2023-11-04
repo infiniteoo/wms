@@ -55,11 +55,8 @@ const ReportTable = () => {
 
   const handleStatusChange = async (rowId, newStatus) => {
     try {
-      let resolved;
-      newStatus === "Y" ? (resolved = "Y") : (resolved = "N");
-
       // display popup modal to confirm coompletion
-      if (newStatus === "Y") {
+      if (newStatus === "Complete") {
         const confirm = window.confirm(
           "Are you sure you want to mark this incident as resolved?"
         );
@@ -69,8 +66,8 @@ const ReportTable = () => {
       }
 
       const { data, error } = await supabase
-        .from("incidents")
-        .update({ resolved: resolved })
+        .from("driver_check_in")
+        .update({ status: newStatus })
         .eq("id", rowId)
         .select();
       if (error) {

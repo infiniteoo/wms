@@ -3,6 +3,7 @@ import { useState } from "react";
 import "./Receiving.css"; // Import your CSS file for custom styling
 import ReceivingDashboard from "./ReceivingDashboard";
 import Orders from "./Orders";
+import Drivers from "./../shared/driver_check_in/Drivers";
 
 const Receiving = ({}) => {
   const [activeTab, setActiveTab] = useState("dashboard");
@@ -17,8 +18,8 @@ const Receiving = ({}) => {
         return <ReceivingDashboard />;
       case "orders":
         return <Orders />;
-      case "tab3":
-        return null;
+      case "driver check-in":
+        return <Drivers />;
       case "tab4":
         return null;
       case "tab5":
@@ -43,6 +44,12 @@ const Receiving = ({}) => {
             onClick={() => handleTabClick("orders")}
           >
             orders
+          </li>
+          <li
+            className={activeTab === "driver check-in" ? "active" : ""}
+            onClick={() => handleTabClick("driver check-in")}
+          >
+            driver check-in
           </li>
           {/* <li
             className={activeTab === "RECEIVING" ? "active" : ""}
