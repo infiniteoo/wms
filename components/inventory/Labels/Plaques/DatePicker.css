@@ -1,0 +1,29 @@
+/* DatePicker.css */
+
+.date-picker {
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+    margin-left: 5px;
+    width: 100%;
+   
+    
+  }
+  
+  .label {
+    font-weight: bold;
+    
+  }
+  
+  .date-input {
+    padding: 8px;
+    
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 100%;
+  }
+  
+  .selected-date {
+    margin-top: 10px;
+  }
+  

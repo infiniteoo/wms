@@ -70,7 +70,7 @@ const Labels = () => {
       marginTop: 10,
     },
     labelGeneratorsBox: {
-      width: "35%", // Set the width to 35%
+      width: "100s%", // Set the width to 35%
       marginRight: "2%", // Add some margin for spacing
     },
   });
@@ -115,12 +115,6 @@ const Labels = () => {
           </button>
         </div>
         <div className="tab-content">{renderTabContent()}</div>
-      </div>
-
-      <div className="w-full ml-2">
-        <PDFViewer width="100%" height={500}>
-          {/* No need to render content here, it's already rendered in tab-content */}
-        </PDFViewer>
       </div>
     </div>
   );
