@@ -18,7 +18,7 @@ const ActionDropdown = ({
   };
   const handleDeleteItem = async () => {
     if (selectedRows.length === 0) {
-      alert("please select an item to delete");
+      alert("please select an item to archive");
       setActionModifier("");
       return;
     }
@@ -44,12 +44,12 @@ const ActionDropdown = ({
     setActionModifier(event.target.value);
     switch (event.target.value) {
       case "edit":
-        console.log("Edit Incident");
+        console.log("Edit Appointments");
         handleEditItem();
         break;
 
       case "delete":
-        console.log("Archive Incident");
+        console.log("Archive Appointments");
         handleDeleteItem();
         break;
       default:
@@ -66,9 +66,9 @@ const ActionDropdown = ({
       <option value="" disabled defaultValue hidden>
         Actions
       </option>
-      <option value="edit">Edit Incident</option>
+      <option value="edit">Edit Appointment</option>
 
-      <option value="delete">Archive Incident</option>
+      <option value="delete">Archive Appointment</option>
     </select>
   );
 };
