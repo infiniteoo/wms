@@ -39,6 +39,7 @@
     "react-countup": "^6.5.0",
     "react-datetime": "^3.2.0",
     "react-dom": "^18",
+    "react-spinners": "^0.13.8",
     "read-excel-file": "^5.7.1",
     "uuid": "^9.0.1",
     "victory": "^36.6.11",
