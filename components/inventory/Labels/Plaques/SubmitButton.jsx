@@ -18,7 +18,7 @@ const SubmitButton = ({ definedStops, setDefinedStops, setNumberOfStops }) => {
     try {
       await axios.post(
         process.env.REACT_APP_ENVIRONMENT === "development"
-          ? `http://localhost:8156/api/generateImage/${textToGenerate}`
+          ? `/api/generateImage/${textToGenerate}`
           : `https://fgftags.com/api/generateImage/${textToGenerate}`
       );
     } catch (error) {
@@ -50,7 +50,7 @@ const SubmitButton = ({ definedStops, setDefinedStops, setNumberOfStops }) => {
     try {
       const response = await axios.post(
         process.env.REACT_APP_ENVIRONMENT === "development"
-          ? "http://localhost:8156/api/stops"
+          ? `/api/stops`
           : "https://fgftags.com/api/stops",
         parsedData,
         {
@@ -97,18 +97,24 @@ const SubmitButton = ({ definedStops, setDefinedStops, setNumberOfStops }) => {
 
   return (
     <div>
-      {showButton && !loading && ( // Conditional rendering based on showButton and not loading
-        <button
-          className="bg-red-500 hover:bg-red-600 text-white font-semibold py-3 px-4 rounded-full shadow-md transition duration-300 ease-in-out mt-1"
-          onClick={handleSubmit}
-        >
-          Generate PDF
-        </button>
-      )}
+      {showButton &&
+        !loading && ( // Conditional rendering based on showButton and not loading
+          <button
+            className="bg-red-500 hover:bg-red-600 text-white font-semibold py-3 px-4 rounded-full shadow-md transition duration-300 ease-in-out mt-1"
+            onClick={handleSubmit}
+          >
+            Generate PDF
+          </button>
+        )}
       {loading && ( // Show loader when loading is true
         <div className="mt-4 text-center">
           <p className="text-bold text-lg">Loading...</p>
-          <BeatLoader css={override} size={50} color={"red"} loading={loading} />
+          <BeatLoader
+            css={override}
+            size={50}
+            color={"red"}
+            loading={loading}
+          />
         </div>
       )}
       {pdfData && (

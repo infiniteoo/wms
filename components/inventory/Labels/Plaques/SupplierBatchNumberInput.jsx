@@ -14,10 +14,12 @@ const SupplierBatchNumberInput = ({
 
   const handleBlur = () => {
     if (enteredOrderNumber === "") return;
-    console.log(process.env.REACT_APP_ENVIRONMENT);
+
+    // fetch post /api/generateImage/:orderNumber
+    // axios.post(`http://localhost:8156/api/generateImage/${enteredOrderNumber}`);
     axios.post(
-      process.env.REACT_APP_ENVIRONMENT === "development"
-        ? `http://localhost:8156/api/generateImage/${enteredOrderNumber}`
+      process.env.NEXT_PUBLIC_ENVIRONMENT === "development"
+        ? `/api/generateImage/${enteredOrderNumber}`
         : `https://fgftags.com/api/generateImage/${enteredOrderNumber}`
     );
   };

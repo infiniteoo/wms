@@ -33,13 +33,13 @@ const ProductionDatePicker = ({
     const formattedDate = formatDateToMMDDYY(selectedDate);
     axios.post(
       process.env.REACT_APP_ENVIRONMENT === "development"
-        ? `http://localhost:8156/api/generateImage/${formattedDate}`
+        ? `/api/generateImage/${formattedDate}`
         : `https://fgftags.com/api/generateImage/${formattedDate}`
     );
   };
 
   return (
-    <div className="w-2/5 ml-2" >
+    <div className="w-2/5 ml-2">
       <label className="block text-xs font-medium leading-6 text-gray-900  ">
         Prod Date
       </label>
