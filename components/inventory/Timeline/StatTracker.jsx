@@ -6,8 +6,8 @@ import { renderTimeline } from "./utils/renderTimeline";
 import dynamicCounter from "./DynamicCounter";
 
 const StatTracker = ({ timelineA, timelineB, timelineC, unitsThisHour }) => {
-  /*   console.log("StatTracker.jsx - unitThisHour: ", unitsThisHour);
-   */ const [currentHour, setCurrentHour] = useState(
+  /* console.log("StatTracker.jsx - unitThisHour: ", unitsThisHour); */
+  const [currentHour, setCurrentHour] = useState(
     new Date().getHours().toString().padStart(2, "0") + ":00:00"
   );
 
@@ -80,7 +80,7 @@ const StatTracker = ({ timelineA, timelineB, timelineC, unitsThisHour }) => {
   }, [currentHour, unitsThisHour]);
 
   return (
-    <div className="stat-tracker flex flex-row justify-center border-3 border-white">
+    <div className="stat-tracker flex flex-row justify-center border-3 border-white w-full">
       <div className="w-2/12">
         <TimeAndWeather />
       </div>

@@ -18,7 +18,7 @@ const ProductionTable = ({
   // State to keep track of the current hour
 
   const [currentHour, setCurrentHour] = useState(
-    new Date().getHours().toString().padStart(2, "0") + ":00:00"
+    new Date().getHours().toString().padStart(2, "0") + ":00"
   );
 
   useEffect(() => {
@@ -43,7 +43,7 @@ const ProductionTable = ({
   // define current hour
 
   // define fake date as 08/29/2023
-  const fakeDate = new Date(2023, 8, 29);
+  const fakeDate = new Date(2023, 7, 29);
 
   // create useeffect on component start
 
@@ -61,12 +61,17 @@ const ProductionTable = ({
 
     tables.forEach((table, tableIndex) => {
       table.forEach((row, rowIndex) => {
+        /*  console.log("row", row); */
         const rowDate = new Date(row[0]);
-
+        /* console.log("rowDate", rowDate.toDateString());
+        console.log("fakeDate", fakeDate.toDateString()); */
+        /* console.log("row[1]", row[1]);
+        console.log("currentHour", currentHour); */
         if (
           rowDate.toDateString() === fakeDate.toDateString() &&
           row[1] === currentHour
         ) {
+          /*  console.log("match found", row[0], row[1]); */
           // Unhighlight the previously highlighted rows and remove CSS effects
           const highlightedRows = document.querySelectorAll(".highlighted-row");
           highlightedRows.forEach((highlightedRow) => {
