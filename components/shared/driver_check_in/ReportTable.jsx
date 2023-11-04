@@ -20,6 +20,9 @@ const ReportTable = () => {
   const [itemToDelete, setItemToDelete] = useState(null);
   const [operators, setOperators] = useState([]);
   const [selectedRowIndex, setSelectedRowIndex] = useState(null);
+  const [dockDoors, setDockDoors] = useState([]); // State for dock door options
+  const [selectedDockDoor, setSelectedDockDoor] = useState("");
+  const [selectedOperator, setSelectedOperator] = useState("");
 
   const cancelDelete = () => {
     // Cancel the delete operation and close the modal
@@ -93,8 +96,8 @@ const ReportTable = () => {
     try {
       setSelectedOperator(newOperator);
       const { data, error } = await supabase
-        .from("incidents")
-        .update({ assignedTo: newOperator })
+        .from("driver_check_in")
+        .update({ loaderName: newOperator })
         .eq("id", rowId)
         .select();
       if (error) {
@@ -105,7 +108,7 @@ const ReportTable = () => {
         setInventory((inventory) =>
           inventory.map((item) => {
             if (item.id === rowId) {
-              return { ...item, assignedTo: newOperator };
+              return { ...item, loaderName: newOperator };
             } else {
               return item;
             }
@@ -124,7 +127,7 @@ const ReportTable = () => {
         try {
           // Delete the item
           const { data, error } = await supabase
-            .from("incidents")
+            .from("driver_check_in")
             .update({ archived: true })
             .eq("id", row.id)
             .select();
@@ -152,10 +155,35 @@ const ReportTable = () => {
       setShowDeleteModal(false);
     }
   };
+  const fetchDockDoors = async () => {
+    try {
+      // Step 2: Fetch dock door options from the Supabase config table
+      const { data, error } = await supabase
+        .from("config")
+        .select("config")
+        .eq("id", 1);
+
+      if (error) {
+        console.error(error);
+      } else {
+        // Extract the dock door options from the data and set the state
+        if (data.length === 1) {
+          console.log("data", data);
+          const dockDoorOptions = data[0].config.dockDoors.map(
+            (dockDoor) => dockDoor.name
+          );
+
+          setDockDoors(dockDoorOptions);
+        }
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   useEffect(() => {
     // Step 2: Fetch employee names from Supabase when the component loads
-
+    fetchDockDoors();
     fetchOperators();
     fetchInventory();
   }, [currentPage, searchTerm]);
@@ -178,7 +206,7 @@ const ReportTable = () => {
   const fetchInventory = async () => {
     try {
       const { data, error } = await supabase
-        .from("incidents")
+        .from("driver_check_in")
         .select("*")
         .ilike(modifier, `%${searchTerm}%`)
         .range(
@@ -203,42 +231,66 @@ const ReportTable = () => {
   const onSave = async (formData) => {
     console.log("form data on save: ", formData);
     let po_number;
-    if (formData.po_number === "") {
+    if (formData.purchaseOrderNumber === "") {
       po_number = generateRandomPoNumber();
     } else {
-      po_number = formData.po_number;
+      po_number = formData.purchaseOrderNumber;
     }
 
     const {
       id,
-      barcodeData,
+      _id,
       description,
-      image,
-      date,
-      location,
-      submittedBy,
-      resolved,
-      assignedTo,
-      archived,
+      signInData,
+      status,
+      loaderName,
+      assignedDoor,
+      weight,
+      checkOutTime,
+      checkInTime,
+      created_at,
+      checkInNumber,
+      appointmentTime,
+      purchaseOrderNumber,
+      carrier,
+      destination,
+      bookerEmailAddress,
+      bookerPhoneNumber,
+      bookerName,
+      trailerNumber,
+      driverPhoneNumber,
+      driverName,
     } = formData;
 
     const item = {
       id,
-      barcodeData,
+      _id,
       description,
-      image,
-      date,
-      location,
-      submittedBy,
-      resolved,
-      assignedTo,
-      archived,
+      signInData,
+      status,
+      loaderName,
+      assignedDoor,
+      weight,
+      checkOutTime,
+      checkInTime,
+      created_at,
+      checkInNumber,
+      appointmentTime,
+      purchaseOrderNumber,
+      carrier,
+      destination,
+      bookerEmailAddress,
+      bookerPhoneNumber,
+      bookerName,
+      trailerNumber,
+      driverPhoneNumber,
+      driverName,
     };
     // if selectedRows is empty, add item to database
     if (selectedRows.length === 0) {
       // Add logic to save item to database
       const { data, error } = await supabase
-        .from("incidents")
+        .from("driver_check_in")
         .insert([item])
         .select();
       if (error) {
@@ -255,7 +307,7 @@ const ReportTable = () => {
       console.log("selectedRow[0].id", selectedRows[0].id);
       console.log("item", item);
       const { data, error } = await supabase
-        .from("incidents")
+        .from("driver_check_in")
         .update(item)
         .eq("id", selectedRows[0].id)
 
@@ -283,6 +335,32 @@ const ReportTable = () => {
     setCurrentPage(page);
   };
 
+  const handleDoorChange = async (rowId, newDoor) => {
+    try {
+      const { data, error } = await supabase
+        .from("driver_check_in")
+        .update({ assignedDoor: newDoor })
+        .eq("id", rowId)
+        .select();
+      if (error) {
+        console.error(error);
+      } else {
+        // Update the local state to reflect the new status
+        setInventory((inventory) =>
+          inventory.map((item) => {
+            if (item.id === rowId) {
+              return { ...item, assignedDoor: newDoor };
+            } else {
+              return item;
+            }
+          })
+        );
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   const handleCheckboxChange = (event, rowItem) => {
     event.stopPropagation(); // Prevent the click event from propagating to the row
     handleRowClick(rowItem);
@@ -307,7 +385,7 @@ const ReportTable = () => {
   };
 
   return (
-    <div className="mt-8 border-orange-500 ml-2" style={{ width: "99%" }}>
+    <div className=" border-orange-500 ml-2" style={{ width: "99%" }}>
       <ReportToolbar
         inventory={inventory}
         setInventory={setInventory}
@@ -328,11 +406,7 @@ const ReportTable = () => {
         <div className="table-container h-80 overflow-y-auto mt-1">
           <table className="rounded-lg overflow-hidden text-sm w-full">
             <colgroup>
-              <col style={{ width: "60px" }} />
-              {/* Adjust the width as needed */}
-              <col style={{ width: "60px" }} />
-              {/* Adjust the width as needed */}
-              <col style={{ width: "1000px" }} />
+              <col style={{ width: "30px" }} />
               {/* Adjust the width as needed */}
               <col style={{ width: "100px" }} />
               {/* Adjust the width as needed */}
@@ -342,22 +416,30 @@ const ReportTable = () => {
               {/* Adjust the width as needed */}
               <col style={{ width: "100px" }} />
               {/* Adjust the width as needed */}
-              <col style={{ width: "120px" }} />
+              <col style={{ width: "100px" }} />
               {/* Adjust the width as needed */}
-              <col style={{ width: "160px" }} />
+              <col style={{ width: "150px" }} />
+              <col style={{ width: "170px" }} />
+              {/* Adjust the width as needed */}
+              <col style={{ width: "100px" }} />
+              {/* Adjust the width as needed */}
+              <col style={{ width: "100px" }} />
+              <col style={{ width: "100px" }} />
               {/* Adjust the width as needed */}
             </colgroup>
             <thead className="bg-gray-800 text-white">
               <tr>
                 <th className="py-2"></th>
-                <th className="py-2">Image</th>
-                <th className="py-2">Report</th>
-                <th className="py-2">LPN Number</th>
-                <th className="py-2">Date Created</th>
-                <th className="py-2">Location</th>
-                <th className="py-2">Submitted By</th>
-                <th className="py-2">Resolved?</th>
+                <th className="py-2">Driver Name</th>
+                <th className="py-2">Carrier</th>
+                <th className="py-2">Trailer</th>
+                <th className="py-2">Driver Phone</th>
+                <th className="py-2">Destination</th>
+                <th className="py-2">PO Number</th>
+                <th className="py-2">Appointment</th>
+                <th className="py-2">Status</th>
                 <th className="py-2">Operator</th>
+                <th className="py-2">Dock Door</th>
               </tr>
             </thead>
             <tbody>
@@ -386,53 +468,70 @@ const ReportTable = () => {
                     />
                     {selectedRows.includes(item.id) ? "✓" : null}
                   </td>
+
+                  <td className="py-2 text-center">{item.driverName}</td>
+                  <td className="py-2 text-center">{item.carrier}</td>
+                  <td className="py-2 text-center">{item.trailerNumber}</td>
+                  <td className="py-2 text-center">{item.driverPhoneNumber}</td>
+                  <td className="py-2 text-center">{item.destination}</td>
                   <td className="py-2 text-center">
-                    {item.image ? (
-                      <img
-                        src={item.image} // Use the URL from your data
-                        alt="Thumbnail"
-                        style={{ width: "50px", height: "50px" }} // Adjust the width and height as needed
-                      />
-                    ) : (
-                      "No Image" // Display text when there is no image
-                    )}
+                    {item.purchaseOrderNumber}
                   </td>
-                  <td className="py-2 text-center">{item.description}</td>
-                  <td className="py-2 text-center">{item.barcodeData}</td>
-                  <td className="py-2 text-center">{formatDate(item.date)}</td>
-                  <td className="py-2 text-center">{item.location}</td>
-                  <td className="py-2 text-center">{item.submittedBy}</td>
+                  <td className="py-2 text-center">
+                    {formatDate(item.appointmentTime)},{" "}
+                    {formatTime(item.appointmentTime)}
+                  </td>
 
                   <td className="py-2 text-center">
-                    {item.resolved === "Y" ? (
-                      item.resolved // Display the text value when the order is completed
+                    {item.status === "Complete" ? (
+                      item.status // Display the text value when the order is completed
                     ) : (
                       <select
-                        value={item.resolved || ""}
+                        value={item.status || ""}
                         onChange={(e) =>
                           handleStatusChange(item.id, e.target.value)
                         }
                       >
-                        <option value="Y">Y</option>
-                        <option value="N">N</option>
+                        <option value="Scheduled">Scheduled</option>
+                        <option value="Loading">Loading</option>
+                        <option value="Complete">Complete</option>
                       </select>
                     )}
                   </td>
 
                   <td className="py-2 text-center">
-                    {item.resolved === "Y" ? (
-                      item.assignedTo // Display the text value when the order is completed
+                    {item.status === "Complete" ? (
+                      item.loaderName // Display the text value when the order is completed
                     ) : (
                       <select
-                        value={item.assignedTo || ""}
+                        value={item.loaderName || ""}
                         onChange={(e) =>
                           handleOperatorChange(item.id, e.target.value)
                         }
                       >
-                        <option value="">Select Operator</option>
+                        <option value="">Operator</option>
                         {operators.map((operator, index) => (
                           <option key={index} value={operator}>
                             {operator}
+                          </option>
+                        ))}
+                      </select>
+                    )}
+                  </td>
+                  <td className="py-2 text-center">
+                    {item.status === "Complete" ? (
+                      item.assignedDoor // Display the text value when the order is completed
+                    ) : (
+                      <select
+                        value={item.assignedDoor}
+                        onChange={(e) =>
+                          handleDoorChange(item.id, e.target.value)
+                        }
+                      >
+                        <option value="">Dock Door</option>
+                        {dockDoors.map((dockDoor, index) => (
+                          <option key={index} value={dockDoor}>
+                            {dockDoor}
                           </option>
                         ))}
                       </select>

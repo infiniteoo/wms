@@ -19,15 +19,27 @@ const OrderModal = ({
   const [selectedOperator, setSelectedOperator] = useState("");
   const [newOrderLine, setNewOrderLine] = useState({
     id: "",
-    barcodeData: "",
+    _id: "",
     description: "",
-    image: "",
-    date: "",
-    location: "",
-    submittedBy: "",
-    resolved: "",
-    assignedTo: "",
-    archived: "",
+    signInData: {},
+    status: "",
+    loaderName: "",
+    assignedDoor: "",
+    weight: "",
+    checkOutTime: new Date(),
+    checkInTime: new Date(),
+    created_at: new Date(),
+    checkInNumber: "",
+    appointmentTime: new Date(),
+    purchaseOrderNumber: "",
+    carrier: "",
+    destination: "",
+    bookerEmailAddress: "",
+    bookerPhoneNumber: "",
+    bookerName: "",
+    trailerNumber: "",
+    driverPhoneNumber: "",
+    driverName: "",
   });
 
   const handleOrderLineChange = (e) => {
@@ -82,15 +94,27 @@ const OrderModal = ({
 
   const initialFormData = {
     id: "",
-    barcodeData: "",
+    _id: "",
     description: "",
-    image: "",
-    date: "",
-    location: "",
-    submittedBy: "",
-    resolved: "",
-    assignedTo: "",
-    archived: "",
+    signInData: {},
+    status: "",
+    loaderName: "",
+    assignedDoor: "",
+    weight: "",
+    checkOutTime: new Date(),
+    checkInTime: new Date(),
+    created_at: new Date(),
+    checkInNumber: "",
+    appointmentTime: new Date(),
+    purchaseOrderNumber: "",
+    carrier: "",
+    destination: "",
+    bookerEmailAddress: "",
+    bookerPhoneNumber: "",
+    bookerName: "",
+    trailerNumber: "",
+    driverPhoneNumber: "",
+    driverName: "",
   };
 
   const [formData, setFormData] = useState(initialFormData);
@@ -99,28 +123,52 @@ const OrderModal = ({
     if (selectedRows.length === 1) {
       const {
         id,
-        barcodeData,
+        _id,
         description,
-        image,
-        date,
-        location,
-        submittedBy,
-        resolved,
-        assignedTo,
-        archived,
+        signInData,
+        status,
+        loaderName,
+        assignedDoor,
+        weight,
+        checkOutTime,
+        checkInTime,
+        created_at,
+        checkInNumber,
+        appointmentTime,
+        purchaseOrderNumber,
+        carrier,
+        destination,
+        bookerEmailAddress,
+        bookerPhoneNumber,
+        bookerName,
+        trailerNumber,
+        driverPhoneNumber,
+        driverName,
       } = selectedRows[0];
 
       setFormData({
         id,
-        barcodeData,
+        _id,
         description,
-        image,
-        date,
-        location,
-        submittedBy,
-        resolved,
-        assignedTo,
-        archived,
+        signInData,
+        status,
+        loaderName,
+        assignedDoor,
+        weight,
+        checkOutTime,
+        checkInTime,
+        created_at,
+        checkInNumber,
+        appointmentTime,
+        purchaseOrderNumber,
+        carrier,
+        destination,
+        bookerEmailAddress,
+        bookerPhoneNumber,
+        bookerName,
+        trailerNumber,
+        driverPhoneNumber,
+        driverName,
       });
     } else {
       // No row selected, reset the form data
@@ -167,8 +215,34 @@ const OrderModal = ({
 
         <form onSubmit={handleSubmit} id="item-form">
           <div className="column">
-            <img src={formData.image}></img>
+            <label htmlFor="driverName">Driver Name:</label>
+            <input
+              type="text"
+              id="driverName"
+              name="driverName"
+              value={formData.driverName}
+              onChange={handleChange}
+              readOnly
+            />
+            <label htmlFor="carrier">Carrier:</label>
+            <input
+              type="text"
+              id="carrier"
+              name="carrier"
+              value={formData.carrier}
+              onChange={handleChange}
+              readOnly
+            />
           </div>
+          <label htmlFor="trailerNumber">Trailer Number:</label>
+          <input
+            type="text"
+            id="trailerNumber"
+            name="trailerNumber"
+            value={formData.trailerNumber}
+            onChange={handleChange}
+            readOnly
+          />
 
           <div className="column">
             <label htmlFor="barcodeData">LPN Number:</label>
