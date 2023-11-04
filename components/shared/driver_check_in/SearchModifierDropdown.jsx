@@ -15,13 +15,14 @@ const SearchModifierDropdown = ({ inventory, setModifier, modifier }) => {
       <option value="" disabled hidden>
         Modifier
       </option>
-      <option value="po_number">PO Number</option>
+      <option value="purchaseOrderNumber">PO Number</option>
       <option value="carrier">Carrier</option>
-      <option value="trailer_number">Trailer Number</option>
-      <option value="created_by">Created By</option>
+      <option value="trailerNumber">Trailer Number</option>
+      <option value="driverPhoneNumber">Driver Phone</option>
       <option value="status">Status</option>
-      <option value="completed">Complete</option>
-      <option value="updated_by">Updated By</option>
+      <option value="driverName">Driver Name</option>
+      <option value="loaderName">Operator</option>
+      <option value="assignedDoor">Dock Door</option>
     </select>
   );
 };
