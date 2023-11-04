@@ -78,7 +78,7 @@ export default function Timeline() {
   };
 
   return (
-    <main className="text-lg">
+    <main className="text-sm flex flex-col">
       <DataReader
         setTimelineA={setTimelineA}
         setTimelineB={setTimelineB}

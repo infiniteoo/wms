@@ -31,7 +31,7 @@ function WeatherComponent({ apiKey, city }) {
 
   return (
     <div className="flex flex-col">
-      <div className="weather-component flex flex-row">
+      <div className="weather-component flex flex-row text-sm">
         <img
           width="auto"
           className=""
@@ -39,7 +39,7 @@ function WeatherComponent({ apiKey, city }) {
           alt="Weather Icon"
         />
         <div className="flex flex-col">
-          <p className="text-center text-3xl">
+          <p className="text-center text-sm">
             {Math.round(temperatureFahrenheit)}°F
           </p>
           <p className="text-sm">{weatherDescription}</p>

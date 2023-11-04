@@ -21,7 +21,7 @@ function TimeComponent() {
 
   return (
     <div>
-      <p className="text-4xl font-bold">{formattedTime}</p>
+      <p className="text-sm font-bold">{formattedTime}</p>
       <p className="text-sm">{formattedDate}</p>
     </div>
   );

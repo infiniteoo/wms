@@ -5,7 +5,7 @@ import WeatherComponent from "./WeatherComponent";
 const TimeAndWeather = () => {
   return (
     <div className=" flex flex-col items-center">
-      <div className="text-3xl p-1 text-center mr-2">
+      <div className="text-lg p-1 text-center mr-2">
         <TimeComponent />
       </div>
       <div className="mt-5">

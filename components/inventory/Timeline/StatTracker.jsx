@@ -79,13 +79,13 @@ const StatTracker = ({ timelineA, timelineB, timelineC, unitsThisHour }) => {
   }, [currentHour, unitsThisHour]);
 
   return (
-    <div className="stat-tracker flex flex-row justify-center border-3 border-white">
+    <div className="stat-tracker flex flex-row justify-center  text-lg border-3 border-white">
       <div className="w-2/12">
         <TimeAndWeather />
       </div>
 
       {/* Render Line A */}
-      <div className="flex flex-col w-1/3 mr-10">
+      <div className="flex flex-col w-1/3 mr-10 text-sm">
         <RunningStatus
           status={
             unitsThisHour.timelineB.product === "CIP"
