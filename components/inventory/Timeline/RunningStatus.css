@@ -1,0 +1,40 @@
+/* RunningText.css */
+
+.running-box {
+  display: inline-block;
+  padding: 6px;
+  background-color: black;
+  color: #00ff00; /* Neon green color */
+  font-size: 24px;
+  border: 2px solid #00ff00; /* Neon green border */
+  animation: blink 3s infinite; /* 3s blinking + 4s hold = 7s total */
+  text-align: center;
+  width: 100%;
+}
+.stopped-box {
+  display: inline-block;
+  padding: 6px;
+  background-color: black;
+  color: red; /* Neon green color */
+  font-size: 24px;
+  border: 2px solid red; /* Neon green border */
+  animation: blink 3s infinite; /* 3s blinking + 4s hold = 7s total */
+  text-align: center;
+  width: 100%;
+}
+
+.stat-item {
+  font-size: 14px;
+}
+
+@keyframes blink {
+  0% {
+    opacity: 1;
+  }
+  75% {
+    opacity: 1; /* Hold at full opacity */
+  }
+  100% {
+    opacity: 0;
+  }
+}

@@ -20,6 +20,7 @@
     "@supabase/auth-helpers-nextjs": "^0.8.1",
     "@supabase/storage-js": "^2.5.4",
     "@supabase/supabase-js": "^2.38.1",
+    "axios": "^1.6.0",
     "chart.js": "^4.4.0",
     "cross-fetch": "^4.0.0",
     "encoding": "^0.1.13",
@@ -35,10 +36,14 @@
     "react-calendar-timeline": "^0.28.0",
     "react-chartjs-2": "^5.2.0",
     "react-color": "^2.19.3",
+    "react-countup": "^6.5.0",
     "react-datetime": "^3.2.0",
     "react-dom": "^18",
+    "read-excel-file": "^5.7.1",
     "uuid": "^9.0.1",
-    "victory": "^36.6.11"
+    "victory": "^36.6.11",
+    "xlsx": "^0.18.5",
+    "xlsx-populate": "^1.21.0"
   },
   "devDependencies": {
     "@faker-js/faker": "^8.2.0",
