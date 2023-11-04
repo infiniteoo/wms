@@ -6,7 +6,8 @@ import { renderTimeline } from "./utils/renderTimeline";
 import dynamicCounter from "./DynamicCounter";
 
 const StatTracker = ({ timelineA, timelineB, timelineC, unitsThisHour }) => {
-  const [currentHour, setCurrentHour] = useState(
+  /*   console.log("StatTracker.jsx - unitThisHour: ", unitsThisHour);
+   */ const [currentHour, setCurrentHour] = useState(
     new Date().getHours().toString().padStart(2, "0") + ":00:00"
   );
 
@@ -79,13 +80,13 @@ const StatTracker = ({ timelineA, timelineB, timelineC, unitsThisHour }) => {
   }, [currentHour, unitsThisHour]);
 
   return (
-    <div className="stat-tracker flex flex-row justify-center  text-lg border-3 border-white">
+    <div className="stat-tracker flex flex-row justify-center border-3 border-white">
       <div className="w-2/12">
         <TimeAndWeather />
       </div>
 
       {/* Render Line A */}
-      <div className="flex flex-col w-1/3 mr-10 text-sm">
+      <div className="flex flex-col w-1/3 mr-10">
         <RunningStatus
           status={
             unitsThisHour.timelineB.product === "CIP"

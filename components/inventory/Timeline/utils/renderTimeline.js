@@ -1,6 +1,6 @@
-import ProgressBar from '../ProgressBar'
-import CountUp from 'react-countup'
-import { calculateTotalUnitsByItem } from './calculateTotalUnitsByItem'
+import ProgressBar from "../ProgressBar";
+import CountUp from "react-countup";
+import { calculateTotalUnitsByItem } from "./calculateTotalUnitsByItem";
 
 export const renderTimeline = (
   timelineData,
@@ -9,7 +9,7 @@ export const renderTimeline = (
   timelineC,
   startingQty,
   qty,
-  unitsMadeThisHour,
+  unitsMadeThisHour
 ) => {
   const totalUnitsByItem = calculateTotalUnitsByItem({
     timelineData: timelineData,
@@ -18,23 +18,23 @@ export const renderTimeline = (
     timelineC: timelineC,
 
     // Assuming timelineA is the appropriate property
-  })
+  });
 
-  if (timelineData.product === 'CIP') {
+  if (timelineData.product === "CIP") {
     return (
       <div className="text-center text-2xl mt-5">CLEANING IN PROGRESS...</div>
-    )
+    );
   }
 
   return (
     <div>
-      {timelineData.product !== 'CIP' ? (
+      {timelineData.product !== "CIP" ? (
         <div>
-          {' '}
+          {" "}
           <div className="flex flex-row mt-2 w-full ">
             <div className="stat-item">
               <p className="text-md">
-                Item Number:{' '}
+                Item Number:{" "}
                 <span className="text-lg">{timelineData.item}</span>
               </p>
             </div>
@@ -46,7 +46,7 @@ export const renderTimeline = (
               <ProgressBar
                 qty={qty}
                 totalQty={timelineData.qty}
-                message={'Units/Hour:'}
+                message={"Units/Hour:"}
                 startingQty={startingQty}
                 percentage={(unitsMadeThisHour / timelineData.qty) * 100}
               />
@@ -55,7 +55,7 @@ export const renderTimeline = (
           <div className="flex flex-row justify-end">
             <div className="stat-item">
               <p className="text-lg text-right">
-                {' '}
+                {" "}
                 Units/Hour: {timelineData.qty}
               </p>
             </div>
@@ -68,5 +68,5 @@ export const renderTimeline = (
         </div>
       ) : null}
     </div>
-  )
-}
+  );
+};

@@ -10,7 +10,9 @@ const ProductionTable = ({
   timelineB,
   timelineC,
   dateAndTimeline,
+  timelineData,
 }) => {
+  /*  console.log("ProductionTable.jsx: timelineData", timelineData); */
   // Create a ref to store the matched row element
   const matchedRowRef = useRef(null);
   // State to keep track of the current hour
@@ -41,18 +43,23 @@ const ProductionTable = ({
   // define current hour
 
   // define fake date as 08/29/2023
-  const fakeDate = new Date(2023, 7, 29);
+  const fakeDate = new Date(2023, 8, 29);
 
   // create useeffect on component start
 
   useEffect(() => {
     const updatedUnitsThisHour = { ...unitsThisHour };
 
+    // Initialize the total quantity for each timeline
+    const totalQtyByTimeline = {
+      timelineA: 0,
+      timelineB: 0,
+      timelineC: 0,
+    };
+
     const tables = [dateAndTimeline, timelineA, timelineB, timelineC];
 
     tables.forEach((table, tableIndex) => {
-      let totalQty = 0; // Initialize the total quantity for this timeline
-
       table.forEach((row, rowIndex) => {
         const rowDate = new Date(row[0]);
 
@@ -94,61 +101,35 @@ const ProductionTable = ({
           }
 
           // Update the total quantity for this timeline
-          totalQty += row[5];
+          totalQtyByTimeline[
+            `timeline${String.fromCharCode(65 + tableIndex)}`
+          ] += row[5];
 
-          // Set the values in the unitsThisHour state based on the current timeline
+          // Update the other information in the unitsThisHour state
           updatedUnitsThisHour[
             `timeline${String.fromCharCode(65 + tableIndex)}`
           ] = {
             item: row[3],
             product: row[4],
             qty: row[5],
-            totalQty, // Add the totalQty to the state
           };
         }
       });
+    });
 
-      const myTables = [timelineA, timelineB, timelineC];
-
-      myTables.forEach((table, tableIndex) => {
-        let totalQty = 0; // Initialize the total quantity for this timeline
-
-        table.forEach((row, rowIndex) => {
-          /*  */
-          if (
-            row[3] ===
-              updatedUnitsThisHour[
-                `timeline${String.fromCharCode(66 + tableIndex)}`
-              ].item &&
-            row[4] ===
-              updatedUnitsThisHour[
-                `timeline${String.fromCharCode(66 + tableIndex)}`
-              ].product
-          ) {
-            // Update the total quantity for this timeline
-            totalQty += row[5];
-
-            // Set the values in the unitsThisHour state based on the current timeline
-            updatedUnitsThisHour[
-              `timeline${String.fromCharCode(66 + tableIndex)}`
-            ] = {
-              item: row[3],
-              product: row[4],
-              qty: row[5],
-              totalQty, // Add the totalQty to the state
-            };
-            setUnitsThisHour(updatedUnitsThisHour);
-          }
-        });
-      });
+    // Update the unitsThisHour state with total quantities
+    Object.keys(totalQtyByTimeline).forEach((timelineKey) => {
+      updatedUnitsThisHour[timelineKey].totalQty =
+        totalQtyByTimeline[timelineKey];
     });
 
     setUnitsThisHour(updatedUnitsThisHour);
+    /*  console.log("units this hour", updatedUnitsThisHour); */
   }, [dateAndTimeline, currentHour]);
 
   const tables = [dateAndTimeline, timelineA, timelineB, timelineC];
   return (
-    <div className="justify-between">
+    <div className="justify-around flex flex-col w-screen text-sm">
       <StatTracker
         timelineA={timelineA}
         timelineB={timelineB}
@@ -156,12 +137,16 @@ const ProductionTable = ({
         dateAndTimeline={dateAndTimeline}
         setUnitsThisHour={setUnitsThisHour}
         unitsThisHour={unitsThisHour}
+        timelineData={timelineData}
       />
-      <table className=" table-fixed rounded-lg shadow-lg">
+      <table className=" table-fixed rounded-lg shadow-lg w-screen">
         <tbody>
           <tr>
-            <td className="w-1/12 p-2 border-r">
-              <table className="w-1/12 min-h-[400px] rounded-lg shadow-lg">
+            <td className="w-1/12 p-2 border-r" style={{ width: "10%" }}>
+              <table
+                className="w-1/12 min-h-[400px] rounded-lg shadow-lg"
+                style={{ width: "10%" }}
+              >
                 <thead>
                   <tr>
                     <th className="px-2 py-1 text-left bg-blue-500 text-white top-0 sticky ">
@@ -194,7 +179,7 @@ const ProductionTable = ({
                 </tbody>
               </table>
             </td>
-            <td className=" p-2 border-r" style={{ width: "30.56%" }}>
+            <td className=" p-2 border-r" style={{ width: "25%" }}>
               <table className="min-h-[400px] rounded-lg shadow-lg">
                 <thead>
                   <tr>
@@ -246,7 +231,7 @@ const ProductionTable = ({
                 </tbody>
               </table>
             </td>
-            <td className="p-2 border-r" style={{ width: "30.56%" }}>
+            <td className="p-2 border-r" style={{ width: "25%" }}>
               <table className="table-fixed min-h-[400px] rounded-lg shadow-lg">
                 <thead>
                   <tr>
@@ -294,7 +279,7 @@ const ProductionTable = ({
                 </tbody>
               </table>
             </td>
-            <td className=" p-2 border-r" style={{ width: "30.56%" }}>
+            <td className=" p-2 border-r" style={{ width: "25%" }}>
               <table className="table-fixed min-h-[400px] rounded-lg shadow-lg">
                 <thead>
                   <tr>

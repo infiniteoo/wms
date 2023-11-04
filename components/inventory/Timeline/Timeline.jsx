@@ -72,13 +72,14 @@ export default function Timeline() {
             }
           });
         });
-
+        /* console.log(excelData); */
         setTimelineData(excelData); // Store the data in state
+        /* console.log("Timeline.jsx: timelineData", timelineData); */
       });
   };
 
   return (
-    <main className="text-sm flex flex-col">
+    <main className="text-sm flex w-screen mt-5 flex-col">
       <DataReader
         setTimelineA={setTimelineA}
         setTimelineB={setTimelineB}
@@ -92,6 +93,7 @@ export default function Timeline() {
         timelineB={timelineB}
         timelineC={timelineC}
         dateAndTimeline={dateAndTimeline}
+        timelineData={timelineData}
       />
     </main>
   );
