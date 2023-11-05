@@ -14,7 +14,7 @@ import Tags from "./Tags/Tags.jsx";
 const Labels = () => {
   const [selectedOrder, setSelectedOrder] = useState(null);
   const [completedOrders, setCompletedOrders] = useState(null);
-  const [activeTab, setActiveTab] = useState("Tags"); // Initialize the active tab
+  const [activeTab, setActiveTab] = useState("Plaques"); // Initialize the active tab
 
   const styles = StyleSheet.create({
     page: {

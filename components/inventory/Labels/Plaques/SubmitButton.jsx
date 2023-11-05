@@ -17,7 +17,7 @@ const SubmitButton = ({ definedStops, setDefinedStops, setNumberOfStops }) => {
   const generateImage = async (textToGenerate) => {
     try {
       await axios.post(
-        process.env.REACT_APP_ENVIRONMENT === "development"
+        process.env.NEXT_PUBLIC_ENVIRONMENT === "development"
           ? `/api/generateImage/${textToGenerate}`
           : `https://fgftags.com/api/generateImage/${textToGenerate}`
       );
@@ -28,7 +28,8 @@ const SubmitButton = ({ definedStops, setDefinedStops, setNumberOfStops }) => {
 
   const generatePdfAndImages = async (parsedData) => {
     try {
-      setLoading(true); // Set loading to true
+      /* console.log("parsedData", parsedData); */
+      setLoading(true); // Set loading to truea
       for (const item of parsedData) {
         if (item.itemNumber) {
           await generateImage(item.itemNumber);
@@ -48,9 +49,10 @@ const SubmitButton = ({ definedStops, setDefinedStops, setNumberOfStops }) => {
     }
 
     try {
+      setLoading(true);
       const response = await axios.post(
-        process.env.REACT_APP_ENVIRONMENT === "development"
-          ? `/api/stops`
+        process.env.NEXT_PUBLIC_ENVIRONMENT === "development"
+          ? `/api/stops/stops`
           : "https://fgftags.com/api/stops",
         parsedData,
         {

@@ -31,7 +31,7 @@ const ExpirationDatePicker = ({
   const handleBlur = () => {
     const formattedDate = formatDateToMMDDYY(selectedDate);
     axios.post(
-      process.env.REACT_APP_ENVIRONMENT === "development"
+      process.env.NEXT_PUBLIC_ENVIRONMENT === "development"
         ? `/api/generateImage/${formattedDate}`
         : `https://fgftags.com/api/generateImage/${formattedDate}`
     );
