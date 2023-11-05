@@ -1,6 +1,7 @@
 const bwipjs = require("bwip-js");
 const sharp = require("sharp");
 const { createClient } = require("@supabase/supabase-js");
+const { resolve } = require("styled-jsx/css");
 require("dotenv").config();
 
 const supabase = createClient(
@@ -46,18 +47,27 @@ const barcodeGenerator = async (textToGenerate) => {
             const pngBuffer = await sharp(svgBuffer).toBuffer();
 
             // Upload the PNG buffer to the Supabase bucket
-            await supabase.storage
+            const { data, error } = await supabase.storage
               .from("barcodes")
               .upload(bucketPath, pngBuffer);
-            console.log(`File uploaded to Supabase bucket: ${filename}`);
+            if (error) {
+              console.error(error);
+              return;
+            }
+            if (data) {
+              console.log(`File uploaded to Supabase bucket: ${filename}`);
+              return true;
+            }
           }
         }
       );
     } catch (uploadError) {
       console.error("Upload error:", uploadError);
+      return;
     }
   } else {
     console.log(`File already exists in the Supabase bucket: ${filename}`);
+    return;
   }
 };
 
