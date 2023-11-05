@@ -9,10 +9,7 @@ const TimeAndWeather = () => {
         <TimeComponent />
       </div>
       <div className="mt-3">
-        <WeatherComponent
-          apiKey={process.env.NEXT_PUBLIC_API_KEY}
-          city={"Boise"}
-        />
+        <WeatherComponent apiKey={process.env.WEATHER_API_KEY} city={"Boise"} />
       </div>
     </div>
   );
