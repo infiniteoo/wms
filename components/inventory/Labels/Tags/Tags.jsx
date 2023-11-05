@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { supabase } from "../../../../supabase";
+import axios from "axios";
 import {
   Document,
   Page,
@@ -82,6 +83,19 @@ const Tags = () => {
       marginTop: 10,
     },
   });
+
+  const handleBlur = () => {
+    if (lpn === "") return;
+    console.log("blurring");
+    // fetch post /api/generateImage/:orderNumber
+    // axios.post(`http://localhost:8156/api/generateImage/${enteredOrderNumber}`);
+    axios.post(
+      process.env.NEXT_PUBLIC_ENVIRONMENT === "development"
+        ? `/api/generateImage/${lpn}`
+        : `https://fgftags.com/api/generateImage/${lpn}`
+    );
+  };
+
   return (
     <div className="paperwork-container flex flex-row ml-2 mt-3 justify-left w-screen">
       <div className="left-column h-100 border-gray-400 border-xl border-2 text-center w-1/3 p-2">
@@ -94,6 +108,7 @@ const Tags = () => {
                 id="lpn"
                 value={lpn}
                 onChange={(e) => setLPN(e.target.value)}
+                onBlur={handleBlur}
               />
               <label htmlFor="lotNumber">Lot Number:</label>
               <input
@@ -179,7 +194,7 @@ const Tags = () => {
                     <Image
                       style={styles.logo}
                       src={{
-                        uri: "https://xtvcfdhxsmjophktihxa.supabase.co/storage/v1/object/public/barcodes/353535.png",
+                        uri: `https://xtvcfdhxsmjophktihxa.supabase.co/storage/v1/object/public/barcodes/${lpn}.png`,
                       }}
                     />
                   </View>
