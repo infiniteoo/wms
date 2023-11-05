@@ -1,196 +1,225 @@
 const ReactPDF = require("@react-pdf/renderer");
 const React = require("react");
-const axios = require("axios");
-const fs = require("fs");
 const styles = require("./pdfStyles");
-const { createClient } = require("@supabase/supabase-js");
 
-const supabase = createClient(
-  "https://xtvcfdhxsmjophktihxa.supabase.co",
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
-);
-
-const supabaseApiKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-
-const headers = {
-  authorization: `Bearer ${supabaseApiKey}`,
-  "Content-Type": "application/json",
-};
-
-// Function to download an image and save it locally
-const downloadImage = async (url, filename) => {
-  const response = await axios.get(url, {
-    headers,
-    responseType: "arraybuffer",
-  });
-
-  fs.writeFileSync(filename, Buffer.from(response.data));
-};
-
-const PDF = async ({ data }) => {
+const PDF = ({ data }) => {
   const pages = [];
 
-  await Promise.all(
-    data.map(async (item) => {
-      for (let i = 0; i < item.numberOfPallets; i++) {
-        const barcodeImageFilename = `${item.itemNumber}_${i}.png`;
-        const imageUrl = `https://xtvcfdhxsmjophktihxa.supabase.co/storage/v1/object/public/${item.itemNumber}.png`;
+  const supabaseApiKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+  data.forEach((item, index) => {
+    for (let i = 0; i < item.numberOfPallets; i++) {
+      const imageUrl = `https://xtvcfdhxsmjophktihxa.supabase.co/storage/v1/object/public/barcodes/`;
+      console.log("imageurl", imageUrl + `${item.itemNumber}.png`);
+      pages.push(
+        React.createElement(
+          ReactPDF.Page,
+          { key: `${index}_${i}`, size: "A4", style: styles.page },
 
-        await downloadImage(imageUrl, barcodeImageFilename);
-
-        pages.push(
           React.createElement(
-            ReactPDF.Page,
-            { size: "A4", style: styles.page },
+            ReactPDF.View,
+            { style: styles.container },
+
             React.createElement(
               ReactPDF.View,
-              { style: styles.container },
+              { style: styles.topContainer },
+
+              React.createElement(ReactPDF.View, {
+                style: styles.dairyContainer,
+              })
+            ),
+
+            React.createElement(
+              ReactPDF.View,
+              { style: styles.middleHolder },
+
               React.createElement(
                 ReactPDF.View,
-                { style: styles.middleHolder },
+                { style: styles.middleContainer },
+
                 React.createElement(
                   ReactPDF.View,
-                  { style: styles.middleContainer },
+                  { style: styles.newColumn },
+
                   React.createElement(
-                    ReactPDF.View,
-                    { style: styles.newColumn },
-                    React.createElement(
-                      ReactPDF.Text,
-                      { style: styles.customerText },
-                      "FGF ITEM #: "
-                    ),
-                    React.createElement(
-                      ReactPDF.Text,
-                      { style: styles.customerName },
-                      item.itemNumber
-                    ),
-                    React.createElement(ReactPDF.Image, {
-                      style: styles.barcode,
-                      src: "https://xtvcfdhxsmjophktihxa.supabase.co/storage/v1/object/sign/barcodes/102523.png?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJiYXJjb2Rlcy8xMDI1MjMucG5nIiwiaWF0IjoxNjk5MTQ1NDE2LCJleHAiOjE3MzA2ODE0MTZ9.bJ-Q11nbu3dpLJu3TGJM_5kygjJCUau6cUIeqMCMRAw&t=2023-11-05T00%3A50%3A16.286Z", // Use the downloaded image
-                    })
-                  )
-                ),
+                    ReactPDF.Text,
+                    { style: styles.customerText },
+                    "FGF ITEM #: "
+                  ),
+                  React.createElement(
+                    ReactPDF.Text,
+                    { style: styles.customerName },
+
+                    item.itemNumber
+                  ),
+
+                  React.createElement(ReactPDF.Image, {
+                    style: styles.barcode,
+                    src: {
+                      uri: imageUrl + `${item.itemNumber}.png`,
+                      headers: {
+                        Authorization: `Bearer ${supabaseApiKey}`, // Add this Authorization header
+                      },
+                    },
+                  })
+                )
+              ),
+              React.createElement(
+                ReactPDF.View,
+                { style: styles.middleContainer },
                 React.createElement(
                   ReactPDF.View,
-                  { style: styles.middleContainer },
+                  { style: styles.newColumn },
+
                   React.createElement(
-                    ReactPDF.View,
-                    { style: styles.newColumn },
-                    React.createElement(
-                      ReactPDF.Text,
-                      { style: styles.customerText },
-                      "FGF Item Description: "
-                    ),
-                    React.createElement(
-                      ReactPDF.Text,
-                      { style: styles.customerName },
-                      item.itemDescription
-                    )
-                  )
-                ),
-                React.createElement(
-                  ReactPDF.View,
-                  { style: styles.middleContainer },
+                    ReactPDF.Text,
+                    { style: styles.customerText },
+                    "FGF Item Description: "
+                  ),
                   React.createElement(
-                    ReactPDF.View,
-                    { style: styles.newColumn },
-                    React.createElement(
-                      ReactPDF.Text,
-                      { style: styles.customerText },
-                      "MFG / Supplier Batch #: "
-                    ),
-                    React.createElement(
-                      ReactPDF.Text,
-                      { style: styles.customerName },
-                      item.supplierBatchNumber
-                    ),
-                    React.createElement(ReactPDF.Image, {
-                      style: styles.barcode,
-                      src: "https://xtvcfdhxsmjophktihxa.supabase.co/storage/v1/object/sign/barcodes/102523.png?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJiYXJjb2Rlcy8xMDI1MjMucG5nIiwiaWF0IjoxNjk5MTQ1NDE2LCJleHAiOjE3MzA2ODE0MTZ9.bJ-Q11nbu3dpLJu3TGJM_5kygjJCUau6cUIeqMCMRAw&t=2023-11-05T00%3A50%3A16.286Z", // Use the downloaded image
-                    })
-                  )
-                ),
-                React.createElement(
-                  ReactPDF.View,
-                  { style: styles.middleContainer },
-                  React.createElement(
-                    ReactPDF.View,
-                    { style: styles.newColumn },
-                    React.createElement(
-                      ReactPDF.Text,
-                      { style: styles.customerText },
-                      "MFG / Production Date: "
-                    ),
-                    React.createElement(
-                      ReactPDF.Text,
-                      { style: styles.customerName },
-                      item.productionDate
-                    ),
-                    React.createElement(ReactPDF.Image, {
-                      style: styles.barcode,
-                      src: "https://xtvcfdhxsmjophktihxa.supabase.co/storage/v1/object/sign/barcodes/102523.png?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJiYXJjb2Rlcy8xMDI1MjMucG5nIiwiaWF0IjoxNjk5MTQ1NDE2LCJleHAiOjE3MzA2ODE0MTZ9.bJ-Q11nbu3dpLJu3TGJM_5kygjJCUau6cUIeqMCMRAw&t=2023-11-05T00%3A50%3A16.286Z", // Use the downloaded image
-                    })
-                  )
-                ),
-                React.createElement(
-                  ReactPDF.View,
-                  { style: styles.middleContainer },
-                  React.createElement(
-                    ReactPDF.View,
-                    { style: styles.newColumn },
-                    React.createElement(
-                      ReactPDF.Text,
-                      { style: styles.customerText },
-                      "BBD/ Expiry Date: "
-                    ),
-                    React.createElement(
-                      ReactPDF.Text,
-                      { style: styles.customerName },
-                      item.expirationDate
-                    ),
-                    React.createElement(ReactPDF.Image, {
-                      style: styles.barcode,
-                      src: "https://xtvcfdhxsmjophktihxa.supabase.co/storage/v1/object/sign/barcodes/102523.png?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJiYXJjb2Rlcy8xMDI1MjMucG5nIiwiaWF0IjoxNjk5MTQ1NDE2LCJleHAiOjE3MzA2ODE0MTZ9.bJ-Q11nbu3dpLJu3TGJM_5kygjJCUau6cUIeqMCMRAw&t=2023-11-05T00%3A50%3A16.286Z", // Use the downloaded image
-                    }),
-                    React.createElement(
-                      ReactPDF.Text,
-                      { style: styles.customerText },
-                      "Quantity: "
-                    ),
-                    React.createElement(
-                      ReactPDF.Text,
-                      { style: styles.customerName },
-                      item.quantity
-                    ),
-                    React.createElement(
-                      ReactPDF.Text,
-                      { style: styles.customerText },
-                      "Unit of Measure: "
-                    ),
-                    React.createElement(
-                      ReactPDF.Text,
-                      { style: styles.customerName },
-                      item.unitOfMeasure
-                    )
+                    ReactPDF.Text,
+                    { style: styles.customerName },
+
+                    item.itemDescription
                   )
                 )
               ),
               React.createElement(
                 ReactPDF.View,
-                { style: styles.bottomContainer },
+                { style: styles.middleContainer },
+
                 React.createElement(
-                  ReactPDF.Text,
-                  { style: styles.paragraph },
-                  "Pallet " + (i + 1) + " of " + item.numberOfPallets
+                  ReactPDF.View,
+                  { style: styles.newColumn },
+
+                  React.createElement(
+                    ReactPDF.Text,
+                    { style: styles.customerText },
+                    "MFG / Supplier Batch #: "
+                  ),
+                  React.createElement(
+                    ReactPDF.Text,
+                    { style: styles.customerName },
+
+                    item.supplierBatchNumber
+                  ),
+
+                  React.createElement(ReactPDF.Image, {
+                    style: styles.barcode,
+                    src: {
+                      uri: imageUrl + `${item.supplierBatchNumber}.png`,
+                      headers: {
+                        Authorization: `Bearer ${supabaseApiKey}`, // Add this Authorization header
+                      },
+                    },
+                  })
                 )
+              ),
+              React.createElement(
+                ReactPDF.View,
+                { style: styles.middleContainer },
+
+                React.createElement(
+                  ReactPDF.View,
+                  { style: styles.newColumn },
+
+                  React.createElement(
+                    ReactPDF.Text,
+                    { style: styles.customerText },
+                    "MFG / Production Date: "
+                  ),
+                  React.createElement(
+                    ReactPDF.Text,
+                    { style: styles.customerName },
+
+                    item.productionDate
+                  ),
+
+                  React.createElement(ReactPDF.Image, {
+                    style: styles.barcode,
+                    src: {
+                      uri: imageUrl + `${item.productionDate}.png`,
+                      headers: {
+                        Authorization: `Bearer ${supabaseApiKey}`, // Add this Authorization header
+                      },
+                    },
+                  })
+                )
+              ),
+              React.createElement(
+                ReactPDF.View,
+                { style: styles.middleContainer },
+
+                React.createElement(
+                  ReactPDF.View,
+                  { style: styles.newColumn },
+
+                  React.createElement(
+                    ReactPDF.Text,
+                    { style: styles.customerText },
+                    "Expiry Date: "
+                  ),
+                  React.createElement(
+                    ReactPDF.Text,
+                    { style: styles.customerName },
+
+                    item.expirationDate
+                  ),
+
+                  React.createElement(ReactPDF.Image, {
+                    style: styles.barcode,
+                    src: {
+                      uri: imageUrl + `${item.expirationDate}.png`,
+                      headers: {
+                        Authorization: `Bearer ${supabaseApiKey}`, // Add this Authorization header
+                      },
+                    },
+                  }),
+                  React.createElement(
+                    ReactPDF.Text,
+                    { style: styles.customerText },
+                    "Quantity: "
+                  ),
+                  React.createElement(
+                    ReactPDF.Text,
+                    { style: styles.customerName },
+
+                    item.quantity
+                  ),
+                  React.createElement(
+                    ReactPDF.Text,
+                    { style: styles.customerText },
+                    "Unit of Measure: "
+                  ),
+                  React.createElement(
+                    ReactPDF.Text,
+                    { style: styles.customerName },
+
+                    item.unitOfMeasure
+                  )
+                )
+              )
+            ),
+            // empty row
+
+            /* React.createElement(ReactPDF.View, {
+              style: styles.emptySpace,
+            }) */
+
+            React.createElement(
+              ReactPDF.View,
+              { style: styles.bottomContainer },
+
+              React.createElement(
+                ReactPDF.Text,
+                { style: styles.paragraph },
+                "Pallet " + (i + 1) + " of " + item.numberOfPallets
               )
             )
           )
-        );
-      }
-    })
-  );
-
+        )
+      );
+    }
+  });
   return React.createElement(ReactPDF.Document, null, pages);
 };
 

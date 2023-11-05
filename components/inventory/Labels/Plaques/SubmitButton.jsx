@@ -16,11 +16,14 @@ const SubmitButton = ({ definedStops, setDefinedStops, setNumberOfStops }) => {
 
   const generateImage = async (textToGenerate) => {
     try {
-      await axios.post(
+      let result = await axios.post(
         process.env.NEXT_PUBLIC_ENVIRONMENT === "development"
           ? `/api/generateImage/${textToGenerate}`
           : `https://fgftags.com/api/generateImage/${textToGenerate}`
       );
+      if (result.status === 200) {
+        console.log("Image generated successfully for", textToGenerate);
+      }
     } catch (error) {
       console.error(`Error generating image for ${textToGenerate}:`, error);
     }
@@ -50,7 +53,7 @@ const SubmitButton = ({ definedStops, setDefinedStops, setNumberOfStops }) => {
 
     try {
       setLoading(true);
-      const response = await axios.post(
+      let response = await axios.post(
         process.env.NEXT_PUBLIC_ENVIRONMENT === "development"
           ? `/api/stops/stops`
           : "https://fgftags.com/api/stops",
@@ -62,10 +65,12 @@ const SubmitButton = ({ definedStops, setDefinedStops, setNumberOfStops }) => {
           },
         }
       );
-      const pdfBlob = new Blob([response.data], { type: "application/pdf" });
-      const pdfUrl = URL.createObjectURL(pdfBlob);
 
-      setPdfData(pdfUrl);
+      if (response) {
+        const pdfBlob = new Blob([response.data], { type: "application/pdf" });
+        const pdfUrl = URL.createObjectURL(pdfBlob);
+        setPdfData(pdfUrl);
+      }
     } catch (error) {
       console.log(error);
     } finally {
