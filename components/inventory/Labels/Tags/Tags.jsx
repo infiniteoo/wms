@@ -16,8 +16,8 @@ const Tags = () => {
   const [lpn, setLPN] = useState("");
   const [lotNumber, setLotNumber] = useState("");
   const [itemNumber, setItemNumber] = useState("");
-  /*  const [expirationDate, setExpirationDate] = useState(new Date()); // Initialize with a date
-  const [manufacturingDate, setManufacturingDate] = useState(new Date()); // Initialize with a date */
+  const [expirationDate, setExpirationDate] = useState(new Date()); // Initialize with a date
+  const [manufacturingDate, setManufacturingDate] = useState(new Date()); // Initialize with a date
   const [quantity, setQuantity] = useState("");
   const [description, setDescription] = useState("");
 
@@ -30,29 +30,29 @@ const Tags = () => {
   const styles = StyleSheet.create({
     page: {
       flexDirection: "row",
-      borderWidth: 2,
-      borderStyle: "solid",
-      borderColor: "black",
     },
     column: {
       width: "100%",
-      padding: 20,
+      padding: 5,
       backgroundColor: "#f0f0f0",
     },
     logo: {
       width: 80,
       height: 40,
-      marginBottom: 20,
+      marginBottom: 7,
     },
     title: {
-      fontSize: 48,
-      textAlign: "center",
+      fontSize: 20,
+      textAlign: "right",
+      marginBottom: 5,
+    },
+    lpn: {
+      fontSize: 18,
+      textAlign: "left",
       marginBottom: 2,
     },
     subtitle: {
-      fontSize: 10,
-      textAlign: "center",
-      marginBottom: 10,
+      fontSize: 8,
     },
     sectionTitle: {
       fontSize: 10,
@@ -62,10 +62,11 @@ const Tags = () => {
     },
     text: {
       fontSize: 10,
+      marginBottom: 3,
     },
     grid: {
       display: "flex",
-      flexDirection: "row",
+      flexDirection: "column",
       flexWrap: "wrap",
       justifyContent: "space-between",
     },
@@ -83,33 +84,59 @@ const Tags = () => {
   });
   return (
     <div className="paperwork-container flex flex-row ml-2 mt-3 justify-left w-screen">
-      <div className="left-column h-100 border-gray-400 border-xl border-2 text-center w-40 p-2">
-        <h2 className="font-bold">Enter Tag Details</h2>
+      <div className="left-column h-100 border-gray-400 border-xl border-2 text-center w-1/3 p-2">
         <form>
-          <div className="mb-3">
-            <label htmlFor="lpn">LPN:</label>
-            <input
-              type="text"
-              id="lpn"
-              value={lpn}
-              onChange={(e) => setLPN(e.target.value)}
-            />
+          <div className="flex flex-row">
+            <div className="w-1/2">
+              <label htmlFor="lpn">LPN:</label>
+              <input
+                type="text"
+                id="lpn"
+                value={lpn}
+                onChange={(e) => setLPN(e.target.value)}
+              />
+              <label htmlFor="lotNumber">Lot Number:</label>
+              <input
+                type="text"
+                id="lotNumber"
+                value={lotNumber}
+                onChange={(e) => setLotNumber(e.target.value)}
+              />
+              <label htmlFor="itemNumber">Item Number:</label>
+              <input
+                type="text"
+                id="itemNumber"
+                value={itemNumber}
+                onChange={(e) => setItemNumber(e.target.value)}
+              />
+            </div>
+            <div className="w-1/2 mx-3">
+              <label htmlFor="expirationDate">Expiration Date:</label>
+              <DatePicker
+                id="expirationDate"
+                selected={expirationDate}
+                onChange={(date) => handleDateChange(date, setExpirationDate)}
+                style={{ width: "100%" }}
+              />
+              <label htmlFor="manufacturingDate">Manufacturing Date:</label>
+              <DatePicker
+                id="manufacturingDate"
+                selected={manufacturingDate}
+                onChange={(date) =>
+                  handleDateChange(date, setManufacturingDate)
+                }
+              />
+              <label htmlFor="quantity">Quantity:</label>
+              <input
+                type="text"
+                id="quantity"
+                value={quantity}
+                onChange={(e) => setQuantity(e.target.value)}
+              />
+            </div>
           </div>
           <div className="mb-3">
-            <label htmlFor="lotNumber">Lot Number:</label>
-            <input
-              type="text"
-              id="lotNumber"
-              value={lotNumber}
-              onChange={(e) => setLotNumber(e.target.value)}
-            />
-            <label htmlFor="itemNumber">Item Number:</label>
-            <input
-              type="text"
-              id="itemNumber"
-              value={itemNumber}
-              onChange={(e) => setItemNumber(e.target.value)}
-            />
+            {" "}
             <label htmlFor="description">Description:</label>
             <input
               type="text"
@@ -118,72 +145,91 @@ const Tags = () => {
               onChange={(e) => setDescription(e.target.value)}
             />
           </div>
-          <div className="mb-3">
-            {/*  <label htmlFor="expirationDate">Expiration Date:</label>
-              <DatePicker
-              id="expirationDate"
-              selected={expirationDate}
-              onChange={(date) => handleDateChange(date, setExpirationDate)}
-            /> */}
-          </div>
-          <div className="mb-3">
-            {/* <label htmlFor="manufacturingDate">Manufacturing Date:</label>
-             <DatePicker
-              id="manufacturingDate"
-              selected={manufacturingDate}
-              onChange={(date) => handleDateChange(date, setManufacturingDate)}
-            /> */}
-          </div>
-          <div className="mb-3">
-            <label htmlFor="quantity">Quantity:</label>
-            <input
-              type="text"
-              id="quantity"
-              value={quantity}
-              onChange={(e) => setQuantity(e.target.value)}
-            />
-          </div>
+
+          <div className="mb-3"></div>
+          <div className="mb-3"></div>
         </form>
       </div>
 
-      <div className="w-full ml-2">
+      <div className="w-2/3 ml-2">
         <PDFViewer width="100%" height={500}>
           <Document>
             <Page size="ID1" style={styles.page} orientation="landscape">
               <View style={styles.column}>
-                <View style={styles.grid}>
-                  <View style={{ display: "flex", flexDirection: "row" }}>
-                    <Text style={styles.text}>LPN:</Text>
-                    <Text style={styles.text}> {lpn}</Text>
-                  </View>
-                  <Image
-                    style={styles.logo}
-                    src={{
-                      uri: "https://xtvcfdhxsmjophktihxa.supabase.co/storage/v1/object/public/barcodes/353535.png",
-                    }}
-                  />
+                <View
+                  style={{
+                    width: "100%",
+                    display: "flex",
+                    flexDirection: "row",
 
-                  <Text style={styles.text}>Lot Number: {lotNumber}</Text>
-                  <View style={{ width: "50%" }}></View>
+                    justifyContent: "space-between",
+                  }}
+                >
+                  <View style={{ display: "flex", flexDirection: "column" }}>
+                    <View
+                      style={{
+                        display: "flex",
+                        flexDirection: "row",
+                        textAlign: "left",
+                        justifyContent: "left",
+                      }}
+                    >
+                      <Text style={styles.lpn}> {lpn}</Text>
+                    </View>
+                    <Image
+                      style={styles.logo}
+                      src={{
+                        uri: "https://xtvcfdhxsmjophktihxa.supabase.co/storage/v1/object/public/barcodes/353535.png",
+                      }}
+                    />
+                  </View>
+
+                  <View
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      width: "50%",
+                      textAlign: "right",
+                    }}
+                  >
+                    <Text style={styles.title}>{description}</Text>
+                  </View>
                 </View>
 
                 <View style={styles.grid}>
-                  <View>
-                    <View style={{ width: "50%", marginBottom: 10 }}>
-                      <Text style={styles.text}>Item: {itemNumber}</Text>
-                      <Text style={styles.text}>Quantity: {quantity}</Text>
-                      <Text style={styles.text}>Lot Number: {lotNumber}</Text>
+                  <View style={{ display: "flex", flexDirection: "row" }}>
+                    <View
+                      style={{
+                        width: "50%",
+
+                        display: "flex",
+                        flexDirection: "column",
+                      }}
+                    >
+                      <Text style={styles.subtitle}>Lot Number: </Text>
+                      <Text style={styles.text}>{lotNumber}</Text>
+                      <Text style={styles.subtitle}>Item:</Text>
+                      <Text style={styles.text}>{itemNumber}</Text>
+                      <Text style={styles.subtitle}>Quantity: </Text>
+                      <Text style={styles.text}>{quantity}</Text>
                     </View>
-                    <View style={{ width: "50%", marginBottom: 10 }}>
+                    <View
+                      style={{
+                        width: "50%",
+                        justifyContent: "right",
+                        textAlign: "right",
+                        display: "flex",
+                        flexDirection: "col",
+                      }}
+                    >
+                      <Text style={styles.subtitle}>Manufactured Date:</Text>
                       <Text style={styles.text}>
-                        Description: {description}
+                        {manufacturingDate.toDateString()}
                       </Text>
-                      {/*  <Text style={styles.text}>
-                        Expiration Date: {expirationDate}
-                      </Text>
+                      <Text style={styles.subtitle}>Expiration Date:</Text>
                       <Text style={styles.text}>
-                        Manufactured Date: {manufacturingDate}
-                      </Text> */}
+                        {expirationDate.toDateString()}
+                      </Text>
                     </View>
                   </View>
                 </View>
