@@ -168,14 +168,7 @@ const Tags = () => {
               />
             </div>
             <div className="w-1/2 mx-3">
-              <label htmlFor="expirationDate">Expiration Date:</label>
-              <DatePicker
-                id="expirationDate"
-                selected={expirationDate}
-                onChange={(date) => handleDateChange(date, setExpirationDate)}
-                style={{ width: "100%" }}
-              />
-              <label htmlFor="manufacturingDate">Manufacturing Date:</label>
+              <label htmlFor="manufacturingDate">Manufactured:</label>
               <DatePicker
                 id="manufacturingDate"
                 selected={manufacturingDate}
@@ -183,6 +176,14 @@ const Tags = () => {
                   handleDateChange(date, setManufacturingDate)
                 }
               />
+              <label htmlFor="expirationDate">Expiration:</label>
+              <DatePicker
+                id="expirationDate"
+                selected={expirationDate}
+                onChange={(date) => handleDateChange(date, setExpirationDate)}
+                style={{ width: "100%" }}
+              />
+
               <label htmlFor="quantity">Quantity:</label>
               <input
                 type="text"
@@ -210,7 +211,7 @@ const Tags = () => {
       </div>
 
       <div className="w-2/3 ml-2">
-        {formComplete && (
+        {formComplete ? (
           <PDFViewer width="100%" height={500}>
             <Document>
               <Page size="ID1" style={styles.page} orientation="landscape">
@@ -294,6 +295,16 @@ const Tags = () => {
                   </View>
                 </View>
               </Page>
+            </Document>
+          </PDFViewer>
+        ) : (
+          <PDFViewer width="100%" height={500}>
+            <Document>
+              <Page
+                size="ID1"
+                style={styles.page}
+                orientation="landscape"
+              ></Page>
             </Document>
           </PDFViewer>
         )}

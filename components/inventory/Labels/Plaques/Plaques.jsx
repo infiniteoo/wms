@@ -48,7 +48,7 @@ function App() {
   }, [numberOfStops]);
 
   return (
-    <main className="flex h-full flex-col items-center justify-between ">
+    <main className="flex h-full flex-col items-center justify-between w-screen  ">
       <div className="z-10 max-w-7xl w-full items-center justify-between font-mono text-sm lg:flex flex-col">
         {definedStops.map((stop) => (
           <div
