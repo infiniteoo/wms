@@ -9,31 +9,21 @@ import {
   PDFViewer,
   Image,
 } from "@react-pdf/renderer";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 const Tags = () => {
   const [lpn, setLPN] = useState("");
   const [lotNumber, setLotNumber] = useState("");
   const [itemNumber, setItemNumber] = useState("");
-  const [expirationDate, setExpirationDate] = useState("");
-  const [manufacturingDate, setManufacturingDate] = useState("");
+  /*  const [expirationDate, setExpirationDate] = useState(new Date()); // Initialize with a date
+  const [manufacturingDate, setManufacturingDate] = useState(new Date()); // Initialize with a date */
   const [quantity, setQuantity] = useState("");
   const [description, setDescription] = useState("");
 
-  useEffect(() => {
-    const fetchCompletedOrders = async () => {
-      const { data, error } = await supabase
-        .from("outbound_orders")
-        .select("*")
-        .eq("completed", true)
-        .is("archived", false);
-
-      if (error) console.log("error", error);
-      if (data) setCompletedOrders(data);
-      console.log("fetched data", data);
-    };
-
-    fetchCompletedOrders();
-  }, []);
+  const handleDateChange = (date, stateSetter) => {
+    stateSetter(date);
+  };
 
   const [selectedOrder, setSelectedOrder] = useState(null);
   const [completedOrders, setCompletedOrders] = useState(null);
@@ -60,18 +50,18 @@ const Tags = () => {
       marginBottom: 2,
     },
     subtitle: {
-      fontSize: 16,
+      fontSize: 10,
       textAlign: "center",
       marginBottom: 10,
     },
     sectionTitle: {
-      fontSize: 18,
+      fontSize: 10,
       fontWeight: "bold",
       marginTop: 10,
       marginBottom: 5,
     },
     text: {
-      fontSize: 12,
+      fontSize: 10,
     },
     grid: {
       display: "flex",
@@ -93,7 +83,7 @@ const Tags = () => {
   });
   return (
     <div className="paperwork-container flex flex-row ml-2 mt-3 justify-left w-screen">
-      <div className="left-column h-100 border-gray-400 border-xl border-2 text-center w-100 p-2">
+      <div className="left-column h-100 border-gray-400 border-xl border-2 text-center w-40 p-2">
         <h2 className="font-bold">Enter Tag Details</h2>
         <form>
           <div className="mb-3">
@@ -129,22 +119,20 @@ const Tags = () => {
             />
           </div>
           <div className="mb-3">
-            <label htmlFor="expirationDate">Expiration Date:</label>
-            <input
-              type="text"
+            {/*  <label htmlFor="expirationDate">Expiration Date:</label>
+              <DatePicker
               id="expirationDate"
-              value={expirationDate}
-              onChange={(e) => setExpirationDate(e.target.value)}
-            />
+              selected={expirationDate}
+              onChange={(date) => handleDateChange(date, setExpirationDate)}
+            /> */}
           </div>
           <div className="mb-3">
-            <label htmlFor="manufacturingDate">Manufacturing Date:</label>
-            <input
-              type="text"
+            {/* <label htmlFor="manufacturingDate">Manufacturing Date:</label>
+             <DatePicker
               id="manufacturingDate"
-              value={manufacturingDate}
-              onChange={(e) => setManufacturingDate(e.target.value)}
-            />
+              selected={manufacturingDate}
+              onChange={(date) => handleDateChange(date, setManufacturingDate)}
+            /> */}
           </div>
           <div className="mb-3">
             <label htmlFor="quantity">Quantity:</label>
@@ -161,18 +149,21 @@ const Tags = () => {
       <div className="w-full ml-2">
         <PDFViewer width="100%" height={500}>
           <Document>
-            <Page size="ID1" style={styles.page}>
+            <Page size="ID1" style={styles.page} orientation="landscape">
               <View style={styles.column}>
                 <View style={styles.grid}>
-                  <View style={{ width: "50%" }}>
-                    <Text style={styles.text}>LPN: {lpn}</Text>
-                    <Image
-                      style={styles.logo}
-                      src="https://xtvcfdhxsmjophktihxa.supabase.co/storage/v1/object/sign/barcodes/102523.png?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJiYXJjb2Rlcy8xMDI1MjMucG5nIiwiaWF0IjoxNjk5MTQ4OTkwLCJleHAiOjE3MzA2ODQ5OTB9.7KVejWtBA6Y3RqJ0DXDh0eEY2METR6HW8R-8rqW6dK0&t=2023-11-05T01%3A49%3A50.161Z"
-                    />
-
-                    <Text style={styles.text}>Order ID: {lotNumber}</Text>
+                  <View style={{ display: "flex", flexDirection: "row" }}>
+                    <Text style={styles.text}>LPN:</Text>
+                    <Text style={styles.text}> {lpn}</Text>
                   </View>
+                  <Image
+                    style={styles.logo}
+                    src={{
+                      uri: "https://xtvcfdhxsmjophktihxa.supabase.co/storage/v1/object/public/barcodes/353535.png",
+                    }}
+                  />
+
+                  <Text style={styles.text}>Lot Number: {lotNumber}</Text>
                   <View style={{ width: "50%" }}></View>
                 </View>
 
@@ -187,12 +178,12 @@ const Tags = () => {
                       <Text style={styles.text}>
                         Description: {description}
                       </Text>
-                      <Text style={styles.text}>
+                      {/*  <Text style={styles.text}>
                         Expiration Date: {expirationDate}
                       </Text>
                       <Text style={styles.text}>
                         Manufactured Date: {manufacturingDate}
-                      </Text>
+                      </Text> */}
                     </View>
                   </View>
                 </View>
