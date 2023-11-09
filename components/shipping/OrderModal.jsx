@@ -17,6 +17,7 @@ const OrderModal = ({ isOpen, closeModal, onSave, selectedRows }) => {
     description: "",
     manufacturing_date: "",
     expiration_date: "",
+    processed: false,
   });
 
   const handleOrderLineChange = (e) => {
@@ -67,6 +68,7 @@ const OrderModal = ({ isOpen, closeModal, onSave, selectedRows }) => {
         description: "",
         manufacturing_date: "",
         expiration_date: "",
+        processed: false,
       });
       console.log("order lines: ", orderLines);
     }
