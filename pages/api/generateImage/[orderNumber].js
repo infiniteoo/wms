@@ -1,4 +1,4 @@
-import barcodeGenerator from "./barcodeGenerator.js";
+import barcodeGenerator from "../../../components/inventory/Labels/Plaques/barcodeGenerator.js";
 
 export default function handler(req, res) {
   const { orderNumber } = req.query;
@@ -17,7 +17,3 @@ export default function handler(req, res) {
     res.status(500).json({ success: false, error: "Internal server error" });
   }
 }
-
-export const config = {
-  type: "experimental-background",
-};

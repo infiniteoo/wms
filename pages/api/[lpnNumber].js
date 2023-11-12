@@ -58,7 +58,3 @@ export default async function handler(req, res) {
     res.status(500).send("Error generating PDF");
   }
 }
-
-export const config = {
-  type: "experimental-background",
-};

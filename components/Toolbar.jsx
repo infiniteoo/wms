@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "./Toolbar.css"; // Import your CSS file for custom styling
 import Config from "./config/Config";
 import Inventory from "./inventory/Inventory";
@@ -10,6 +10,15 @@ import { UserButton } from "@clerk/nextjs";
 
 const Toolbar = ({}) => {
   const [activeTab, setActiveTab] = useState("INVENTORY");
+
+  useEffect(() => {
+    const fetchHello = async () => {
+      const response = await fetch("/api/hello/hello");
+      const data = await response.json();
+      console.log(data);
+    };
+    fetchHello();
+  }, []);
 
   const handleTabClick = (tabName) => {
     setActiveTab(tabName);
