@@ -1,4 +1,4 @@
-import barcodeGenerator from "../../../components/inventory/Labels/Plaques/barcodeGenerator.js";
+import barcodeGenerator from "./barcodeGenerator.js";
 
 export default function handler(req, res) {
   const { orderNumber } = req.query;
