@@ -1,9 +1,9 @@
 import barcodeGenerator from "../../../components/inventory/Labels/Plaques/barcodeGenerator.js";
 
-export default function handler(req, res) {
+export default async function handler(req, res) {
   const { orderNumber } = req.query;
   try {
-    let completed = barcodeGenerator(orderNumber);
+    let completed = await barcodeGenerator(orderNumber);
     if (completed) {
       console.log("completed", completed);
       res.status(200).json({ success: true });
