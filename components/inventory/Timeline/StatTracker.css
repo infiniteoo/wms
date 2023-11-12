@@ -8,12 +8,10 @@
   color: white;
   padding: 10px;
 
-  /* Add any other styling you want for the StatTracker here */
+
 }
 
 .stat-item {
   /* display: inline-block; */
   margin-right: 20px;
 }
-
-/* Add more styling for stat items as needed */
