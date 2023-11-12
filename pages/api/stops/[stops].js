@@ -1,6 +1,6 @@
 const createTemplate = require("../../../components/inventory/Labels/Plaques/manual-template.jsx");
 
-export default async (req, res) => {
+export default async function handler(req, res) {
   try {
     const result = await createTemplate(req.body);
     if (result) {
@@ -16,4 +16,4 @@ export default async (req, res) => {
     console.error("Error: Internal server error", error);
     res.status(500).json({ error: "Internal server error" });
   }
-};
+}

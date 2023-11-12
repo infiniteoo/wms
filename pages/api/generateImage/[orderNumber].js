@@ -1,6 +1,6 @@
 import barcodeGenerator from "../../../components/inventory/Labels/Plaques/barcodeGenerator.js";
 
-export default (req, res) => {
+export default function handler(req, res) {
   const { orderNumber } = req.query;
   try {
     let completed = barcodeGenerator(orderNumber);
@@ -16,4 +16,4 @@ export default (req, res) => {
     console.error("Error during barcode generation:", error);
     res.status(500).json({ success: false, error: "Internal server error" });
   }
-};
+}

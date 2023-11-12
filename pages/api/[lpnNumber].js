@@ -9,7 +9,7 @@ import {
   Image,
 } from "@react-pdf/renderer";
 
-export default async (req, res) => {
+export default async function handler(req, res) {
   const { lpnNumber } = req.query;
   const barcodeURL = `https://bwipjs-api.metafloor.com/?bcid=code128&text=${lpnNumber}&scale=2`;
 
@@ -57,4 +57,4 @@ export default async (req, res) => {
     console.error("Error generating PDF:", error);
     res.status(500).send("Error generating PDF");
   }
-};
+}
