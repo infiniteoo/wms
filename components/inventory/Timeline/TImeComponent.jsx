@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-function TimeComponent() {
+const TimeComponent = () => {
   const [currentDateTime, setCurrentDateTime] = useState(new Date());
 
   useEffect(() => {
@@ -25,6 +25,6 @@ function TimeComponent() {
       <p className="text-sm">{formattedDate}</p>
     </div>
   );
-}
+};
 
 export default TimeComponent;
