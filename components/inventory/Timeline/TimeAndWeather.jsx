@@ -1,5 +1,5 @@
 import React from "react";
-import TimeComponent from "./TimeComponent";
+import TimeComponent from "./TimeComponent.jsx";
 import WeatherComponent from "./WeatherComponent";
 
 const TimeAndWeather = () => {
