@@ -106,7 +106,7 @@ const Tags = () => {
     let result = await axios.post(
       process.env.NEXT_PUBLIC_ENVIRONMENT === "development"
         ? `/api/generateImage/${lpn}`
-        : `https://fgftags.com/api/generateImage/${lpn}`
+        : `https://greatblue.netlify.app/api/generateImage/${lpn}`
     );
     if (result.status === 200) {
       setFormComplete(true);

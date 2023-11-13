@@ -19,7 +19,7 @@ const SubmitButton = ({ definedStops, setDefinedStops, setNumberOfStops }) => {
       let result = await axios.post(
         process.env.NEXT_PUBLIC_ENVIRONMENT === "development"
           ? `/api/generateImage/${textToGenerate}`
-          : `https://fgftags.com/api/generateImage/${textToGenerate}`
+          : `https://greatblue.netlify.app/api/generateImage/${textToGenerate}`
       );
       if (result.status === 200) {
         console.log("Image generated successfully for", textToGenerate);
@@ -56,7 +56,7 @@ const SubmitButton = ({ definedStops, setDefinedStops, setNumberOfStops }) => {
       let response = await axios.post(
         process.env.NEXT_PUBLIC_ENVIRONMENT === "development"
           ? `/api/stops/stops`
-          : "https://fgftags.com/api/stops",
+          : "https://greatblue.netlify.app/api/stops/stops",
         parsedData,
         {
           responseType: "blob",

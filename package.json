@@ -33,6 +33,7 @@
     "interactjs": "^1.10.19",
     "jsbarcode": "^3.11.5",
     "moment": "^2.29.4",
+    "netlify-cli": "^17.2.2",
     "next": "13.5.5",
     "node-fetch": "^3.3.2",
     "prop-types": "^15.8.1",
