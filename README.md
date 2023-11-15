@@ -76,11 +76,11 @@ A filterable inventory management database:
 
 Generate pallet labels with scannable LPN barcodes along with other pallet stats:
 
-  <img src="./public/db-14.png" alt="Logo" width="100%" height="100%">
+  <img src="./public/db-22.png" alt="Logo" width="100%" height="100%">
 
 Generate professional pallet tags to help organize your outbound loads. Includes barcodes for item/quantity/dates/LPN:
 
-  <img src="./public/db-15.png" alt="Logo" width="100%" height="100%">
+  <img src="./public/db-21.png" alt="Logo" width="100%" height="100%">
 
 The door activity monitor keeps track of which loads are being handled in your warehouse:
 
