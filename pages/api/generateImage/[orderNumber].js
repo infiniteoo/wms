@@ -2,6 +2,10 @@ import barcodeGenerator from "../../../components/inventory/Labels/Plaques/barco
 
 export default async function handler(req, res) {
   const { orderNumber } = req.query;
+  console.log("orderNumber", orderNumber);
+  console.log("hello from generateImage handler");
+  console.log("req", req);
+
   /* try { */
   let completed = barcodeGenerator(orderNumber);
   if (completed) {
