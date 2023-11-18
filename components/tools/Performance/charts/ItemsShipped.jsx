@@ -38,7 +38,7 @@ ChartJS.register(
   RadialLinearScale
 );
 
-const itemsShipped = ({ data, userObject, isInModal }) => {
+const ItemsShipped = ({ data, userObject, isInModal }) => {
   const [chartData, setChartData] = useState(null);
   const [dateRange, setDateRange] = useState("");
 
@@ -128,4 +128,4 @@ const itemsShipped = ({ data, userObject, isInModal }) => {
   );
 };
 
-export default memo(itemsShipped);
+export default memo(ItemsShipped);
