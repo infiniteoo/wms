@@ -2,3 +2,32 @@
 @tailwind components;
 @tailwind utilities;
 
+.chart-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    z-index: 50;
+}
+
+.chart-card {
+    position: relative;
+    z-index: 50;
+    transition: all 0.3s ease-in-out;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.1);
+    border: 1px solid #ddd;
+    cursor: pointer;
+}
+
+.chart-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 12px 24px 0 rgba(0, 0, 0, 0.2);
+}
+
+.section-title {
+    padding-top: 100px;
+    /* Adjust this value to the height of your header */
+    margin-top: -100px;
+    /* This should be the negative value of padding-top */
+}
