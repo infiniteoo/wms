@@ -1,5 +1,7 @@
 const path = require("path");
 const XLSX = require("xlsx");
+import zlib from "zlib";
+import compression from "compression";
 
 export const config = {
   api: {
@@ -142,5 +144,10 @@ export default async function (req, res) {
     };
   });
   console.log("returning formatted data");
-  res.json(formattedData);
+  /* res.json(formattedData); */
+  const compressedData = zlib.gzipSync(JSON.stringify(formattedData));
+  res.setHeader("Content-Type", "application/json");
+  res.setHeader("Content-Encoding", "gzip");
+  res.setHeader("Content-Length", compressedData.length);
+  res.end(compressedData);
 }
