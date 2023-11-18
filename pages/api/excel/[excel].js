@@ -3,8 +3,9 @@ const XLSX = require("xlsx");
 
 export default async function (req, res) {
   console.log("entered /api/excel");
-  const filePath = path.join("./pages/api/excel/", "/Inventory.csv");
+  const filePath = path.join(process.cwd(), "pages/api/excel/Inventory.csv");
   console.log("filepath created: ", filePath);
+
   const workbook = XLSX.readFile(filePath);
   console.log("workbook created: ");
 
