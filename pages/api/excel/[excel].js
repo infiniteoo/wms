@@ -1,6 +1,12 @@
 const path = require("path");
 const XLSX = require("xlsx");
 
+export const config = {
+  api: {
+    responseLimit: false,
+  },
+};
+
 export default async function (req, res) {
   console.log("entered /api/excel");
   const filePath = path.join(process.cwd(), "pages/api/excel/Inventory.csv");
