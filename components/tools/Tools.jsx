@@ -4,6 +4,7 @@ import DockActivity from "./DockActivity/DockActivity";
 import Appointments from "./Appointments/Appointments";
 import Schedule from "./Schedule/Schedule";
 import Paperwork from "./Paperwork/Paperwork";
+import Performance from "./Performance/Performance";
 
 const Tools = ({}) => {
   const [activeTab, setActiveTab] = useState("dock_activity");
@@ -22,8 +23,8 @@ const Tools = ({}) => {
         return <Schedule />;
       case "paperwork":
         return <Paperwork />;
-      case "tab5":
-        return null;
+      case "performance":
+        return <Performance />;
       default:
         return;
     }
@@ -59,6 +60,12 @@ const Tools = ({}) => {
             onClick={() => handleTabClick("paperwork")}
           >
             paperwork
+          </li>
+          <li
+            className={activeTab === "performance" ? "active" : ""}
+            onClick={() => handleTabClick("performance")}
+          >
+            performance
           </li>
         </ul>
       </div>
