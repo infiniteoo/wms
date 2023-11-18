@@ -65,13 +65,12 @@ Informative dashboards highlighting various statistics:
 A sleek and easily-implemented complete authentication system provided by Clerk:
 
   <img src="./public/db-11.png" alt="Logo" width="100%" height="100%">
-  
-A production timeline monitor to keep track of how many units are being produced eventually en route to your warehouse:
-  
-  <img src="./public/db-12.png" alt="Logo" width="100%" height="100%">
-  
+
+An employee analysis tool rich with data and a ranking system:
+<img src="./public/db-23.png" alt="Logo" width="100%" height="100%">
+
 A filterable inventory management database:
-  
+
   <img src="./public/db-13.png" alt="Logo" width="100%" height="100%">
 
 Generate pallet labels with scannable LPN barcodes along with other pallet stats:
@@ -99,6 +98,9 @@ Once a truck is loaded and marked complete, the driver's sign-out paperwork will
 
 Customize your dock door names, colors and total amount:
 <img src="./public/db-20.png" alt="Logo" width="100%" height="100%">
+A production timeline monitor to keep track of how many units are being produced eventually en route to your warehouse:
+
+  <img src="./public/db-12.png" alt="Logo" width="100%" height="100%">
 
 ## Getting Started
 
