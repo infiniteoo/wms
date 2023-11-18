@@ -1,0 +1,3 @@
+[build]
+  functions = "./pages/api/**/*"
+  command = "npm install && npm run build" 
