@@ -1,5 +1,5 @@
 [build]
-  functions = "./pages/api/**/*"
+ 
   command = "npm install && npm run build" 
 
   [context.production]
@@ -12,6 +12,7 @@
 
 [functions]
   external_node_modules = ["sharp"]
+  included_files = ["node_modules/sharp/**/*"]
 
 [[plugins]]
   package = "@netlify/plugin-nextjs"
