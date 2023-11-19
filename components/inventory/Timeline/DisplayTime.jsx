@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 
-const TimeComponent = () => {
+const DisplayTime = () => {
   const [currentDateTime, setCurrentDateTime] = useState(new Date());
 
   useEffect(() => {
@@ -27,4 +27,4 @@ const TimeComponent = () => {
   );
 };
 
-export default TimeComponent;
+export default DisplayTime;
