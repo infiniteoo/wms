@@ -31,25 +31,27 @@ function WeatherComponent({ apiKey, city }) {
 
   return (
     <div className="flex flex-col">
-      <div className="weather-component flex flex-row text-sm">
-        <img
-          width="auto"
-          className=""
-          src={`http://openweathermap.org/img/wn/${weatherIcon}.png`}
-          alt="Weather Icon"
-        />
-        <div className="flex flex-col">
+      <div className="weather-component flex flex-row text-sm w-100">
+        <div className="flex flex-wrap justify-around w-1/2">
+          <img
+            width="auto"
+            className=""
+            src={`http://openweathermap.org/img/wn/${weatherIcon}.png`}
+            alt="Weather Icon"
+          />
           <p className="text-center text-sm">
             {Math.round(temperatureFahrenheit)}°F
           </p>
           <p className="text-sm">{weatherDescription}</p>
         </div>
-        <div className="flex flex-col ml-2">
-          <p className="text-sm">High: {Math.round(highTempFahrenheit)}°F</p>
-          <p className="text-sm ml-0.5">
-            {" "}
-            Low: {Math.round(lowTempFahrenheit)}°F
+        <div className="flex flex-col ml-2 w-1/2">
+          <p className="text-sm text-right">
+            High: {Math.round(highTempFahrenheit)} °F
           </p>
+          <p className="text-sm text-right">
+            Low: {Math.round(lowTempFahrenheit)} °F
+          </p>
+          <p className="text-sm ml-0.5"> </p>
           <p className="text-sm border-top border-t">{city}, Idaho</p>
         </div>
       </div>

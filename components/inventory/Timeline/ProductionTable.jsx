@@ -125,7 +125,7 @@ const ProductionTable = ({
 
   const tables = [dateAndTimeline, timelineA, timelineB, timelineC];
   return (
-    <div className="justify-around flex flex-col w-screen text-sm">
+    <div className="justify-around flex flex-col w-full text-sm overflow-x-auto">
       <StatTracker
         timelineA={timelineA}
         timelineB={timelineB}
@@ -135,14 +135,11 @@ const ProductionTable = ({
         unitsThisHour={unitsThisHour}
         timelineData={timelineData}
       />
-      <table className=" table-fixed rounded-lg shadow-lg w-screen">
+      <table className="table-fixed rounded-lg shadow-lg w-full">
         <tbody>
           <tr>
-            <td className="w-1/12 p-2 border-r" style={{ width: "10%" }}>
-              <table
-                className="w-1/12 min-h-[400px] rounded-lg shadow-lg"
-                style={{ width: "10%" }}
-              >
+            <td className=" p-2 overflow-hidden" style={{ width: "10%" }}>
+              <table className="w-full min-h-[400px] rounded-lg shadow-lg">
                 <thead>
                   <tr>
                     <th className="px-2 py-1 text-left bg-blue-500 text-white top-0 sticky ">
@@ -175,8 +172,8 @@ const ProductionTable = ({
                 </tbody>
               </table>
             </td>
-            <td className=" p-2 border-r" style={{ width: "25%" }}>
-              <table className="min-h-[400px] rounded-lg shadow-lg">
+            <td className=" p-2 overflow-hidden" style={{ width: "25%" }}>
+              <table className="min-w-full min-h-[400px] rounded-lg shadow-lg">
                 <thead>
                   <tr>
                     <th className="px-2 py-1 text-left bg-green-500 text-white top-0 sticky ">
@@ -227,8 +224,11 @@ const ProductionTable = ({
                 </tbody>
               </table>
             </td>
-            <td className="p-2 border-r" style={{ width: "25%" }}>
-              <table className="table-fixed min-h-[400px] rounded-lg shadow-lg">
+            <td
+              className="p-2 border-r overflow-hidden"
+              style={{ width: "25%" }}
+            >
+              <table className="min-w-full min-h-[400px] rounded-lg shadow-lg">
                 <thead>
                   <tr>
                     <th className="px-2 py-1 text-left bg-orange-500 text-white top-0 sticky">
@@ -275,8 +275,11 @@ const ProductionTable = ({
                 </tbody>
               </table>
             </td>
-            <td className=" p-2 border-r" style={{ width: "25%" }}>
-              <table className="table-fixed min-h-[400px] rounded-lg shadow-lg">
+            <td
+              className="overflow-hidden p-2 border-r"
+              style={{ width: "25%" }}
+            >
+              <table className="min-w-full min-h-[400px] rounded-lg shadow-lg">
                 <thead>
                   <tr>
                     <th className="px-2 py-1 text-left bg-purple-500 text-white top-0 sticky ">

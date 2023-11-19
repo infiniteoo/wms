@@ -79,7 +79,7 @@ export default function Timeline() {
   };
 
   return (
-    <main className="text-sm flex w-screen mt-5 flex-col">
+    <main className="text-sm flex flex-col mt-1 overflow-x-auto">
       <DataReader
         setTimelineA={setTimelineA}
         setTimelineB={setTimelineB}
@@ -88,13 +88,17 @@ export default function Timeline() {
         timelineData={timelineData}
         fetchTimeline={fetchTimeline}
       />
-      <ProductionTable
-        timelineA={timelineA}
-        timelineB={timelineB}
-        timelineC={timelineC}
-        dateAndTimeline={dateAndTimeline}
-        timelineData={timelineData}
-      />
+      <div className="overflow-y-scroll max-h-[70vh]">
+        <ProductionTable
+          timelineA={timelineA}
+          timelineB={timelineB}
+          timelineC={timelineC}
+          dateAndTimeline={dateAndTimeline}
+          timelineData={timelineData}
+          // Responsive table classes
+          className="min-w-full divide-y divide-gray-200 sm:min-w-min"
+        />
+      </div>
     </main>
   );
 }

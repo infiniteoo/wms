@@ -13,15 +13,15 @@ const DisplayTime = () => {
 
   const formattedTime = currentDateTime.toLocaleTimeString();
   const formattedDate = currentDateTime.toLocaleDateString(undefined, {
-    weekday: "long",
+    weekday: "short",
     year: "numeric",
-    month: "long",
+    month: "short",
     day: "numeric",
   });
 
   return (
     <div>
-      <p className="text-sm font-bold">{formattedTime}</p>
+      <p className="text-xl font-bold">{formattedTime}</p>
       <p className="text-sm">{formattedDate}</p>
     </div>
   );
