@@ -60,7 +60,7 @@ const Performance = () => {
   return (
     <>
       {!loading ? (
-        <main className="flex min-h-screen flex-col justify-around relative z-50 bg-gray-200 text-black ">
+        <main className="flex mt-3 min-h-screen flex-col justify-around relative z-50 bg-gray-200 text-black ">
           {dataFinallyLoaded && (
             <DataDisplay data={data} userObject={userObject} />
           )}

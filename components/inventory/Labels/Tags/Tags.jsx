@@ -11,7 +11,7 @@ import {
 } from "@react-pdf/renderer";
 
 import "react-datepicker/dist/react-datepicker.css";
-import { styles } from "./Tags.js";
+import { styles } from "./Tags.styles.js";
 
 const Tags = () => {
   const [lpn, setLPN] = useState("");
@@ -77,11 +77,11 @@ const Tags = () => {
   };
 
   return (
-    <div className="paperwork-container flex flex-row ml-2 mt-3 justify-left w-screen">
+    <div className="paperwork-container flex flex-row ml-1 mt-3 w-full">
       <div className="left-column h-100 border-gray-400 border-xl border-2 text-center w-1/3 p-2">
         <form onSubmit={handleSubmit}>
           <div className="flex flex-row">
-            <div className="w-1/2">
+            <div className="w-2/3">
               <label htmlFor="lpn">LPN:</label>
               <input
                 type="text"
@@ -141,14 +141,16 @@ const Tags = () => {
               onChange={(e) => setDescription(e.target.value)}
             />
           </div>
-          <button type="submit">Generate</button>
-
-          <div className="mb-3"></div>
-          <div className="mb-3"></div>
+          <button
+            className="border-gray-300 border-2 p-2 rounded-xl w-1/2"
+            type="submit"
+          >
+            Generate
+          </button>
         </form>
       </div>
 
-      <div className="w-2/3 ml-2">
+      <div className="w-2/3">
         {formComplete ? (
           <PDFViewer width="100%" height={500}>
             <Document>

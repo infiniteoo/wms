@@ -44,11 +44,11 @@ function WeatherComponent({ apiKey, city }) {
           </p>
           <p className="text-sm">{weatherDescription}</p>
         </div>
-        <div className="flex flex-col ml-2 w-1/2">
-          <p className="text-sm text-right">
+        <div className="flex flex-col ml-1 w-1/2 pr-1">
+          <p className="text-sm text-center">
             High: {Math.round(highTempFahrenheit)} °F
           </p>
-          <p className="text-sm text-right">
+          <p className="text-sm text-center">
             Low: {Math.round(lowTempFahrenheit)} °F
           </p>
           <p className="text-sm ml-0.5"> </p>

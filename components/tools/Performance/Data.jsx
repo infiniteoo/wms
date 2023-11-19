@@ -41,7 +41,7 @@ const DataDisplay = ({ data, userObject }) => {
 
   return (
     <>
-      <div className="flex justify-around space-x-4 mb-4 mt-5">
+      <div className="flex justify-around space-x-4 mb-4 mt-1">
         <DateRange dateRange={dateRange} />
 
         <div></div>

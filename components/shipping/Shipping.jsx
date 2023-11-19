@@ -15,7 +15,7 @@ const Shipping = ({}) => {
   const renderTabContent = () => {
     switch (activeTab) {
       case "dashboard":
-        return <ShippingDashboard />;
+        return <ShippingDashboard setActiveTab={setActiveTab} />;
       case "orders":
         return <Orders />;
       case "driver check-in":
