@@ -79,7 +79,7 @@ const StatTracker = ({ timelineA, timelineB, timelineC, unitsThisHour }) => {
   }, [currentHour, unitsThisHour]);
 
   return (
-    <div className="stat-tracker flex flex-row justify-center border-3 border-white w-full">
+    <div className="stat-tracker flex flex-row justify-center border-3 border-white w-100">
       <div className="w-2/12">
         <TimeAndWeather />
       </div>
