@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import { supabase } from "../../../supabase";
+import { supabase } from "@/supabase";
 import Chart from "chart.js/auto";
 
-const InventoryTimeline = () => {
+const InventoryTimeline = ({ loaded, setLoaded }) => {
   const [activity, setActivity] = useState([]);
 
   useEffect(() => {
@@ -12,12 +12,13 @@ const InventoryTimeline = () => {
           .from("inventory")
           .select("*")
           .order("created_at", { ascending: true })
-          .limit(100);
+          .limit(75);
 
         if (error) {
           console.error(error);
         } else {
           setActivity(data);
+          setLoaded(loaded + 1);
         }
       } catch (error) {
         console.error(error);
@@ -49,7 +50,7 @@ const InventoryTimeline = () => {
             labels: Array.from({ length: 24 }, (_, i) => i),
             datasets: [
               {
-                label: "Activity Count",
+                label: "Database Activity (New Items Added)",
                 data: counts,
                 backgroundColor: "rgba(51, 102, 204, 0.6)",
                 borderColor: "rgba(51, 102, 204, 1)",

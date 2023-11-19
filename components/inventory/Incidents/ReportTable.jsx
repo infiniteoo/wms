@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { supabase } from "../../../supabase";
-import { useUser } from "@clerk/clerk-react";
 import ReportToolbar from "./ReportToolbar";
 import IncidentModal from "./IncidentModal";
 import DeleteConfirmationModal from "./ConfirmationModal";
@@ -15,7 +14,6 @@ const ReportTable = () => {
   const [selectedRows, setSelectedRows] = useState([]);
   const [searchTerm, setSearchTerm] = useState(""); // Add state for search term
   const [isOpen, setIsOpen] = useState(false);
-  const user = useUser();
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [itemToDelete, setItemToDelete] = useState(null);
   const [operators, setOperators] = useState([]);
@@ -33,7 +31,6 @@ const ReportTable = () => {
   };
 
   const generateRandomPoNumber = () => {
-    // Generate a random UUID
     const uuid = uuidv4();
 
     // Extract the first 10 characters from the UUID and remove hyphens
@@ -93,6 +90,7 @@ const ReportTable = () => {
         console.error(error);
       } else {
         setSelectedOperator("");
+
         // Update the local state to reflect the new status
         setInventory((inventory) =>
           inventory.map((item) => {
@@ -273,7 +271,7 @@ const ReportTable = () => {
   };
 
   const handleCheckboxChange = (event, rowItem) => {
-    event.stopPropagation(); // Prevent the click event from propagating to the row
+    event.stopPropagation();
     handleRowClick(rowItem);
   };
 
@@ -296,7 +294,7 @@ const ReportTable = () => {
   };
 
   return (
-    <div className="mt-8 border-orange-500 ml-2" style={{ width: "99%" }}>
+    <div className=" border-orange-500 ml-2" style={{ width: "99%" }}>
       <ReportToolbar
         inventory={inventory}
         setInventory={setInventory}
@@ -318,23 +316,14 @@ const ReportTable = () => {
           <table className="rounded-lg overflow-hidden text-sm w-full">
             <colgroup>
               <col style={{ width: "60px" }} />
-              {/* Adjust the width as needed */}
               <col style={{ width: "60px" }} />
-              {/* Adjust the width as needed */}
               <col style={{ width: "1000px" }} />
-              {/* Adjust the width as needed */}
               <col style={{ width: "100px" }} />
-              {/* Adjust the width as needed */}
               <col style={{ width: "100px" }} />
-              {/* Adjust the width as needed */}
               <col style={{ width: "100px" }} />
-              {/* Adjust the width as needed */}
               <col style={{ width: "100px" }} />
-              {/* Adjust the width as needed */}
               <col style={{ width: "120px" }} />
-              {/* Adjust the width as needed */}
               <col style={{ width: "160px" }} />
-              {/* Adjust the width as needed */}
             </colgroup>
             <thead className="bg-gray-800 text-white">
               <tr>
@@ -362,7 +351,7 @@ const ReportTable = () => {
                       ? "bg-gray-100"
                       : "hover:bg-gray-200"
                   }`}
-                  onClick={() => handleRowClick(item, index)} // Handle row click
+                  onClick={() => handleRowClick(item, index)}
                 >
                   <td className="py-2">
                     <input
@@ -378,12 +367,12 @@ const ReportTable = () => {
                   <td className="py-2 text-center">
                     {item.image ? (
                       <img
-                        src={item.image} // Use the URL from your data
+                        src={item.image}
                         alt="Thumbnail"
                         style={{ width: "50px", height: "50px" }}
                       />
                     ) : (
-                      "No Image" // Display text when there is no image
+                      "No Image"
                     )}
                   </td>
                   <td className="py-2 text-center">{item.description}</td>
@@ -394,7 +383,7 @@ const ReportTable = () => {
 
                   <td className="py-2 text-center">
                     {item.resolved === "Y" ? (
-                      item.resolved // Display the text value when the order is completed
+                      item.resolved
                     ) : (
                       <select
                         value={item.resolved || ""}
@@ -434,7 +423,7 @@ const ReportTable = () => {
         </div>
       )}
 
-      <div className="pagination text-center mt-10">
+      <div className="pagination text-center mt-3">
         {inventory && inventory.length > itemsPerPage && (
           <>
             {" "}

@@ -1,52 +1,13 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
+import { supabase } from "@/supabase";
 import "./OrderModal.css";
-import Datetime from "react-datetime";
+
 import "react-datetime/css/react-datetime.css";
 import moment from "moment";
-import { v4 as uuidv4 } from "uuid";
-import { supabase } from "@/supabase";
 
-import { AiOutlinePlusCircle } from "@react-icons/all-files/ai/AiOutlinePlusCircle";
-
-const OrderModal = ({
-  isOpen,
-  closeModal,
-  onSave,
-  selectedRows,
-  operators,
-}) => {
+const OrderModal = ({ closeModal, onSave, selectedRows, operators }) => {
   const [orderLines, setOrderLines] = useState([]);
   const [selectedOperator, setSelectedOperator] = useState("");
-  const [newOrderLine, setNewOrderLine] = useState({
-    id: "",
-    _id: "",
-    description: "",
-    signInData: {},
-    status: "",
-    loaderName: "",
-    assignedDoor: "",
-    weight: "",
-    checkOutTime: new Date(),
-    checkInTime: new Date(),
-    created_at: new Date(),
-    checkInNumber: "",
-    appointmentTime: new Date(),
-    purchaseOrderNumber: "",
-    carrier: "",
-    destination: "",
-    bookerEmailAddress: "",
-    bookerPhoneNumber: "",
-    bookerName: "",
-    trailerNumber: "",
-    driverPhoneNumber: "",
-    driverName: "",
-  });
-
-  const handleOrderLineChange = (e) => {
-    const { name, value } = e.target;
-    setNewOrderLine({ ...newOrderLine, [name]: value });
-    console.log("new order line: ", newOrderLine);
-  };
 
   const handleOperatorChange = async (rowId, newOperator) => {
     try {
@@ -61,7 +22,6 @@ const OrderModal = ({
       } else {
         formData.assignedTo = newOperator;
         setSelectedOperator("");
-        // Update the local state to reflect the new status
       }
     } catch (error) {
       console.error(error);
@@ -72,24 +32,15 @@ const OrderModal = ({
     console.log("date: ", date);
 
     console.log("formatted time: ", moment(date).format("HH:mm A"));
-    // Use the format you want, for example, "HH:mm"
+
     return moment(date).format("HH:mm A");
   };
   const formatDate = (date) => {
     console.log("date: ", date);
 
     console.log("formatted time: ", moment(date).format("YYYY-MM-DD"));
-    // Use the format you want, for example, "HH:mm"
+
     return moment(date).format("YYYY-MM-DD");
-  };
-  const generateRandomPoNumber = () => {
-    // Generate a random UUID
-    const uuid = uuidv4();
-
-    // Extract the first 10 characters from the UUID and remove hyphens
-    const poNumber = uuid.substr(0, 10).replace(/-/g, "");
-
-    return poNumber;
   };
 
   const initialFormData = {
@@ -171,28 +122,20 @@ const OrderModal = ({
         driverName,
       });
     } else {
-      // No row selected, reset the form data
       setFormData(initialFormData);
     }
-    console.log("formdata in selectedrow useeeffects: ", formData);
   }, [selectedRows]);
 
   useEffect(() => {}, []);
   const handleChange = (e) => {
     const { name, value } = e.target;
-    console.log("name: ", name);
-    console.log("value: ", value);
 
     setFormData({ ...formData, [name]: value });
-    console.log("form data: ", formData);
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("order lines in handlesubmit: ", orderLines);
-    console.log("form data in handlesubmit before mutation: ", formData);
     formData.order_lines = orderLines;
-    console.log("form data inhandlesubmit: ", formData);
     onSave(formData);
     closeModal();
   };
@@ -202,19 +145,24 @@ const OrderModal = ({
   if (formData.date instanceof Date) {
     formattedAppointmentDate = formData.date.toISOString().split("T")[0];
   }
-  console.log("apt time: ", formData.time);
+
   let formattedAppointmentTime = formatTime(formData.time);
-  console.log("formatted appointment time: ", formattedAppointmentTime);
 
   return (
-    <div className="modal" id="item-modal">
-      <div className="modal-content">
-        <span className="close" onClick={closeModal}>
+    <div
+      className="fixed top-[0%] left-0 w-[100%] h-[100%] bg-gray-900 bg-opacity-75 items-center justify-center flex"
+      id="item-modal"
+    >
+      <div className="bg-white w-[60%] m-0 p-2 rounded-xl relative">
+        <span
+          className="absolute top-5 right-2 text-4xl cursor-pointer"
+          onClick={closeModal}
+        >
           &times;
         </span>
 
         <form onSubmit={handleSubmit} id="item-form">
-          <div className="column">
+          <div className="w-[48%] float-left mr-2">
             <label htmlFor="driverName">Driver Name:</label>
             <input
               type="text"
@@ -233,16 +181,16 @@ const OrderModal = ({
               onChange={handleChange}
               readOnly
             />
+            <label htmlFor="trailerNumber">Trailer Number:</label>
+            <input
+              type="text"
+              id="trailerNumber"
+              name="trailerNumber"
+              value={formData.trailerNumber}
+              onChange={handleChange}
+              readOnly
+            />
           </div>
-          <label htmlFor="trailerNumber">Trailer Number:</label>
-          <input
-            type="text"
-            id="trailerNumber"
-            name="trailerNumber"
-            value={formData.trailerNumber}
-            onChange={handleChange}
-            readOnly
-          />
 
           <div className="column">
             <label htmlFor="barcodeData">LPN Number:</label>
@@ -273,6 +221,7 @@ const OrderModal = ({
               readOnly
             />
           </div>
+
           <div className="w-100 text-left">
             {" "}
             <label htmlFor="description">Description:</label>

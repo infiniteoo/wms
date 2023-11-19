@@ -1,7 +1,7 @@
-import { supabase } from "../../../supabase";
+import { supabase } from "@/supabase";
 import { useState, useEffect } from "react";
 
-const RecentActivity = () => {
+const RecentActivity = ({ loaded, setLoaded }) => {
   const [activity, setActivity] = useState([]);
 
   useEffect(() => {
@@ -17,6 +17,7 @@ const RecentActivity = () => {
           console.error(error);
         } else {
           setActivity(data);
+          setLoaded(loaded + 1);
         }
       } catch (error) {
         console.error(error);

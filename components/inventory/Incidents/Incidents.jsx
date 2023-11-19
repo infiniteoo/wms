@@ -2,7 +2,7 @@ import ReportTable from "./ReportTable";
 
 const Incidents = () => {
   return (
-    <div className="p-2 mt-10 flex flex-col">
+    <div className="p-2 mt-4 flex flex-col">
       <ReportTable />
     </div>
   );

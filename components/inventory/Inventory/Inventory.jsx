@@ -1,6 +1,6 @@
 import { useState } from "react";
 import DisplayInventory from "./DisplayInventory";
-import InventoryDashboard from "./InventoryDashboard";
+import InventoryDashboard from "../Dashboard/InventoryDashboard";
 import Incidents from "../Incidents/Incidents.jsx";
 import Labels from "../Labels/Labels.jsx";
 import Timeline from "../Timeline/Timeline.jsx";

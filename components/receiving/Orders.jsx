@@ -345,7 +345,7 @@ const Orders = () => {
   };
 
   const handleCheckboxChange = (event, rowItem) => {
-    event.stopPropagation(); // Prevent the click event from propagating to the row
+    event.stopPropagation();
     handleRowClick(rowItem);
   };
 
@@ -439,6 +439,7 @@ const Orders = () => {
                       ? "bg-gray-100"
                       : "hover:bg-gray-200"
                   }`}
+                  onClick={() => handleRowClick(item, index)}
                 >
                   <td className="py-2">
                     <input

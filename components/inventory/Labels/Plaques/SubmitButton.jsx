@@ -73,7 +73,7 @@ const SubmitButton = ({ definedStops, setDefinedStops, setNumberOfStops }) => {
     } catch (error) {
       console.log(error);
     } finally {
-      setLoading(false); // Set loading to false after API call
+      setLoading(false);
       setShowButton(false);
     }
   };

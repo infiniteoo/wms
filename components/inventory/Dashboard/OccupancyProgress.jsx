@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { supabase } from "../../../supabase";
+import { supabase } from "@/supabase";
 
 const OccupancyProgress = () => {
   const [totalCount, setTotalCount] = useState(0);
@@ -13,13 +13,13 @@ const OccupancyProgress = () => {
 
       if (count) {
         const totalCount = count;
-        setTotalCount(totalCount); // Update the state with the total count
+        setTotalCount(totalCount);
       } else {
-        setTotalCount(0); // Update with 0 if no data is available (e.g., empty table)
+        setTotalCount(0);
       }
     } catch (error) {
       console.error("Error getting total row count:", error);
-      setTotalCount(0); // Update with 0 in case of an error
+      setTotalCount(0);
     }
   };
 
@@ -33,11 +33,11 @@ const OccupancyProgress = () => {
       if (data) {
         setTotalSpotsInWarehouse(data[0].config.TOTAL_SPOTS_IN_WAREHOUSE);
       } else {
-        setTotalCount(0); // Update with 0 if no data is available (e.g., empty table)
+        setTotalCount(0);
       }
     } catch (error) {
       console.error("Error getting total row count:", error);
-      setTotalCount(0); // Update with 0 in case of an error
+      setTotalCount(0);
     }
   };
 
@@ -46,10 +46,8 @@ const OccupancyProgress = () => {
     getTotalSpots();
   }, []);
 
-  // Calculate the number of occupied spots
   const occupiedSpots = totalCount;
 
-  // Calculate the percentage of occupied spots
   const percentageOccupied = (occupiedSpots / TOTAL_SPOTS_IN_WAREHOUSE) * 100;
 
   return (

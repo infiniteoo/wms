@@ -3,7 +3,6 @@ import { v4 as uuidv4 } from "uuid";
 import { supabase } from "../../../supabase";
 import ReportToolbar from "./ReportToolbar";
 import IncidentModal from "./IncidentModal";
-import { useUser } from "@clerk/clerk-react";
 import DeleteConfirmationModal from "./ConfirmationModal";
 
 const ReportTable = () => {
@@ -13,35 +12,31 @@ const ReportTable = () => {
   const itemsPerPage = 10;
   const [modifier, setModifier] = useState("");
   const [selectedRows, setSelectedRows] = useState([]);
-  const [searchTerm, setSearchTerm] = useState(""); // Add state for search term
+  const [searchTerm, setSearchTerm] = useState("");
   const [isOpen, setIsOpen] = useState(false);
-  const user = useUser();
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [itemToDelete, setItemToDelete] = useState(null);
   const [operators, setOperators] = useState([]);
   const [selectedRowIndex, setSelectedRowIndex] = useState(null);
-  const [dockDoors, setDockDoors] = useState([]); // State for dock door options
-  const [selectedDockDoor, setSelectedDockDoor] = useState("");
+  const [dockDoors, setDockDoors] = useState([]);
   const [selectedOperator, setSelectedOperator] = useState("");
 
   const cancelDelete = () => {
-    // Cancel the delete operation and close the modal
     setActionModifier("");
     setShowDeleteModal(false);
   };
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
-    return date.toLocaleDateString(); // You can customize the format
+    return date.toLocaleDateString();
   };
 
   const formatTime = (dateString) => {
     const date = new Date(dateString);
-    return date.toLocaleTimeString(); // You can customize the format
+    return date.toLocaleTimeString();
   };
 
   const generateRandomPoNumber = () => {
-    // Generate a random UUID
     const uuid = uuidv4();
 
     // Extract the first 10 characters from the UUID and remove hyphens
@@ -50,15 +45,8 @@ const ReportTable = () => {
     return poNumber;
   };
 
-  const calculateTotalCases = (orderLines) => {
-    return orderLines.reduce((totalCases, orderLine) => {
-      return totalCases + Number(orderLine.cases);
-    }, 0);
-  };
-
   const handleStatusChange = async (rowId, newStatus) => {
     try {
-      // display popup modal to confirm coompletion
       if (newStatus === "Complete") {
         const confirm = window.confirm(
           "Are you sure you want to mark this incident as resolved?"
@@ -76,7 +64,6 @@ const ReportTable = () => {
       if (error) {
         console.error(error);
       } else {
-        // Update the local state to reflect the new status
         setInventory((inventory) =>
           inventory.map((item) => {
             if (item.id === rowId) {
@@ -104,7 +91,7 @@ const ReportTable = () => {
         console.error(error);
       } else {
         setSelectedOperator("");
-        // Update the local state to reflect the new status
+
         setInventory((inventory) =>
           inventory.map((item) => {
             if (item.id === rowId) {
@@ -142,14 +129,13 @@ const ReportTable = () => {
       // Wait for all delete operations to complete
       await Promise.all(deletePromises);
 
-      // Update the local state to remove the deleted itemss
+      // Update the local state to remove the deleted items
       const updatedInventory = inventory.filter(
         (item) =>
           !selectedRows.some((selectedItem) => selectedItem.id === item.id)
       );
       setInventory(updatedInventory);
 
-      // Clear the selected rows and close the modal
       setSelectedRows([]);
       setActionModifier("");
       setShowDeleteModal(false);
@@ -157,7 +143,6 @@ const ReportTable = () => {
   };
   const fetchDockDoors = async () => {
     try {
-      // Step 2: Fetch dock door options from the Supabase config table
       const { data, error } = await supabase
         .from("config")
         .select("config")
@@ -182,7 +167,6 @@ const ReportTable = () => {
   };
 
   useEffect(() => {
-    // Step 2: Fetch employee names from Supabase when the component loads
     fetchDockDoors();
     fetchOperators();
     fetchInventory();
@@ -286,9 +270,8 @@ const ReportTable = () => {
       driverPhoneNumber,
       driverName,
     };
-    // if selectedRows is empty, add item to database
+
     if (selectedRows.length === 0) {
-      // Add logic to save item to database
       const { data, error } = await supabase
         .from("driver_check_in")
         .insert([item])
@@ -300,12 +283,8 @@ const ReportTable = () => {
         setInventory([...inventory, data[0]]);
         setSelectedRows([]);
         setActionModifier("");
-        console.log("action modified: ", actionModifier);
       }
     } else {
-      // update item in database with selectedRows[0].id
-      console.log("selectedRow[0].id", selectedRows[0].id);
-      console.log("item", item);
       const { data, error } = await supabase
         .from("driver_check_in")
         .update(item)
@@ -316,7 +295,6 @@ const ReportTable = () => {
       if (error) {
         console.error(error);
       } else {
-        console.log("data", data);
         setInventory(
           inventory.map((item) => {
             if (item.id === data[0].id) {
@@ -345,7 +323,6 @@ const ReportTable = () => {
       if (error) {
         console.error(error);
       } else {
-        // Update the local state to reflect the new status
         setInventory((inventory) =>
           inventory.map((item) => {
             if (item.id === rowId) {
@@ -362,14 +339,13 @@ const ReportTable = () => {
   };
 
   const handleCheckboxChange = (event, rowItem) => {
-    event.stopPropagation(); // Prevent the click event from propagating to the row
+    event.stopPropagation();
     handleRowClick(rowItem);
   };
 
   const handleRowClick = (rowItem, index) => {
     setSelectedRowIndex(index);
     setSelectedRows((prevSelectedRows) => {
-      // Check if the clicked row is already selected
       const isRowSelected = prevSelectedRows.some(
         (item) => item.id === rowItem.id
       );

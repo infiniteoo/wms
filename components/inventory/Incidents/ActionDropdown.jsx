@@ -3,7 +3,6 @@ const ActionDropdown = ({
   setActionModifier,
   selectedRows,
   setIsOpen,
-  setSelectedRows,
   setItemToDelete,
   setShowDeleteModal,
 }) => {
@@ -23,7 +22,6 @@ const ActionDropdown = ({
       alert("sorry, you can only edit one item at a time");
       setActionModifier("");
     } else if (selectedRows.length === 1) {
-      // open modal to edit item
       setIsOpen(true);
       setActionModifier("");
     } else {
