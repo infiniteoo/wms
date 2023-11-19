@@ -1,7 +1,6 @@
 const bwipjs = require("bwip-js");
 const sharp = require("sharp");
 const { createClient } = require("@supabase/supabase-js");
-const { resolve } = require("styled-jsx/css");
 require("dotenv").config();
 
 const supabase = createClient(
@@ -19,7 +18,6 @@ const barcodeGenerator = async (textToGenerate) => {
 
   if (error) {
     console.error(error);
-
     return;
   }
 
@@ -28,7 +26,6 @@ const barcodeGenerator = async (textToGenerate) => {
   if (!fileExists) {
     try {
       // Generate barcode as SVG buffer
-
       bwipjs.toBuffer(
         {
           bcid: "code128",
@@ -66,7 +63,6 @@ const barcodeGenerator = async (textToGenerate) => {
       return;
     }
   } else {
-    console.log(`File already exists in the Supabase bucket: ${filename}`);
     return;
   }
 };

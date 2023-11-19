@@ -24,13 +24,12 @@
     cursor: pointer;
 }
 
-/* Add styling for the two columns */
+
 .column {
     width: 48%;
-    /* Adjust the width as needed to create a gap between the columns */
     float: left;
     margin-right: 2%;
-    /* Adjust this margin to create a gap between the columns */
+
 }
 
 label {

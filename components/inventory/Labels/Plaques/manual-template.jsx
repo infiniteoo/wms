@@ -9,7 +9,7 @@ const PDF = ({ data }) => {
   data.forEach((item, index) => {
     for (let i = 0; i < item.numberOfPallets; i++) {
       const imageUrl = `https://xtvcfdhxsmjophktihxa.supabase.co/storage/v1/object/public/barcodes/`;
-      console.log("imageurl", imageUrl + `${item.itemNumber}.png`);
+
       pages.push(
         React.createElement(
           ReactPDF.Page,
@@ -57,7 +57,7 @@ const PDF = ({ data }) => {
                     src: {
                       uri: imageUrl + `${item.itemNumber}.png`,
                       headers: {
-                        Authorization: `Bearer ${supabaseApiKey}`, // Add this Authorization header
+                        Authorization: `Bearer ${supabaseApiKey}`,
                       },
                     },
                   })
@@ -108,7 +108,7 @@ const PDF = ({ data }) => {
                     src: {
                       uri: imageUrl + `${item.supplierBatchNumber}.png`,
                       headers: {
-                        Authorization: `Bearer ${supabaseApiKey}`, // Add this Authorization header
+                        Authorization: `Bearer ${supabaseApiKey}`,
                       },
                     },
                   })
@@ -139,7 +139,7 @@ const PDF = ({ data }) => {
                     src: {
                       uri: imageUrl + `${item.productionDate}.png`,
                       headers: {
-                        Authorization: `Bearer ${supabaseApiKey}`, // Add this Authorization header
+                        Authorization: `Bearer ${supabaseApiKey}`,
                       },
                     },
                   })
@@ -170,7 +170,7 @@ const PDF = ({ data }) => {
                     src: {
                       uri: imageUrl + `${item.expirationDate}.png`,
                       headers: {
-                        Authorization: `Bearer ${supabaseApiKey}`, // Add this Authorization header
+                        Authorization: `Bearer ${supabaseApiKey}`,
                       },
                     },
                   }),
@@ -199,11 +199,6 @@ const PDF = ({ data }) => {
                 )
               )
             ),
-            // empty row
-
-            /* React.createElement(ReactPDF.View, {
-              style: styles.emptySpace,
-            }) */
 
             React.createElement(
               ReactPDF.View,

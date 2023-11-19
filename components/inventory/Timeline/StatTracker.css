@@ -1,4 +1,3 @@
-/* StatTracker.css */
 .stat-tracker {
   position: fixed;
   bottom: 0;
@@ -12,6 +11,6 @@
 }
 
 .stat-item {
-  /* display: inline-block; */
+
   margin-right: 20px;
 }

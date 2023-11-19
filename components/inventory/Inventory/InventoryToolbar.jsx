@@ -1,8 +1,7 @@
-import React, { useState } from "react";
 import ActionDropdown from "./ActionDropdown";
 import SearchModifierDropdown from "./SearchModifierDropdown";
 import SearchTextInput from "./SearchTextInput";
-import RefreshButton from "./RefreshButton";
+import RefreshButton from "../Dashboard/RefreshButton";
 
 const InventoryToolbar = ({
   inventory,
@@ -30,12 +29,14 @@ const InventoryToolbar = ({
           setSelectedRows={setSelectedRows}
           setItemToDelete={setItemToDelete}
           setShowDeleteModal={setShowDeleteModal}
-
         />
       </div>
 
       <div className="flex items-center">
-        <RefreshButton setInventory={setInventory} fetchInventory={fetchInventory} />
+        <RefreshButton
+          setInventory={setInventory}
+          fetchInventory={fetchInventory}
+        />
         <SearchModifierDropdown
           inventory={inventory}
           setModifier={setModifier}

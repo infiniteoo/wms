@@ -1,17 +1,9 @@
-import React, { useState } from "react";
+import { useState } from "react";
 
-const QuantityNumberInput = ({
-  stop,
-  definedStops,
-  setDefinedStops,
-  numberOfStops,
-  setNumberOfStops,
-}) => {
-  const stopIndex = stop.stopNumber - 1; // Assuming stops are 1-indexed
+const QuantityNumberInput = ({ stop, setDefinedStops }) => {
+  const stopIndex = stop.stopNumber - 1;
 
   const [quantityNumber, setQuantityNumber] = useState("");
-
-  /* update setEnteredOrderNumber with the event */
 
   const handleQuantityNumberChange = (event) => {
     const enteredQuantityNumber = event.target.value;

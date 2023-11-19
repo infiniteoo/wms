@@ -1,4 +1,5 @@
-import "./OrderModal.css";
+import React from "react";
+import "./ItemModal.css";
 
 const DeleteConfirmationModal = ({
   selectedRows,
@@ -10,9 +11,9 @@ const DeleteConfirmationModal = ({
     showDeleteModal && (
       <div className="modal">
         <div className="modal-content text-center">
-          <div className="text-xl font-bold">Confirm Archive</div>
+          <div className="text-xl font-bold">Confirm Deletion</div>
           <p className="mb-5">
-            Are you sure you want to archive the selected incident(s)?
+            Are you sure you want to delete the selected item(s)?
           </p>
           {selectedRows.map((item) => (
             <div key={item.id}>
@@ -20,7 +21,7 @@ const DeleteConfirmationModal = ({
                 <span className="text-2xl text-center items-center justify-center">
                   •
                 </span>{" "}
-                LPN: {item.barcodeData} - Submitted By: {item.sibmitedBy}
+                {item.item_number} - {item.description}
               </p>
             </div>
           ))}

@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from "react";
-
-import { supabase } from "../../supabase";
+import { useEffect, useState } from "react";
+import { supabase } from "../../../supabase";
+import { useUser } from "@clerk/clerk-react";
 import InventoryToolbar from "./InventoryToolbar";
 import ItemModal from "./ItemModal";
-import { useUser } from "@clerk/clerk-react";
 import DeleteConfirmationModal from "./ConfirmationModal";
 
 const DisplayInventory = () => {
@@ -13,7 +12,7 @@ const DisplayInventory = () => {
   const itemsPerPage = 10;
   const [modifier, setModifier] = useState("");
   const [selectedRows, setSelectedRows] = useState([]);
-  const [searchTerm, setSearchTerm] = useState(""); // Add state for search term
+  const [searchTerm, setSearchTerm] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const user = useUser();
   const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -125,6 +124,7 @@ const DisplayInventory = () => {
 
       last_modified: new Date(),
     };
+
     // if selectedRows is empty, add item to database
     if (selectedRows.length === 0) {
       // Add logic to save item to database

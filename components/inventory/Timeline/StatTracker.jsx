@@ -1,12 +1,11 @@
-import React, { useState, useEffect } from "react";
-import "./StatTracker.css"; // Import the CSS for styling
+import { useState, useEffect } from "react";
 import RunningStatus from "./RunningStatus";
 import TimeAndWeather from "./TimeAndWeather";
 import { renderTimeline } from "./utils/renderTimeline";
-import dynamicCounter from "./DynamicCounter";
+
+import "./StatTracker.css";
 
 const StatTracker = ({ timelineA, timelineB, timelineC, unitsThisHour }) => {
-  /* console.log("StatTracker.jsx - unitThisHour: ", unitsThisHour); */
   const [currentHour, setCurrentHour] = useState(
     new Date().getHours().toString().padStart(2, "0") + ":00:00"
   );
@@ -16,7 +15,7 @@ const StatTracker = ({ timelineA, timelineB, timelineC, unitsThisHour }) => {
       const newHour =
         new Date().getHours().toString().padStart(2, "0") + ":00:00";
       setCurrentHour(newHour);
-    }, 5000); // Update every minute
+    }, 5000);
 
     // Clear the interval on component unmount
     return () => clearInterval(intervalId);

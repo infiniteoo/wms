@@ -8,9 +8,8 @@ export default async function handler(req, res) {
 
   try {
     let completed = barcodeGenerator(orderNumber);
-    console.log("completed before", completed);
+
     if (completed) {
-      console.log("completed after", completed);
       res.status(200).json({ success: true });
     } else {
       res

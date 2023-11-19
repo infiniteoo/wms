@@ -1,5 +1,5 @@
 import React from "react";
-import "./RunningStatus.css"; // You can create a CSS file for styling
+import "./RunningStatus.css";
 
 function RunningStatus({ status }) {
   if (status.includes("RUNNING")) {

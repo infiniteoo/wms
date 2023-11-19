@@ -1,13 +1,11 @@
-import React, { useEffect, useState } from "react";
-import { supabase } from "../../supabase";
-/* import { TOTAL_SPOTS_IN_WAREHOUSE } from "@/constants"; */
+import { useEffect, useState } from "react";
+import { supabase } from "../../../supabase";
 
 const OccupancyProgress = () => {
-  const [inventory, setInventory] = useState([]);
   const [totalCount, setTotalCount] = useState(0);
   const [TOTAL_SPOTS_IN_WAREHOUSE, setTotalSpotsInWarehouse] = useState(0);
 
-  async function getTotalRowCount() {
+  const getTotalRowCount = async () => {
     try {
       const { data, count } = await supabase
         .from("inventory")
@@ -23,9 +21,9 @@ const OccupancyProgress = () => {
       console.error("Error getting total row count:", error);
       setTotalCount(0); // Update with 0 in case of an error
     }
-  }
+  };
 
-  async function getTotalSpots() {
+  const getTotalSpots = async () => {
     try {
       const { data, error } = await supabase
         .from("config")
@@ -41,7 +39,7 @@ const OccupancyProgress = () => {
       console.error("Error getting total row count:", error);
       setTotalCount(0); // Update with 0 in case of an error
     }
-  }
+  };
 
   useEffect(() => {
     getTotalRowCount();

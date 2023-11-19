@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import ActionDropdown from "./ActionDropdown";
 import SearchModifierDropdown from "./SearchModifierDropdown";
 import SearchTextInput from "./SearchTextInput";

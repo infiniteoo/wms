@@ -1,17 +1,17 @@
-import React, { useEffect, useState } from "react";
-import { supabase } from "../../supabase";
+import { useEffect, useState } from "react";
+import { supabase } from "../../../supabase";
 import Chart from "chart.js/auto";
 
 const InventoryTimeline = () => {
   const [activity, setActivity] = useState([]);
 
   useEffect(() => {
-    async function fetchRecentActivity() {
+    const fetchRecentActivity = async () => {
       try {
         const { data, error } = await supabase
           .from("inventory")
           .select("*")
-          .order("last_modified", { ascending: true })
+          .order("created_at", { ascending: true })
           .limit(100);
 
         if (error) {
@@ -22,7 +22,7 @@ const InventoryTimeline = () => {
       } catch (error) {
         console.error(error);
       }
-    }
+    };
 
     fetchRecentActivity();
   }, []);

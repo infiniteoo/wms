@@ -1,5 +1,5 @@
 function parseData(data) {
-  const itemsData = data.split("\t").filter((item) => item.trim() !== ""); // Split data into items
+  const itemsData = data.split("\t").filter((item) => item.trim() !== "");
 
   const items = [];
   let currentItem = {};
@@ -36,7 +36,6 @@ function parseData(data) {
         currentItem = {};
         break;
       default:
-        // Handle unexpected input (e.g., log a warning)
         console.warn(`Unexpected index value: ${index}`);
         break;
     }

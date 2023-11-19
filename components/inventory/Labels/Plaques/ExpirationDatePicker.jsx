@@ -1,19 +1,12 @@
 import React, { useState } from "react";
-import "./DatePicker.css"; // Import your CSS file
+import "./DatePicker.css";
 import TodaysDate from "./todaysDate";
 import formatDateToMMDDYY from "./formatDateToMMDDYY";
 import axios from "axios";
 
-const ExpirationDatePicker = ({
-  options,
-  numberOfStops,
-  setNumberOfStops,
-  stop,
-  setDefinedStops,
-  definedStops,
-}) => {
+const ExpirationDatePicker = ({ stop, setDefinedStops }) => {
   const [selectedDate, setSelectedDate] = useState(TodaysDate());
-  const stopIndex = stop.stopNumber - 1; // Assuming stops are 1-indexed
+  const stopIndex = stop.stopNumber - 1;
 
   const handleDateChange = (event) => {
     const formattedDate = formatDateToMMDDYY(event.target.value);

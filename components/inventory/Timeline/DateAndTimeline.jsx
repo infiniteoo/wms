@@ -1,5 +1,3 @@
-import React from "react";
-
 const DateAndTimeline = ({ dateAndTimeline }) => {
   return (
     <div>
@@ -7,8 +5,7 @@ const DateAndTimeline = ({ dateAndTimeline }) => {
         <thead className="table-header">
           <tr>
             <th>Date</th>
-            <th className="">Time</th> {/* Add left padding for space */}
-            {/* Add more columns as needed */}
+            <th className="">Time</th>
           </tr>
         </thead>
         <tbody className="">
@@ -19,7 +16,6 @@ const DateAndTimeline = ({ dateAndTimeline }) => {
             >
               <td className="date-column">{row[0]}</td>
               <td className="time-column">{row[1]}</td>
-              {/* Add more columns as needed */}
             </tr>
           ))}
         </tbody>

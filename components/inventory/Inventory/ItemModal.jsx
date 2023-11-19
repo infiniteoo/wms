@@ -1,20 +1,9 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
+import { initialFormData } from "../../../constants";
+
 import "./ItemModal.css";
 
-const ItemModal = ({ isOpen, closeModal, onSave, selectedRows }) => {
-  const initialFormData = {
-    itemNumber: "",
-    description: "",
-    lpnNumber: "",
-    lotNumber: "",
-    status: "AVAILABLE",
-    location: "",
-    cases: "",
-    manufacturedDate: "",
-    expirationDate: "",
-    agingProfile: "",
-  };
-
+const ItemModal = ({ closeModal, onSave, selectedRows }) => {
   const [formData, setFormData] = useState(initialFormData);
 
   useEffect(() => {

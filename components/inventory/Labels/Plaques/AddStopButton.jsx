@@ -1,6 +1,4 @@
-import React from "react";
-
-const AddStopButton = ({ numberOfStops, setNumberOfStops, stop }) => {
+const AddStopButton = ({ numberOfStops, setNumberOfStops }) => {
   return (
     <div className="text-center">
       <label

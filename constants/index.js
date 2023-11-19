@@ -1,1 +1,12 @@
-export const TOTAL_SPOTS_IN_WAREHOUSE = 5000;
+export const initialFormData = {
+  itemNumber: "",
+  description: "",
+  lpnNumber: "",
+  lotNumber: "",
+  status: "AVAILABLE",
+  location: "",
+  cases: "",
+  manufacturedDate: "",
+  expirationDate: "",
+  agingProfile: "",
+};

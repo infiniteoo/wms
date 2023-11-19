@@ -1,40 +1,13 @@
-import React, { useState, useEffect } from "react";
-import "./OrderModal.css";
-import Datetime from "react-datetime";
-import "react-datetime/css/react-datetime.css";
+import { useState, useEffect } from "react";
 import moment from "moment";
-import { v4 as uuidv4 } from "uuid";
 import { supabase } from "@/supabase";
 
-import { AiOutlinePlusCircle } from "@react-icons/all-files/ai/AiOutlinePlusCircle";
+import "react-datetime/css/react-datetime.css";
+import "./OrderModal.css";
 
-const OrderModal = ({
-  isOpen,
-  closeModal,
-  onSave,
-  selectedRows,
-  operators,
-}) => {
+const OrderModal = ({ closeModal, onSave, selectedRows, operators }) => {
   const [orderLines, setOrderLines] = useState([]);
   const [selectedOperator, setSelectedOperator] = useState("");
-  const [newOrderLine, setNewOrderLine] = useState({
-    id: "",
-    barcodeData: "",
-    description: "",
-    image: "",
-    date: "",
-    location: "",
-    submittedBy: "",
-    resolved: "",
-    assignedTo: "",
-    archived: "",
-  });
-
-  const handleOrderLineChange = (e) => {
-    const { name, value } = e.target;
-    setNewOrderLine({ ...newOrderLine, [name]: value });
-    console.log("new order line: ", newOrderLine);
-  };
 
   const handleOperatorChange = async (rowId, newOperator) => {
     try {
@@ -49,7 +22,6 @@ const OrderModal = ({
       } else {
         formData.assignedTo = newOperator;
         setSelectedOperator("");
-        // Update the local state to reflect the new status
       }
     } catch (error) {
       console.error(error);
@@ -58,26 +30,8 @@ const OrderModal = ({
 
   const formatTime = (date) => {
     console.log("date: ", date);
-
     console.log("formatted time: ", moment(date).format("HH:mm A"));
-    // Use the format you want, for example, "HH:mm"
     return moment(date).format("HH:mm A");
-  };
-  const formatDate = (date) => {
-    console.log("date: ", date);
-
-    console.log("formatted time: ", moment(date).format("YYYY-MM-DD"));
-    // Use the format you want, for example, "HH:mm"
-    return moment(date).format("YYYY-MM-DD");
-  };
-  const generateRandomPoNumber = () => {
-    // Generate a random UUID
-    const uuid = uuidv4();
-
-    // Extract the first 10 characters from the UUID and remove hyphens
-    const poNumber = uuid.substr(0, 10).replace(/-/g, "");
-
-    return poNumber;
   };
 
   const initialFormData = {
@@ -92,9 +46,7 @@ const OrderModal = ({
     assignedTo: "",
     archived: "",
   };
-
   const [formData, setFormData] = useState(initialFormData);
-
   useEffect(() => {
     if (selectedRows.length === 1) {
       const {
@@ -126,35 +78,25 @@ const OrderModal = ({
       // No row selected, reset the form data
       setFormData(initialFormData);
     }
-    console.log("formdata in selectedrow useeeffects: ", formData);
   }, [selectedRows]);
 
   useEffect(() => {}, []);
   const handleChange = (e) => {
     const { name, value } = e.target;
-    console.log("name: ", name);
-    console.log("value: ", value);
-
     setFormData({ ...formData, [name]: value });
-    console.log("form data: ", formData);
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("order lines in handlesubmit: ", orderLines);
-    console.log("form data in handlesubmit before mutation: ", formData);
     formData.order_lines = orderLines;
-    console.log("form data inhandlesubmit: ", formData);
     onSave(formData);
     closeModal();
   };
 
-  let formattedAppointmentDate = formatDate(formData.date);
-
   if (formData.date instanceof Date) {
     formattedAppointmentDate = formData.date.toISOString().split("T")[0];
   }
-  console.log("apt time: ", formData.time);
+
   let formattedAppointmentTime = formatTime(formData.time);
   console.log("formatted appointment time: ", formattedAppointmentTime);
 
@@ -229,7 +171,7 @@ const OrderModal = ({
 
           <div className="column">
             {formData.resolved === "Y" ? (
-              formData.assignedTo // Display the text value when the order is completed
+              formData.assignedTo
             ) : (
               <>
                 {" "}

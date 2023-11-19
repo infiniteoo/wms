@@ -1,11 +1,11 @@
-import { supabase } from "../../supabase";
+import { supabase } from "../../../supabase";
 import { useState, useEffect } from "react";
 
 const RecentActivity = () => {
   const [activity, setActivity] = useState([]);
 
   useEffect(() => {
-    async function fetchRecentActivity() {
+    const fetchRecentActivity = async () => {
       try {
         const { data, error } = await supabase
           .from("inventory")
@@ -21,7 +21,7 @@ const RecentActivity = () => {
       } catch (error) {
         console.error(error);
       }
-    }
+    };
 
     fetchRecentActivity();
   }, []);

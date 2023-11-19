@@ -1,5 +1,3 @@
-import React from "react";
-
 const SearchTextInput = ({ searchTerm, setSearchTerm }) => {
   const handleChange = (event) => {
     setSearchTerm(event.target.value);

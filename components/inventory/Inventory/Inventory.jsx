@@ -1,11 +1,11 @@
-"use client";
 import { useState } from "react";
-import "./Inventory.css";
 import DisplayInventory from "./DisplayInventory";
 import InventoryDashboard from "./InventoryDashboard";
-import Incidents from "./Incidents/Incidents.jsx";
-import Labels from "./Labels/Labels.jsx";
-import Timeline from "./Timeline/Timeline.jsx";
+import Incidents from "../Incidents/Incidents.jsx";
+import Labels from "../Labels/Labels.jsx";
+import Timeline from "../Timeline/Timeline.jsx";
+
+import "./Inventory.css";
 
 const Inventory = ({}) => {
   const [activeTab, setActiveTab] = useState("dashboard");

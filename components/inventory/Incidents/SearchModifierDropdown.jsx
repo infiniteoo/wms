@@ -1,5 +1,3 @@
-import React from "react";
-
 const SearchModifierDropdown = ({ inventory, setModifier, modifier }) => {
   const handleChange = (event) => {
     setModifier(event.target.value);

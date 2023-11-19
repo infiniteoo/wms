@@ -1,12 +1,10 @@
 import React from "react";
-import "./ProgressBar.css"; // You can create a CSS file for styling
+import "./ProgressBar.css";
 import dynamicCounter from "./DynamicCounter";
 import CountUp from "react-countup";
 
 function ProgressBar({ message, totalQty, showUnitsLeft = false }) {
-  /* console.log("ProgressBar.jsx: message", totalQty); */
   let progress = dynamicCounter(totalQty);
-  /*  let progress = [5000, 4000]; */
 
   // Checking if progress and message exist and are valid
   const isProgressValid = progress && progress[0] && !isNaN(progress[0]);

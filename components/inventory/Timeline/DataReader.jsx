@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 
 const DataReader = ({
   setTimelineA,
@@ -8,7 +8,6 @@ const DataReader = ({
   timelineData,
   fetchTimeline,
 }) => {
-  /* console.log("DataReader.jsx: timelineData", timelineData); */
   const convertExcelDateToJSDate = (excelDate) => {
     const excelEpoch = new Date(Date.UTC(1899, 11, 30)); // Excel epoch is December 30, 1899
     return new Date(excelEpoch.getTime() + excelDate * 24 * 60 * 60 * 1000);
@@ -22,7 +21,7 @@ const DataReader = ({
         .toString()
         .padStart(2, "0")}`;
     } else {
-      return ""; // Handle other cases as needed
+      return "";
     }
   };
   useEffect(() => {
@@ -52,13 +51,7 @@ const DataReader = ({
         updatedTimelineB.push(entryB);
         updatedTimelineC.push(entryC);
       });
-      /*    console.log("DataReader.jsx: updatedTimelineA", updatedTimelineA);
-      console.log("DataReader.jsx: updatedTimelineB", updatedTimelineB);
-      console.log("DataReader.jsx: updatedTimelineC", updatedTimelineC);
-      console.log(
-        "DataReader.jsx: updatedDateAndTimeline",
-        updatedDateAndTimeline
-      ); */
+
       setTimelineA(updatedTimelineA);
       setTimelineB(updatedTimelineB);
       setTimelineC(updatedTimelineC);

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import axios from "axios";
 import { css } from "@emotion/react";
 import { BeatLoader } from "react-spinners";
@@ -12,7 +12,7 @@ const override = css`
 const SubmitButton = ({ definedStops, setDefinedStops, setNumberOfStops }) => {
   const [pdfData, setPdfData] = useState(null);
   const [showButton, setShowButton] = useState(true);
-  const [loading, setLoading] = useState(false); // Add loading state
+  const [loading, setLoading] = useState(false);
 
   const generateImage = async (textToGenerate) => {
     try {
@@ -31,8 +31,7 @@ const SubmitButton = ({ definedStops, setDefinedStops, setNumberOfStops }) => {
 
   const generatePdfAndImages = async (parsedData) => {
     try {
-      /* console.log("parsedData", parsedData); */
-      setLoading(true); // Set loading to truea
+      setLoading(true);
       for (const item of parsedData) {
         if (item.itemNumber) {
           await generateImage(item.itemNumber);
@@ -104,16 +103,15 @@ const SubmitButton = ({ definedStops, setDefinedStops, setNumberOfStops }) => {
 
   return (
     <div>
-      {showButton &&
-        !loading && ( // Conditional rendering based on showButton and not loading
-          <button
-            className="bg-red-500 hover:bg-red-600 text-white font-semibold py-3 px-4 rounded-full shadow-md transition duration-300 ease-in-out mt-1"
-            onClick={handleSubmit}
-          >
-            Generate PDF
-          </button>
-        )}
-      {loading && ( // Show loader when loading is true
+      {showButton && !loading && (
+        <button
+          className="bg-red-500 hover:bg-red-600 text-white font-semibold py-3 px-4 rounded-full shadow-md transition duration-300 ease-in-out mt-1"
+          onClick={handleSubmit}
+        >
+          Generate PDF
+        </button>
+      )}
+      {loading && (
         <div className="mt-4 text-center">
           <p className="text-bold text-lg">Loading...</p>
           <BeatLoader

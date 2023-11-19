@@ -1,5 +1,5 @@
-import OccupancyProgress from "./OccupancyProgress";
-import RecentActivity from "./RecentActivity";
+import OccupancyProgress from "../Dashboard/OccupancyProgress";
+import RecentActivity from "../Dashboard/RecentActivity";
 import InventoryTimeline from "./InventoryTimeline";
 
 const InventoryDashboard = () => {
@@ -17,7 +17,6 @@ const InventoryDashboard = () => {
         </div>
       </div>
       <div className="">
-        
         <InventoryTimeline />
       </div>
     </div>

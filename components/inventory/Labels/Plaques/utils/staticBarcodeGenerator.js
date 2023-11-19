@@ -5,7 +5,7 @@ const fs = require("fs");
 const barcodeGenerator = (textToGenerate) => {
   bwipjs.toBuffer(
     {
-      bcid: "code128", // Barcode type (e.g., 'code128', 'qrcode', etc.)
+      bcid: "code128",
       text: textToGenerate,
       scale: 3,
       height: 10,
@@ -23,8 +23,9 @@ const barcodeGenerator = (textToGenerate) => {
         .toBuffer()
         .then((pngBuffer) => {
           // check to see if file exists first, if not, then write it to file
-          if (!fs.existsSync("../generatedBarcodes/" + textToGenerate + ".png")) {
-            
+          if (
+            !fs.existsSync("../generatedBarcodes/" + textToGenerate + ".png")
+          ) {
             fs.writeFile(
               "../generatedBarcodes/" + textToGenerate + ".png",
               pngBuffer,
@@ -33,16 +34,13 @@ const barcodeGenerator = (textToGenerate) => {
                   console.error(err);
                   return;
                 }
-                console.log('file does not exist, writing to file: ../generatedBarcodes/'+ textToGenerate + ".png")
               }
             );
           }
 
           // Save the PNG buffer to a file
-          
         })
         .catch((error) => {
-          console.log("Error generating PNG from SVG buffer:")
           console.error(error);
         });
     }

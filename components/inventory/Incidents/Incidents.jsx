@@ -1,5 +1,3 @@
-import React from "react";
-
 import ReportTable from "./ReportTable";
 
 const Incidents = () => {

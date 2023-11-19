@@ -1,22 +1,20 @@
-import React from "react";
-
-const StopNumber = ({ numberOfStops, stop }) => {
+const StopNumber = ({ stop }) => {
   return (
     <div className="flex flex-col justify-end items-end">
       <div>
         <label
           htmlFor="stopNumber"
           style={{ fontSize: "15px", fontWeight: "bold", marginRight: "5px" }}
-        >
-          
-        </label>
+        ></label>
       </div>
-      <div> <label
+      <div>
+        <label
           htmlFor="stopNumber"
           style={{ fontSize: "15px", fontWeight: "bold", marginRight: "5px" }}
         >
           {stop ? stop + "." : "1."}
-        </label> </div>
+        </label>
+      </div>
     </div>
   );
 };

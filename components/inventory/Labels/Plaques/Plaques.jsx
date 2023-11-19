@@ -1,9 +1,8 @@
+import { useState, useEffect } from "react";
 import CompleteStopGroup from "./CompleteStopGroup.jsx";
 import SubmitButton from "./SubmitButton.jsx";
-import ViewOnGitHub from "./ViewOnGitHub.jsx";
 import AddStopButton from "./AddStopButton.jsx";
-import PasteBox from "./PasteBox";
-import { useState, useEffect } from "react";
+
 import "./App.css";
 
 function App() {
@@ -43,7 +42,6 @@ function App() {
       }
 
       setDefinedStops((prevDefinedStops) => [...prevDefinedStops, ...newStops]);
-      console.log("definedStops", definedStops);
     }
   }, [numberOfStops]);
 
@@ -76,13 +74,6 @@ function App() {
           definedStops={definedStops}
           setDefinedStops={setDefinedStops}
           setNumberOfStops={setNumberOfStops}
-        />
-
-        <PasteBox
-          numberOfStops={numberOfStops}
-          setNumberOfStops={setNumberOfStops}
-          definedStops={definedStops}
-          setDefinedStops={setDefinedStops}
         />
       </div>
     </main>

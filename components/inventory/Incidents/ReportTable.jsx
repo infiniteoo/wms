@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { supabase } from "../../../supabase";
+import { useUser } from "@clerk/clerk-react";
 import ReportToolbar from "./ReportToolbar";
 import IncidentModal from "./IncidentModal";
-import { useUser } from "@clerk/clerk-react";
 import DeleteConfirmationModal from "./ConfirmationModal";
 
 const ReportTable = () => {
@@ -29,12 +29,7 @@ const ReportTable = () => {
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
-    return date.toLocaleDateString(); // You can customize the format
-  };
-
-  const formatTime = (dateString) => {
-    const date = new Date(dateString);
-    return date.toLocaleTimeString(); // You can customize the format
+    return date.toLocaleDateString();
   };
 
   const generateRandomPoNumber = () => {
@@ -45,12 +40,6 @@ const ReportTable = () => {
     const poNumber = uuid.substr(0, 10).replace(/-/g, "");
 
     return poNumber;
-  };
-
-  const calculateTotalCases = (orderLines) => {
-    return orderLines.reduce((totalCases, orderLine) => {
-      return totalCases + Number(orderLine.cases);
-    }, 0);
   };
 
   const handleStatusChange = async (rowId, newStatus) => {
@@ -157,8 +146,6 @@ const ReportTable = () => {
   };
 
   useEffect(() => {
-    // Step 2: Fetch employee names from Supabase when the component loads
-
     fetchOperators();
     fetchInventory();
   }, [currentPage, searchTerm]);
@@ -239,7 +226,6 @@ const ReportTable = () => {
     };
     // if selectedRows is empty, add item to database
     if (selectedRows.length === 0) {
-      // Add logic to save item to database
       const { data, error } = await supabase
         .from("incidents")
         .insert([item])
@@ -394,7 +380,7 @@ const ReportTable = () => {
                       <img
                         src={item.image} // Use the URL from your data
                         alt="Thumbnail"
-                        style={{ width: "50px", height: "50px" }} // Adjust the width and height as needed
+                        style={{ width: "50px", height: "50px" }}
                       />
                     ) : (
                       "No Image" // Display text when there is no image

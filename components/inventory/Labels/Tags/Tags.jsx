@@ -1,80 +1,24 @@
-import React, { useState, useEffect } from "react";
-import { supabase } from "../../../../supabase";
+import { useState, useEffect } from "react";
 import axios from "axios";
+import DatePicker from "react-datepicker";
 import {
   Document,
   Page,
   Text,
   View,
-  StyleSheet,
   PDFViewer,
   Image,
 } from "@react-pdf/renderer";
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
 
-const styles = StyleSheet.create({
-  page: {
-    flexDirection: "row",
-  },
-  column: {
-    width: "100%",
-    padding: 5,
-    backgroundColor: "#f0f0f0",
-  },
-  logo: {
-    width: 80,
-    height: 40,
-    marginBottom: 7,
-  },
-  title: {
-    fontSize: 20,
-    textAlign: "right",
-    marginBottom: 5,
-  },
-  lpn: {
-    fontSize: 18,
-    textAlign: "left",
-    marginBottom: 2,
-  },
-  subtitle: {
-    fontSize: 8,
-  },
-  sectionTitle: {
-    fontSize: 10,
-    fontWeight: "bold",
-    marginTop: 10,
-    marginBottom: 5,
-  },
-  text: {
-    fontSize: 10,
-    marginBottom: 3,
-  },
-  grid: {
-    display: "flex",
-    flexDirection: "column",
-    flexWrap: "wrap",
-    justifyContent: "space-between",
-  },
-  header: {
-    flexDirection: "col",
-    justifyContent: "space-between",
-  },
-  box: {
-    backgroundColor: "lightgray",
-    padding: 10,
-    marginBottom: 20,
-    fontSize: 14,
-    marginTop: 10,
-  },
-});
+import "react-datepicker/dist/react-datepicker.css";
+import { styles } from "./Tags.js";
 
 const Tags = () => {
   const [lpn, setLPN] = useState("");
   const [lotNumber, setLotNumber] = useState("");
   const [itemNumber, setItemNumber] = useState("");
-  const [expirationDate, setExpirationDate] = useState(new Date()); // Initialize with a date
-  const [manufacturingDate, setManufacturingDate] = useState(new Date()); // Initialize with a date
+  const [expirationDate, setExpirationDate] = useState(new Date());
+  const [manufacturingDate, setManufacturingDate] = useState(new Date());
   const [quantity, setQuantity] = useState("");
   const [description, setDescription] = useState("");
   const [imageGenerated, setImageGenerated] = useState(false);
@@ -93,16 +37,10 @@ const Tags = () => {
     }
   }, [imageGenerated, lpn]);
 
-  useEffect(() => {
-    console.log("barcodeUri: ", barcodeUri);
-  }, [barcodeUri]);
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (lpn === "") return;
 
-    // fetch post /api/generateImage/:orderNumber
-    // axios.post(`http://localhost:8156/api/generateImage/${enteredOrderNumber}`);
     let result = await axios.post(
       process.env.NEXT_PUBLIC_ENVIRONMENT === "development"
         ? `/api/generateImage/${lpn}`
@@ -114,7 +52,7 @@ const Tags = () => {
   };
   const handleBlur = async () => {
     if (lpn === "") return;
-    console.log("blurring");
+
     try {
       const result = await axios.post(
         process.env.NEXT_PUBLIC_ENVIRONMENT === "development"

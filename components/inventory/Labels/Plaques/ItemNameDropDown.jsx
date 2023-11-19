@@ -2,17 +2,10 @@ import React, { useState } from "react";
 import itemNames from "./itemNames.js";
 import itemSplit from "./itemSplit.js";
 
-const ItemNameDropDown = ({
-  options,
-  numberOfStops,
-  setNumberOfStops,
-  stop,
-  setDefinedStops,
-  definedStops,
-}) => {
+const ItemNameDropDown = ({ options, stop, setDefinedStops }) => {
   const [selectedOption, setSelectedOption] = useState(options[0]);
 
-  const stopIndex = stop.stopNumber - 1; // Assuming stops are 1-indexed
+  const stopIndex = stop.stopNumber - 1;
 
   const handleOptionChange = (event) => {
     setSelectedOption(event.target.value);

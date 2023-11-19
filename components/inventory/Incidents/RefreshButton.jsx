@@ -1,8 +1,6 @@
-import React from "react";
-
 import { AiOutlineReload } from "@react-icons/all-files/ai/AiOutlineReload";
 
-const RefreshButton = ({ setInventory, fetchInventory }) => {
+const RefreshButton = ({ fetchInventory }) => {
   const handleRefresh = async () => {
     fetchInventory();
   };

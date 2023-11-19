@@ -12,11 +12,10 @@ const ProductionTable = ({
   dateAndTimeline,
   timelineData,
 }) => {
-  /*  console.log("ProductionTable.jsx: timelineData", timelineData); */
   // Create a ref to store the matched row element
   const matchedRowRef = useRef(null);
-  // State to keep track of the current hour
 
+  // State to keep track of the current hour
   const [currentHour, setCurrentHour] = useState(
     new Date().getHours().toString().padStart(2, "0") + ":00"
   );
@@ -26,7 +25,7 @@ const ProductionTable = ({
       const newHour =
         new Date().getHours().toString().padStart(2, "0") + ":00:00";
       setCurrentHour(newHour);
-    }, 5000); // Update every minute
+    }, 5000);
 
     // Clear the interval on component unmount
     return () => clearInterval(intervalId);
@@ -45,8 +44,6 @@ const ProductionTable = ({
   // define fake date as 08/29/2023
   const fakeDate = new Date(2023, 7, 29);
 
-  // create useeffect on component start
-
   useEffect(() => {
     const updatedUnitsThisHour = { ...unitsThisHour };
 
@@ -61,17 +58,12 @@ const ProductionTable = ({
 
     tables.forEach((table, tableIndex) => {
       table.forEach((row, rowIndex) => {
-        /*  console.log("row", row); */
         const rowDate = new Date(row[0]);
-        /* console.log("rowDate", rowDate.toDateString());
-        console.log("fakeDate", fakeDate.toDateString()); */
-        /* console.log("row[1]", row[1]);
-        console.log("currentHour", currentHour); */
+
         if (
           rowDate.toDateString() === fakeDate.toDateString() &&
           row[1] === currentHour
         ) {
-          /*  console.log("match found", row[0], row[1]); */
           // Unhighlight the previously highlighted rows and remove CSS effects
           const highlightedRows = document.querySelectorAll(".highlighted-row");
           highlightedRows.forEach((highlightedRow) => {
@@ -79,7 +71,7 @@ const ProductionTable = ({
             highlightedRow.classList.remove("border-4");
             highlightedRow.classList.remove("border-black");
             highlightedRow.classList.remove("bg-green-200");
-            highlightedRow.style.backgroundColor = ""; // Remove background color
+            highlightedRow.style.backgroundColor = "";
           });
 
           // Apply a class to highlight the matching row
@@ -91,8 +83,8 @@ const ProductionTable = ({
             trElement.classList.add("border-4");
             trElement.classList.add("border-black");
             trElement.classList.add("bg-green-200");
-            trElement.style.backgroundColor = "#86EFAC"; // Set the background color to the desired color
-            trElement.classList.add("highlighted-row"); // Add a class to mark as highlighted
+            trElement.style.backgroundColor = "#86EFAC";
+            trElement.classList.add("highlighted-row");
           });
 
           // Store the matched row element in the ref
@@ -129,7 +121,6 @@ const ProductionTable = ({
     });
 
     setUnitsThisHour(updatedUnitsThisHour);
-    /*  console.log("units this hour", updatedUnitsThisHour); */
   }, [dateAndTimeline, currentHour]);
 
   const tables = [dateAndTimeline, timelineA, timelineB, timelineC];

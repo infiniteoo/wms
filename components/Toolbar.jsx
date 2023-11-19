@@ -1,24 +1,17 @@
 "use client";
-import { useState, useEffect } from "react";
-import "./Toolbar.css"; // Import your CSS file for custom styling
+
+import { useState } from "react";
+import { UserButton } from "@clerk/nextjs";
 import Config from "./config/Config";
-import Inventory from "./inventory/Inventory";
+import Inventory from "./inventory/Inventory/Inventory";
 import Receiving from "./receiving/Receiving";
 import Shipping from "./shipping/Shipping";
 import Tools from "./tools/Tools";
-import { UserButton } from "@clerk/nextjs";
+
+import "./Toolbar.css";
 
 const Toolbar = ({}) => {
   const [activeTab, setActiveTab] = useState("INVENTORY");
-
-  useEffect(() => {
-    const fetchHello = async () => {
-      const response = await fetch("/api/hello/hello");
-      const data = await response.json();
-      console.log(data);
-    };
-    fetchHello();
-  }, []);
 
   const handleTabClick = (tabName) => {
     setActiveTab(tabName);
@@ -45,7 +38,7 @@ const Toolbar = ({}) => {
   return (
     <div className=" border-green-500 w-screen">
       <div className="flex flex-row justify-between w-full">
-        <ul className="menu flex flex-row space-x-4 items-center ml-2">
+        <ul className="menu flex flex-row space-x-4 items-center ml-2 ">
           <li
             className={activeTab === "INVENTORY" ? "active" : ""}
             onClick={() => handleTabClick("INVENTORY")}

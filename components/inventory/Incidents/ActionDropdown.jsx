@@ -1,5 +1,3 @@
-import React from "react";
-
 const ActionDropdown = ({
   actionModifier,
   setActionModifier,
@@ -9,13 +7,6 @@ const ActionDropdown = ({
   setItemToDelete,
   setShowDeleteModal,
 }) => {
-  const handleAddItem = () => {
-    setSelectedRows([]);
-    setActionModifier("");
-    setIsOpen(true);
-
-    // open modal to add item
-  };
   const handleDeleteItem = async () => {
     if (selectedRows.length === 0) {
       alert("please select an item to delete");
@@ -26,6 +17,7 @@ const ActionDropdown = ({
     setItemToDelete(selectedRows);
     setShowDeleteModal(true);
   };
+
   const handleEditItem = () => {
     if (selectedRows.length > 1) {
       alert("sorry, you can only edit one item at a time");
@@ -52,6 +44,7 @@ const ActionDropdown = ({
         console.log("Archive Incident");
         handleDeleteItem();
         break;
+
       default:
         console.log("No action selected");
     }

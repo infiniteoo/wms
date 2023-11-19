@@ -1,17 +1,10 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import palletCount from "./palletCount.js";
 
-const NumberOfPalletsDropDown = ({
-  options,
-  numberOfStops,
-  setNumberOfStops,
-  stop,
-  setDefinedStops,
-  definedStops,
-}) => {
+const NumberOfPalletsDropDown = ({ stop, setDefinedStops }) => {
   const [selectedOption, setSelectedOption] = useState(palletCount[2]);
 
-  const stopIndex = stop.stopNumber - 1; // Assuming stops are 1-indexed
+  const stopIndex = stop.stopNumber - 1;
 
   const handleOptionChange = (event) => {
     setSelectedOption(event.target.value);
@@ -45,8 +38,6 @@ const NumberOfPalletsDropDown = ({
           </option>
         ))}
       </select>
-
-      
     </div>
   );
 };

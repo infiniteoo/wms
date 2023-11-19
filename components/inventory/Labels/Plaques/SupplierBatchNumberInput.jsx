@@ -1,30 +1,20 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import axios from "axios";
 
-const SupplierBatchNumberInput = ({
-  stop,
-  definedStops,
-  setDefinedStops,
-  numberOfStops,
-  setNumberOfStops,
-}) => {
-  const stopIndex = stop.stopNumber - 1; // Assuming stops are 1-indexed
+const SupplierBatchNumberInput = ({ stop, setDefinedStops }) => {
+  const stopIndex = stop.stopNumber - 1;
 
   const [enteredOrderNumber, setEnteredOrderNumber] = useState("");
 
   const handleBlur = () => {
     if (enteredOrderNumber === "") return;
 
-    // fetch post /api/generateImage/:orderNumber
-    // axios.post(`http://localhost:8156/api/generateImage/${enteredOrderNumber}`);
     axios.post(
       process.env.NEXT_PUBLIC_ENVIRONMENT === "development"
         ? `/api/generateImage/${enteredOrderNumber}`
         : `https://fgftags.com/api/generateImage/${enteredOrderNumber}`
     );
   };
-
-  /* update setEnteredOrderNumber with the event */
 
   const handleOrderNumberChange = (event) => {
     const selectedOrderNumber = event.target.value;

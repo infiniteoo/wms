@@ -69,17 +69,17 @@ const styles = ReactPDF.StyleSheet.create({
     flex: 1,
     flexDirection: "column",
     alignItems: "flex-end",
-    marginLeft: 20, // Adjust this value as needed
-    display: "flex", // Add this property to enable flex layout
-    justifyContent: "space-between", // Space out evenly
+    marginLeft: 20,
+    display: "flex",
+    justifyContent: "space-between",
   },
   newRow: {
     flex: 1,
     flexDirection: "row",
     alignItems: "flex-end",
-    marginLeft: 20, // Adjust this value as needed
-    display: "flex", // Add this property to enable flex layout
-    justifyContent: "space-between", // Space out evenly
+    marginLeft: 20,
+    display: "flex",
+    justifyContent: "space-between",
   },
   dairyImage: {
     height: "100rem",
