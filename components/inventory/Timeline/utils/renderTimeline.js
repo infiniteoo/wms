@@ -30,37 +30,36 @@ export const renderTimeline = (
     <div>
       {timelineData.product !== "CIP" ? (
         <div>
-          {" "}
-          <div className="flex flex-row mt-2 w-full ">
+          <div className="w-100 mt-2">
+            <ProgressBar
+              qty={qty}
+              totalQty={timelineData.qty}
+              message={"Units/Hour:"}
+              startingQty={startingQty}
+              percentage={(unitsMadeThisHour / timelineData.qty) * 100}
+            />
+          </div>{" "}
+          <div className="flex flex-row  w-100 ">
             <div className="stat-item">
-              <p className="text-md">
+              <p className="text-xs ">
                 Item Number:{" "}
-                <span className="text-lg">{timelineData.item}</span>
+                <span className="text-sm">{timelineData.item}</span>
               </p>
             </div>
             <div className="stat-item flex flex-col">
-              <p className="text-md">Item:</p>
-              <p className="text-lg">{timelineData.product}</p>
-            </div>
-            <div className="w-9/12">
-              <ProgressBar
-                qty={qty}
-                totalQty={timelineData.qty}
-                message={"Units/Hour:"}
-                startingQty={startingQty}
-                percentage={(unitsMadeThisHour / timelineData.qty) * 100}
-              />
+              <p className="text-xs">Item:</p>
+              <p className="text-sm ">{timelineData.product}</p>
             </div>
           </div>
-          <div className="flex flex-row justify-end">
+          <div className="flex flex-row justify-start mt-1">
             <div className="stat-item">
-              <p className="text-lg text-right">
+              <p className="text-xs text-right">
                 {" "}
                 Units/Hour: {timelineData.qty}
               </p>
             </div>
             <div className="stat-item">
-              <p className="text-lg text-right">
+              <p className="text-xs text-right">
                 Total Units: {timelineData.totalQty}
               </p>
             </div>

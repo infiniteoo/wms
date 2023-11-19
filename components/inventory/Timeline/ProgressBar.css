@@ -1,7 +1,8 @@
 .progress-container {
   width: 100%;
-  height: 50px;
-  background-color: #ccc;
+  height: 25px;
+  background-color:
+    darkgrey;
   border-radius: 10px;
   overflow: hidden;
 }

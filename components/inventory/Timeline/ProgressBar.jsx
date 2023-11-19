@@ -31,7 +31,7 @@ function ProgressBar({ message, totalQty, showUnitsLeft = false }) {
           </div>
         )}
       </div>
-      <div className="text-right text-md mt-1">
+      <div className="text-right text-xs mt-1">
         {showUnitsLeft ? "Units Left This Hour: " : "Units This Hour: "}
         <CountUp start={displayValue} end={displayValue} /> / {totalQty}{" "}
       </div>

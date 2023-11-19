@@ -3,7 +3,7 @@ import WeatherComponent from "./WeatherComponent";
 
 const TimeAndWeather = () => {
   return (
-    <div className=" flex flex-col items-left justify-left">
+    <div className=" flex flex-col items-left justify-left w-100">
       <div className="text-lg p-1 text-left">
         <TimeComponent />
       </div>
