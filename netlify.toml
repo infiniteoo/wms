@@ -1,3 +1,19 @@
 [build]
   functions = "./pages/api/**/*"
   command = "npm install && npm run build" 
+
+  [context.production]
+  command = "npm run build"
+  publish = ".next"
+
+[context.staging]
+  command = "npm run build"
+  publish = ".next" 
+
+[functions]
+  external_node_modules = ["sharp"]
+
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
+
+
