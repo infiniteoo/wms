@@ -41,7 +41,10 @@ const CheckedInDrivers = ({ setActiveTab }) => {
         <p className="text-lg font-bold border-b">Checked In Drivers</p>
         {drivers.length > 0 ? (
           drivers.map((driver, index) => (
-            <div className="flex flex-row justify-between items-center mb-2 mt-2 h-full overflow-y-scroll">
+            <div
+              className="flex flex-row justify-between items-center mb-2 mt-2 h-full overflow-y-scroll"
+              key={index}
+            >
               <div className="flex flex-col">
                 <p className="text-md">{index + 1}.</p>
               </div>
