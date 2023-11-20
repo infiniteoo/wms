@@ -15,7 +15,7 @@ const Receiving = ({}) => {
   const renderTabContent = () => {
     switch (activeTab) {
       case "dashboard":
-        return <ReceivingDashboard />;
+        return <ReceivingDashboard setActiveTab={setActiveTab} />;
       case "orders":
         return <Orders />;
       case "driver check-in":
