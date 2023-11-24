@@ -1,18 +1,18 @@
 import React from "react";
 import { SignIn } from "@clerk/nextjs";
+import "./Page.css"; // Import your CSS file
 
 export default function Page() {
   return (
     <div className="flex">
       {/* Background Image */}
-      <div
-        className="flex-grow bg-left  "
-        style={{
-          backgroundImage: `url('/gb-splash.png')`,
-          width: "100%", // Adjust the width as needed
-          height: "100vh", // Adjust the height as needed
-        }}
-      ></div>
+      <div className="background-container">
+        <img
+          className="responsive-image  rounded-2xl ml-1 mr-2 pr-2"
+          src="/GreatBlue.png"
+          alt="Background"
+        />
+      </div>
 
       {/* SignIn Component */}
       <div className="flex-grow">
